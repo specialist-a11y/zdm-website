@@ -1043,9 +1043,13 @@
       <div class="success-icon">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 14l6 6L23 8" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="square"/></svg>
       </div>
-      <h3>You're In.</h3>
-      <p>We've received your application and will confirm your audit slot within 24 hours. Check your inbox — we'll send a calendar invite with everything you need.</p>
-      <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;color:#C8FF00;letter-spacing:.06em;">Zero Distance to Market.</p>
+      <h3>Application Received.</h3>
+      <p>Your details have been submitted securely. Please select a time for your 30-minute audit call using our calendar below.</p>
+      <a href="YOUR_GOOGLE_CALENDAR_LINK_HERE" target="_blank" class="submit-btn" style="text-decoration:none; display:inline-flex; width:auto; margin-top: 24px;">
+        <span>Book Audit Call</span>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </a>
+      <p style="margin-top:24px;font-family:'DM Mono',monospace;font-size:11px;color:#C8FF00;letter-spacing:.06em;">Zero Distance to Market.</p>
     </div>
   </div>
 </div>
@@ -1487,17 +1491,34 @@
       return;
     }
 
-    // Simulate submission (replace with actual endpoint / Formspree / etc.)
+    // Submit to Formspree via AJAX
     var btn = form.querySelector('.submit-btn');
     btn.querySelector('span').textContent = 'Submitting…';
     btn.disabled = true;
+    
+    var formData = new FormData(form);
 
-    setTimeout(function() {
-      form.style.display = 'none';
-      success.classList.add('show');
-      // Scroll the panel into view
-      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 800);
+    fetch("https://formspree.io/f/xbdbjyyp", {
+      method: "POST",
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        form.style.display = 'none';
+        success.classList.add('show');
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        alert("Oops! There was a problem submitting your form.");
+        btn.querySelector('span').textContent = 'Claim My Free Audit';
+        btn.disabled = false;
+      }
+    }).catch(error => {
+      alert("Oops! There was a problem submitting your form.");
+      btn.querySelector('span').textContent = 'Claim My Free Audit';
+      btn.disabled = false;
+    });
   });
 })();
 </script>
