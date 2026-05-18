@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PropelDeck — Close Faster. Look World-Class.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --navy:        #070D1A;
+    --navy-mid:    #0D1628;
+    --navy-light:  #131F35;
+    --gold:        #C8963E;
+    --gold-dim:    rgba(200,150,62,0.22);
+    --gold-glow:   rgba(200,150,62,0.08);
+    --coral:       #E8644A;
+    --coral-dim:   rgba(232,100,74,0.18);
+    --white:       #F4EFE8;
+    --muted:       rgba(244,239,232,0.5);
+    --faint:       rgba(244,239,232,0.22);
+    --border:      rgba(200,150,62,0.22);
+    --font-display: 'Bricolage Grotesque', sans-serif;
+    --font-body:   'DM Sans', sans-serif;
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    height: 68px;
+    background: rgba(7,13,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-logo span {
+    color: var(--gold);
+  }
+  .nav-logo-mark {
+    width: 28px; height: 28px;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-mark svg { display: block; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--navy) !important;
+    font-weight: 600 !important;
+    padding: 10px 22px;
+    font-size: 13px !important;
+    letter-spacing: 0.5px;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: #e0a94a !important; color: var(--navy) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 68px;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 64px 80px 64px;
+    position: relative;
+    z-index: 2;
+    width: 52%;
+    background: linear-gradient(to right, rgba(7,13,26,0.97) 0%, rgba(7,13,26,0.92) 70%, rgba(7,13,26,0.0) 100%);
+  }
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 2px;
+    background: var(--gold);
+  }
+  .hero-headline {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(40px, 4.5vw, 68px);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+  .hero-headline em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    padding: 14px 28px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #e0a94a; }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 14px 28px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-stats {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 48px;
+  }
+  .hero-stat-val {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 36px;
+    color: var(--gold);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-weight: 400;
+    max-width: 100px;
+    line-height: 1.4;
+  }
+
+  /* ── HERO VIDEO ── */
+  .hero-right {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.82;
+  }
+  .hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(7,13,26,0.88) 0%,
+      rgba(7,13,26,0.5) 50%,
+      rgba(7,13,26,0.15) 100%
+    );
+    pointer-events: none;
+  }
+  .hero-video-tag {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    font-family: var(--font-body);
+    opacity: 0.7;
+  }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: 120px 64px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--gold);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .section-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .section-body {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 560px;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .problem {
+    background: var(--navy);
+  }
+  .problem-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .problem-list {
+    list-style: none;
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .problem-item {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .problem-item:last-child { border-bottom: 1px solid var(--border); }
+  .problem-num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--gold);
+    opacity: 0.5;
+    min-width: 28px;
+    margin-top: 2px;
+  }
+  .problem-text strong {
+    display: block;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 6px;
+    font-family: var(--font-display);
+  }
+  .problem-text p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .problem-callout {
+    margin-top: 48px;
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--coral);
+    padding: 40px;
+  }
+  .problem-callout p {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+    color: var(--white);
+  }
+  .problem-callout p em {
+    font-style: normal;
+    color: var(--coral);
+  }
+  .problem-callout cite {
+    display: block;
+    margin-top: 16px;
+    font-size: 12px;
+    font-style: normal;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how {
+    background: var(--navy-mid);
+  }
+  .how-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 80px;
+    align-items: end;
+  }
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+  .how-step {
+    padding: 48px 40px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .how-step:last-child { border-right: none; }
+  .how-step-num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 64px;
+    color: var(--gold);
+    opacity: 0.15;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .how-step-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 20px;
+    color: var(--gold);
+  }
+  .how-step h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+  .how-step p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .how-step-connector {
+    position: absolute;
+    top: 48px;
+    right: -14px;
+    width: 28px; height: 28px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1;
+    color: var(--gold);
+    font-size: 12px;
+  }
+
+  /* ── FEATURES ── */
+  .features {
+    background: var(--navy);
+  }
+  .features-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 72px;
+    align-items: end;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .feature-card {
+    padding: 44px 36px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.25s;
+  }
+  .feature-card:hover {
+    background: var(--gold-glow);
+  }
+  .feature-icon {
+    width: 32px; height: 32px;
+    margin-bottom: 24px;
+    color: var(--gold);
+  }
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--white);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── INDUSTRIES ── */
+  .industries {
+    background: var(--navy-mid);
+  }
+  .industries-header {
+    margin-bottom: 64px;
+  }
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+  .industry-card {
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid var(--border);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .industry-card:last-child { border-right: none; }
+  .industry-card:hover .industry-bg { opacity: 0.55; }
+  .industry-bg {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.3s;
+  }
+  .industry-card:nth-child(1) .industry-bg { background-image: url('uploads/industry-agencies.jpg'); background-size: cover; background-position: center; opacity: 0.45; }
+  .industry-card:nth-child(2) .industry-bg { background-image: url('uploads/industry-construction.jpg'); background-size: cover; background-position: center; opacity: 0.45; }
+  .industry-card:nth-child(3) .industry-bg { background-image: url('uploads/industry-corporate.jpg'); background-size: cover; background-position: center; opacity: 0.45; }
+  .industry-card:nth-child(4) .industry-bg { background-image: url('uploads/industry-hospitality.jpg'); background-size: cover; background-position: center top; opacity: 0.45; }
+  .industry-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.06;
+    padding: 20px;
+  }
+  .industry-placeholder-lines {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .ph-line {
+    height: 2px;
+    background: var(--white);
+    width: 100%;
+  }
+  .ph-line:nth-child(2) { width: 80%; }
+  .ph-line:nth-child(3) { width: 60%; }
+  .ph-line:nth-child(4) { width: 40%; }
+  .industry-content {
+    position: relative;
+    z-index: 2;
+  }
+  .industry-accent {
+    display: inline-block;
+    width: 36px; height: 3px;
+    margin-bottom: 16px;
+  }
+  .industry-card:nth-child(1) .industry-accent { background: #8B5CF6; }
+  .industry-card:nth-child(2) .industry-accent { background: #22C55E; }
+  .industry-card:nth-child(3) .industry-accent { background: var(--gold); }
+  .industry-card:nth-child(4) .industry-accent { background: var(--coral); }
+  .industry-content h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .industry-content p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .industry-tag {
+    display: inline-flex;
+    margin-top: 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gold);
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .industry-card:hover .industry-tag {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── ANALYTICS ── */
+  .analytics {
+    background: var(--navy);
+  }
+  .analytics-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .analytics-visual {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    padding: 40px;
+  }
+  .analytics-bar-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .analytics-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.07);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .analytics-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    transform-origin: left;
+    animation: barFill 1.4s ease-out forwards;
+    transform: scaleX(0);
+  }
+  @keyframes barFill {
+    to { transform: scaleX(1); }
+  }
+  .analytics-bar-fill.coral { background: var(--coral); }
+  .analytics-bar-fill.green { background: #22C55E; }
+  .analytics-pulse-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .analytics-dot {
+    width: 8px; height: 8px;
+    background: var(--coral);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,100,74,0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(232,100,74,0); }
+  }
+  .analytics-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin-top: 28px;
+    border: 1px solid var(--border);
+  }
+  .analytics-metric {
+    background: var(--navy-light);
+    padding: 24px;
+  }
+  .analytics-metric-val {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 32px;
+    color: var(--gold);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .analytics-metric-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .analytics-list {
+    list-style: none;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .analytics-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .analytics-list li::before {
+    content: '';
+    display: block;
+    width: 20px; height: 20px;
+    background: var(--gold-glow);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .analytics-list li strong { color: var(--white); font-weight: 600; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--navy-mid);
+    text-align: center;
+    border-bottom: none;
+  }
+  .cta-section .section-label {
+    justify-content: center;
+  }
+  .cta-section .section-label::before { display: none; }
+  .cta-section .section-title {
+    max-width: 680px;
+    margin: 0 auto 24px;
+  }
+  .cta-section .section-body {
+    max-width: 480px;
+    margin: 0 auto 48px;
+    text-align: center;
+  }
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .cta-note {
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--faint);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    padding: 64px 64px 40px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 280px;
+  }
+  .footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-col ul li a {
+    font-size: 14px;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-bottom p {
+    font-size: 13px;
+    color: var(--faint);
+  }
+  .footer-region {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--faint);
+    letter-spacing: 0.5px;
+  }
+  .footer-region span {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── COUNTER ANIMATION ── */
+  .count-up { display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <polygon points="2,14 8,2 14,14" fill="#070D1A" stroke="#070D1A" stroke-width="0"/>
+        <polygon points="2,14 8,2 14,14" fill="#070D1A"/>
+        <path d="M3 14 L8 3 L13 14" stroke="#070D1A" stroke-width="2" fill="none"/>
+        <rect x="2" y="11" width="12" height="3" fill="#070D1A"/>
+        <path d="M4 14 L8 5 L12 14 Z" fill="#C8963E"/>
+      </svg>
+    </div>
+    Propel<span>Deck</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#industries">Industries</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#cta" class="nav-cta">Book a Demo</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Caribbean Interactive Proposals</div>
+    <h1 class="hero-headline">
+      Close Caribbean<br>deals <em>faster</em> today.
+    </h1>
+    <p class="hero-sub">
+      Stop losing high-ticket proposals to static PDFs. Interactive HTML proposals track every view, click, and signature — giving you the edge to win more business across the Caribbean.
+    </p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">
+        See a live proposal
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/>
+        </svg>
+      </a>
+      <a href="#how" class="btn-ghost">How it works</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val"><span class="count-up" data-target="3">0</span>x</div>
+        <div class="hero-stat-label">Higher open rates than PDF</div>
+      </div>
+      <div>
+        <div class="hero-stat-val"><span class="count-up" data-target="48">0</span>h</div>
+        <div class="hero-stat-label">Average proposal delivery time</div>
+      </div>
+      <div>
+        <div class="hero-stat-val"><span class="count-up" data-target="94">0</span>%</div>
+        <div class="hero-stat-label">Of clients view on mobile</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <video class="hero-video" autoplay loop muted playsinline>
+      <source src="uploads/Make_waves_move_202604241258.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-overlay"></div>
+    <div class="hero-video-tag">Caribbean · Regional · CARICOM</div>
+  </div>
+</div>
+
+<!-- ── PROBLEM SECTION ── -->
+<section class="problem" id="problem">
+  <div class="problem-inner">
+    <div>
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">A PDF is not<br>a proposal.<br>It's a <em>liability.</em></h2>
+      <p class="section-body">
+        Every time you send a static PDF, you hand control of the deal to the prospect. You lose visibility, momentum, and leverage — and you have no idea what happens next.
+      </p>
+      <div class="problem-callout">
+        <p>"While you are sending PDFs, your competitor's proposal is already <em>open on the client's screen.</em>"</p>
+        <cite>— PropelDeck, built for this region</cite>
+      </div>
+    </div>
+    <div>
+      <ul class="problem-list">
+        <li class="problem-item">
+          <span class="problem-num">01</span>
+          <div class="problem-text">
+            <strong>You cannot track it</strong>
+            <p>Did they open it? Which section stopped them? Did they forward it to the actual decision-maker? A PDF tells you nothing.</p>
+          </div>
+        </li>
+        <li class="problem-item">
+          <span class="problem-num">02</span>
+          <div class="problem-text">
+            <strong>It cannot close the deal</strong>
+            <p>No custom pricing, no e-signature, no deposit. The prospect has to leave the proposal, make a call, and remember to come back. Most don't.</p>
+          </div>
+        </li>
+        <li class="problem-item">
+          <span class="problem-num">03</span>
+          <div class="problem-text">
+            <strong>It does not travel well</strong>
+            <p>Download, scroll, print, scan, email back. On a mobile phone. That is the experience you are asking your best prospects to have.</p>
+          </div>
+        </li>
+        <li class="problem-item">
+          <span class="problem-num">04</span>
+          <div class="problem-text">
+            <strong>It does not reflect your business</strong>
+            <p>Caribbean businesses are ambitious, sophisticated, and serious. A flat PDF says otherwise. The deal goes to whoever looks the part.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="how-header">
+    <div>
+      <div class="section-label">The Process</div>
+      <h2 class="section-title">We build it.<br>You send it.<br>They sign.</h2>
+    </div>
+    <div>
+      <p class="section-body">
+        PropelDeck is not software you figure out alone. It is a done-for-you service. You brief us on the deal — we deliver a live, custom-built proposal within 48 hours. Your client gets a link. You get visibility.
+      </p>
+    </div>
+  </div>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="how-step-num">01</div>
+      <svg class="how-step-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <rect x="6" y="8" width="28" height="24"/>
+        <line x1="12" y1="16" x2="28" y2="16"/>
+        <line x1="12" y1="22" x2="22" y2="22"/>
+        <line x1="12" y1="28" x2="18" y2="28"/>
+      </svg>
+      <h3>You Brief Us</h3>
+      <p>Tell us about the deal — client, scope, pricing, timeline. Share your brand assets. We handle everything from there. No template system to learn.</p>
+      <div class="how-step-connector">→</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">02</div>
+      <svg class="how-step-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <rect x="4" y="10" width="32" height="22"/>
+        <line x1="4" y1="17" x2="36" y2="17"/>
+        <circle cx="10" cy="13.5" r="1.5" fill="currentColor" stroke="none"/>
+        <circle cx="16" cy="13.5" r="1.5" fill="currentColor" stroke="none"/>
+        <rect x="10" y="22" width="20" height="4"/>
+      </svg>
+      <h3>We Build It Live</h3>
+      <p>Custom-coded, fully branded interactive proposal — delivered within 48 hours. Pricing calculators, video, signature, and payment all included.</p>
+      <div class="how-step-connector">→</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">03</div>
+      <svg class="how-step-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <polyline points="6,22 14,30 34,10"/>
+        <circle cx="20" cy="20" r="14"/>
+      </svg>
+      <h3>You Close the Deal</h3>
+      <p>Send your client a link. Watch them open it, navigate it, and sign — while you track every section they read in real time from your dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEMO ── -->
+<section class="demo-section" id="demo" style="background:linear-gradient(135deg,#f0f4ff 0%,#fafbff 50%,#f5f0ff 100%);border-top:none;border-bottom:none;padding:100px 64px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(circle,#c7d2fe 1px,transparent 1px);background-size:28px 28px;opacity:0.35;pointer-events:none;"></div>
+  <div style="position:relative;z-index:1;">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:#eef2ff;border:1px solid #c7d2fe;padding:6px 16px;border-radius:999px;margin-bottom:20px;">
+      <span style="width:8px;height:8px;background:#6366f1;border-radius:50%;animation:demoLivePulse 2s ease-in-out infinite;"></span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#4f46e5;letter-spacing:1px;text-transform:uppercase;">Live Interactive Demo</span>
+    </div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(32px,4vw,52px);color:#0f172a;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;">This is what your clients <span style="color:#6366f1;">actually see.</span></h2>
+    <p style="font-family:'DM Sans',sans-serif;font-size:17px;color:#475569;line-height:1.65;max-width:540px;margin-bottom:52px;">Toggle between a static PDF and a live proposal. Every feature below ships with every PropelDeck engagement.</p>
+    <div id="demo-root"></div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="features-header">
+    <div>
+      <div class="section-label">What's Included</div>
+      <h2 class="section-title">Everything the deal needs.<br><em>In a single link.</em></h2>
+    </div>
+    <div>
+      <p class="section-body">
+        Every PropelDeck proposal ships as a full-stack web experience. No integrations to stitch together. No missing features. No excuses.
+      </p>
+    </div>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <rect x="3" y="6" width="26" height="20"/>
+        <line x1="3" y1="13" x2="29" y2="13"/>
+        <line x1="10" y1="13" x2="10" y2="26"/>
+        <line x1="20" y1="18" x2="24" y2="18"/>
+        <line x1="20" y1="22" x2="26" y2="22"/>
+      </svg>
+      <h3>Pricing Calculator</h3>
+      <p>Clients select scope, add-ons, and timelines — the total updates live. No back-and-forth on revised quotes.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <path d="M6 24 C6 20 10 18 16 18 C22 18 26 20 26 24"/>
+        <circle cx="16" cy="11" r="5"/>
+        <line x1="22" y1="8" x2="28" y2="8"/>
+        <line x1="22" y1="12" x2="28" y2="12"/>
+      </svg>
+      <h3>E-Signature</h3>
+      <p>Clients sign directly inside the proposal. No printing, scanning, or PDFs. Deal closed before they close the tab.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <rect x="3" y="8" width="26" height="18"/>
+        <polyline points="3,8 16,18 29,8"/>
+      </svg>
+      <h3>Online Payment</h3>
+      <p>Caribbean-ready payment collection built in. Clients pay directly inside the proposal — no third-party redirects, no friction at the finish line.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <circle cx="16" cy="16" r="12"/>
+        <polyline points="16,8 16,16 22,16"/>
+      </svg>
+      <h3>Real-Time Analytics</h3>
+      <p>See when the proposal was opened, which sections held their attention longest, and when it's time to follow up.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <rect x="6" y="4" width="14" height="20"/>
+        <polygon points="20,4 26,10 20,10"/>
+        <line x1="20" y1="10" x2="26" y2="10"/>
+        <polyline points="22,20 26,24 30,18"/>
+      </svg>
+      <h3>Video Embeds</h3>
+      <p>Drop in a project walkthrough, testimonial reel, or personal message from the founder. PDFs cannot do this.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
+        <rect x="4" y="10" width="10" height="10"/>
+        <rect x="18" y="10" width="10" height="10"/>
+        <line x1="14" y1="15" x2="18" y2="15"/>
+        <line x1="9" y1="4" x2="9" y2="10"/>
+        <line x1="23" y1="4" x2="23" y2="10"/>
+        <polyline points="18,23 23,28 28,23"/>
+      </svg>
+      <h3>CRM Integration</h3>
+      <p>Proposal data, signatures, and engagement metrics sync directly into your CRM. Your pipeline stays accurate, always.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── INDUSTRIES ── -->
+<section class="industries" id="industries">
+  <div class="industries-header">
+    <div class="section-label">Who We Serve</div>
+    <h2 class="section-title">Built for the businesses<br>that <em>build the Caribbean.</em></h2>
+  </div>
+  <div class="industries-grid">
+    <a href="http://localhost:3000/demo/agencies" class="industry-card" style="text-decoration:none;">
+      <div class="industry-bg"></div>
+      <div class="industry-content">
+        <div class="industry-accent"></div>
+        <h3>Agencies &<br>Creative Studios</h3>
+        <p>Your work is premium. Your proposal should say so. Win retainers and project contracts with proposals that match the quality of what you deliver.</p>
+        <div class="industry-tag">
+          See example →
+        </div>
+      </div>
+    </a>
+    <a href="http://localhost:3000/demo/plumbing" class="industry-card" style="text-decoration:none;">
+      <div class="industry-bg"></div>
+      <div class="industry-content">
+        <div class="industry-accent"></div>
+        <h3>Home Services &<br>Plumbing</h3>
+        <p>Interactive service packages, project phases, and local Caribbean payment integrations. Turn quotes into signed contracts on the spot.</p>
+        <div class="industry-tag">
+          See example →
+        </div>
+      </div>
+    </a>
+    <a href="http://localhost:3000/demo/construction" class="industry-card" style="text-decoration:none;">
+      <div class="industry-bg"></div>
+      <div class="industry-content">
+        <div class="industry-accent"></div>
+        <h3>Construction &<br>Engineering</h3>
+        <p>Interactive project timelines, phased payment schedules, and live budget calculators — in a single proposal link that closes high-value contracts.</p>
+        <div class="industry-tag">
+          See example →
+        </div>
+      </div>
+    </a>
+    <a href="http://localhost:3000/demo/corporate" class="industry-card" style="text-decoration:none;">
+      <div class="industry-bg"></div>
+      <div class="industry-content">
+        <div class="industry-accent"></div>
+        <h3>Corporate &<br>Professional Services</h3>
+        <p>Consulting, legal, finance. Deals where credibility closes more than pricing. PropelDeck makes your firm look exactly as capable as it is.</p>
+        <div class="industry-tag">
+          See example →
+        </div>
+      </div>
+    </a>
+    <a href="http://localhost:3000/demo/hospitality" class="industry-card" style="text-decoration:none;">
+      <div class="industry-bg"></div>
+      <div class="industry-content">
+        <div class="industry-accent"></div>
+        <h3>Hospitality &<br>Tourism</h3>
+        <p>Events, weddings, venue partnerships. Proposals with embedded video tours, package calculators, and one-click booking — sent while the conversation is still warm.</p>
+        <div class="industry-tag">
+          See example →
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ── ANALYTICS ── -->
+<section class="analytics" id="analytics">
+  <div class="analytics-inner">
+    <div>
+      <div class="section-label">Proposal Intelligence</div>
+      <h2 class="section-title">Know exactly<br>where the deal<br><em>stands.</em></h2>
+      <p class="section-body" style="margin-bottom: 40px;">
+        Every PropelDeck proposal comes with a live analytics dashboard. You know when your prospect opened it, what they read, who else they shared it with, and when to call.
+      </p>
+      <ul class="analytics-list">
+        <li><span>Proposal opened <strong>7 min</strong> after you sent it — you'll know.</span></li>
+        <li><span>Pricing section viewed <strong>4 times</strong> — they are interested, not silent.</span></li>
+        <li><span>Proposal forwarded to a <strong>second viewer</strong> — a decision-maker just entered the room.</span></li>
+        <li><span>Time on page dropped to zero — <strong>follow up now.</strong> The window is open.</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="analytics-visual">
+        <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 28px;">Live Proposal — Johnson & Associates</p>
+        
+        <div class="analytics-bar-label">
+          <span>Executive Summary</span><span style="color: var(--gold);">4:12 spent</span>
+        </div>
+        <div class="analytics-bar-track">
+          <div class="analytics-bar-fill" style="width: 88%; animation-delay: 0.2s;"></div>
+        </div>
+
+        <div class="analytics-bar-label">
+          <span>Scope of Work</span><span style="color: var(--gold);">2:40 spent</span>
+        </div>
+        <div class="analytics-bar-track">
+          <div class="analytics-bar-fill green" style="width: 62%; animation-delay: 0.5s;"></div>
+        </div>
+
+        <div class="analytics-bar-label">
+          <span>Pricing & Packages</span><span style="color: var(--coral);">6:55 spent</span>
+        </div>
+        <div class="analytics-bar-track">
+          <div class="analytics-bar-fill coral" style="width: 100%; animation-delay: 0.8s;"></div>
+        </div>
+
+        <div class="analytics-bar-label">
+          <span>Team & Timeline</span><span>1:20 spent</span>
+        </div>
+        <div class="analytics-bar-track">
+          <div class="analytics-bar-fill" style="width: 34%; animation-delay: 1.1s; opacity: 0.5;"></div>
+        </div>
+
+        <div class="analytics-pulse-row">
+          <div class="analytics-dot"></div>
+          <span style="color: var(--muted); font-size: 13px;">Viewed by <strong style="color: var(--white);">2 people</strong> — last active 12 min ago</span>
+        </div>
+
+        <div class="analytics-metrics">
+          <div class="analytics-metric">
+            <div class="analytics-metric-val">3</div>
+            <div class="analytics-metric-label">Total opens</div>
+          </div>
+          <div class="analytics-metric">
+            <div class="analytics-metric-val">14m</div>
+            <div class="analytics-metric-label">Avg. time on page</div>
+          </div>
+          <div class="analytics-metric">
+            <div class="analytics-metric-val">2</div>
+            <div class="analytics-metric-label">Unique viewers</div>
+          </div>
+          <div class="analytics-metric">
+            <div class="analytics-metric-val" style="color: var(--coral);">Hot</div>
+            <div class="analytics-metric-label">Engagement score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section style="background:var(--navy);padding:120px 64px;border-bottom:1px solid var(--border);" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title" style="margin-bottom:16px;">One proposal changes<br>everything. <em>Pick your plan.</em></h2>
+  <p class="section-body" style="margin-bottom:72px;">No subscriptions for launch package*, no learning curve, no hidden fees. You brief us — we deliver. Every plan includes a fully custom-built interactive proposal, deployed and ready to send.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);">
+
+    <!-- Launch -->
+    <div style="padding:48px 40px;border-right:1px solid var(--border);display:flex;flex-direction:column;">
+      <div style="font-family:var(--font-body);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:16px;">Launch</div>
+      <div style="font-family:var(--font-display);font-weight:800;font-size:48px;color:var(--white);letter-spacing:-1px;line-height:1;">$297 <span style="font-size:16px;color:var(--muted);font-weight:400;">USD</span></div>
+      <div style="font-family:var(--font-body);font-size:13px;color:var(--muted);margin-top:6px;margin-bottom:32px;">per proposal</div>
+      <p style="font-family:var(--font-body);font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:36px;">For solo consultants and small businesses sending their first interactive proposal. Everything you need to close a single deal.</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:48px;flex:1;">
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>1 custom-built proposal</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>2 rounds of edit changes</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Full brand alignment</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>E-signature included</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Online payment collection</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>5-day delivery</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Online proposal live for 30 days only</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Approved PDF can be printed/saved</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>7-day view analytics</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Up to 200 approved clients</li>
+      </ul>
+      <a href="payment.html?plan=launch" class="btn-ghost" style="text-align:center;display:block;">Get started</a>
+    </div>
+
+    <!-- Studio — Featured -->
+    <div style="padding:48px 40px;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--navy-light);border-top:3px solid var(--gold);margin-top:-1px;position:relative;">
+      <div style="position:absolute;top:20px;right:20px;background:var(--gold);color:var(--navy);font-family:var(--font-body);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;">Most Popular</div>
+      <div style="font-family:var(--font-body);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:16px;">Studio</div>
+      <div style="font-family:var(--font-display);font-weight:800;font-size:48px;color:var(--white);letter-spacing:-1px;line-height:1;">$799 <span style="font-size:16px;color:var(--muted);font-weight:400;">USD</span></div>
+      <div style="font-family:var(--font-body);font-size:13px;color:var(--muted);margin-top:6px;margin-bottom:32px;">per month · up to 4 proposals</div>
+      <p style="font-family:var(--font-body);font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:36px;">For agencies and growing firms sending multiple proposals each month. Built for teams that are winning consistently.</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:48px;flex:1;">
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>4 proposals per month</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Everything in Launch</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>10 rounds of edit changes per proposal</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Interactive pricing calculator</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Video embeds</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Full analytics dashboard</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>72-hour delivery</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Online proposal live for 30 days only</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Approved PDF can be printed/saved</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Dedicated account manager</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--white);"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">—</span>Up to 1000 approved clients per month</li>
+      </ul>
+      <a href="payment.html?plan=studio" class="btn-primary" style="text-align:center;display:block;justify-content:center;">Get started</a>
+    </div>
+
+    <!-- Enterprise -->
+    <div style="padding:48px 40px;display:flex;flex-direction:column;">
+      <div style="font-family:var(--font-body);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:16px;">Enterprise</div>
+      <div style="font-family:var(--font-display);font-weight:800;font-size:48px;color:var(--white);letter-spacing:-1px;line-height:1;">Custom</div>
+      <div style="font-family:var(--font-body);font-size:13px;color:var(--muted);margin-top:6px;margin-bottom:32px;">bespoke pricing</div>
+      <p style="font-family:var(--font-body);font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:36px;">For enterprise teams, CARICOM institutions, and high-volume operations. White-label, CRM integration, and full API access.</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:48px;flex:1;">
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--coral);font-weight:700;flex-shrink:0;">—</span>Unlimited proposals</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--coral);font-weight:700;flex-shrink:0;">—</span>Everything in Studio</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--coral);font-weight:700;flex-shrink:0;">—</span>White-label branding</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--coral);font-weight:700;flex-shrink:0;">—</span>CRM & API integration</li>
+        <li style="display:flex;gap:12px;font-family:var(--font-body);font-size:14px;color:var(--muted);"><span style="color:var(--coral);font-weight:700;flex-shrink:0;">—</span>Reduced package fees</li>
+      </ul>
+      <a href="payment.html?plan=enterprise" class="btn-ghost" style="text-align:center;display:block;">Talk to us</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section" id="cta">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">Your next proposal<br>closes the deal.</h2>
+  <p class="section-body">
+    Tell us about the deal you want to win. We will build your first interactive proposal and you will see the difference before you send it.
+  </p>
+  <div class="cta-actions">
+    <a href="#" class="btn-primary" style="font-size: 15px; padding: 16px 36px;">
+      Try it for free
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/>
+      </svg>
+    </a>
+    <a href="http://localhost:3000/demo/construction" class="btn-ghost" style="font-size: 15px; padding: 16px 36px;">See a live example</a>
+  </div>
+  <p class="cta-note">No subscription. No templates to learn. Your first proposal delivered in 48 hours.</p>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo" style="font-size: 20px;">
+        <div class="nav-logo-mark">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 14 L8 5 L12 14 Z" fill="#C8963E"/>
+          </svg>
+        </div>
+        Propel<span>Deck</span>
+      </div>
+      <p>The Caribbean's dedicated sales enablement platform. Interactive proposals that close deals and make local businesses look world-class.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">How It Works</a></li>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Industries</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 PropelDeck. All rights reserved.</p>
+    <div class="footer-region">
+      Built for <span>&nbsp;CARICOM</span> &nbsp;·&nbsp; Serving the Caribbean
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── COUNTER ANIMATION ── */
+  function animateCountUp(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 1400;
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const counters = document.querySelectorAll('.count-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCountUp(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => observer.observe(c));
+
+  /* ── BAR ANIMATION ── */
+  const bars = document.querySelectorAll('.analytics-bar-fill');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(b => {
+    b.style.animationPlayState = 'paused';
+    barObserver.observe(b);
+  });
+
+  /* ── TWEAKS PANEL ── */
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "heroHeadline": "Close faster. Look world-class.",
+    "accentColor": "#C8963E",
+    "videoOpacity": 0.86
+  }/*EDITMODE-END*/;
+
+  let tweaks = { ...TWEAK_DEFAULTS };
+
+  function applyTweaks() {
+    document.querySelector('.hero-video').style.opacity = tweaks.videoOpacity;
+    document.documentElement.style.setProperty('--gold', tweaks.accentColor);
+  }
+
+  applyTweaks();
+
+  /* ── TWEAKS PROTOCOL ── */
+  let tweaksPanel = null;
+
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === '__activate_edit_mode') showTweaks();
+    if (e.data?.type === '__deactivate_edit_mode') hideTweaks();
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+  function showTweaks() {
+    if (tweaksPanel) { tweaksPanel.style.display = 'block'; return; }
+    tweaksPanel = document.createElement('div');
+    tweaksPanel.style.cssText = `
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: #0D1628; border: 1px solid rgba(200,150,62,0.35);
+      padding: 24px; width: 300px; font-family: 'DM Sans', sans-serif;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    `;
+    tweaksPanel.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <span style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#F4EFE8;letter-spacing:1px;text-transform:uppercase;">Tweaks</span>
+        <button id="tw-close" style="background:none;border:none;color:#F4EFE8;cursor:pointer;font-size:18px;opacity:0.5;padding:0;">✕</button>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(244,239,232,0.5);display:block;margin-bottom:8px;">Accent Color</label>
+        <input type="color" id="tw-accent" value="${tweaks.accentColor}" style="width:100%;height:36px;border:1px solid rgba(200,150,62,0.22);background:transparent;cursor:pointer;padding:2px;">
+      </div>
+      <div>
+        <label style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(244,239,232,0.5);display:block;margin-bottom:8px;">Video Opacity — <span id="tw-opval">${tweaks.videoOpacity}</span></label>
+        <input type="range" id="tw-opacity" min="0.2" max="1" step="0.01" value="${tweaks.videoOpacity}" style="width:100%;accent-color:#C8963E;">
+      </div>
+    `;
+    document.body.appendChild(tweaksPanel);
+    document.getElementById('tw-close').onclick = () => {
+      hideTweaks();
+      window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+    };
+    document.getElementById('tw-accent').oninput = (e) => {
+      tweaks.accentColor = e.target.value;
+      applyTweaks();
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: tweaks.accentColor } }, '*');
+    };
+    document.getElementById('tw-opacity').oninput = (e) => {
+      tweaks.videoOpacity = parseFloat(e.target.value);
+      document.getElementById('tw-opval').textContent = tweaks.videoOpacity.toFixed(2);
+      applyTweaks();
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { videoOpacity: tweaks.videoOpacity } }, '*');
+    };
+  }
+
+  function hideTweaks() {
+    if (tweaksPanel) tweaksPanel.style.display = 'none';
+  }
+</script>
+
+<script type="text/babel">
+const { useState, useRef } = React;
+
+/* ── DESIGN TOKENS (light SaaS) ── */
+const D = {
+  bg:       '#ffffff',
+  bgAlt:    '#f8fafc',
+  bgCard:   '#ffffff',
+  accent:   '#6366f1',
+  accentLt: '#eef2ff',
+  accentMd: '#c7d2fe',
+  green:    '#16a34a',
+  greenLt:  '#f0fdf4',
+  red:      '#dc2626',
+  redLt:    '#fef2f2',
+  text:     '#0f172a',
+  muted:    '#64748b',
+  border:   '#e2e8f0',
+  shadow:   '0 2px 16px rgba(15,23,42,0.08)',
+  radius:   '12px',
+  fontD:    "'Bricolage Grotesque', sans-serif",
+  fontB:    "'DM Sans', sans-serif",
+};
+
+/* ── SIGNATURE PAD ── */
+function SignaturePad() {
+  const canvasRef = useRef(null);
+  const drawing   = useRef(false);
+  const lastPos   = useRef(null);
+
+  React.useEffect(() => {
+    const c = canvasRef.current;
+    const r = c.getBoundingClientRect();
+    c.width  = r.width;
+    c.height = r.height;
+  }, []);
+
+  function getPos(e, c) {
+    const r = c.getBoundingClientRect();
+    const s = e.touches ? e.touches[0] : e;
+    const scaleX = c.width / r.width;
+    const scaleY = c.height / r.height;
+    return { x: (s.clientX - r.left) * scaleX, y: (s.clientY - r.top) * scaleY };
+  }
+  function start(e) { e.preventDefault(); drawing.current = true; lastPos.current = getPos(e, canvasRef.current); }
+  function move(e) {
+    e.preventDefault();
+    if (!drawing.current) return;
+    const c = canvasRef.current, ctx = c.getContext('2d'), pos = getPos(e, c);
+    ctx.beginPath(); ctx.moveTo(lastPos.current.x, lastPos.current.y); ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = D.accent; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.stroke();
+    lastPos.current = pos;
+  }
+  function end() { drawing.current = false; }
+  function clear() { const c = canvasRef.current; c.getContext('2d').clearRect(0,0,c.width,c.height); }
+
+  return (
+    <div style={{position:'relative'}}>
+      <canvas ref={canvasRef} width={400} height={130}
+        style={{width:'100%',height:'130px',background:'#fafbff',border:`2px dashed ${D.accentMd}`,borderRadius:'8px',display:'block',cursor:'crosshair',touchAction:'none'}}
+        onMouseDown={start} onMouseMove={move} onMouseUp={end} onMouseLeave={end}
+        onTouchStart={start} onTouchMove={move} onTouchEnd={end} />
+      <button onClick={clear} style={{position:'absolute',top:8,right:10,background:'none',border:'none',color:D.muted,cursor:'pointer',fontSize:'11px',fontFamily:D.fontB}}>Clear</button>
+    </div>
+  );
+}
+
+/* ── TIMELINE ── */
+const PHASES = [
+  { id:1, title:'Phase 1 — Site Prep & Permitting',  duration:'4 Weeks', detail:'Securing all local permits, clearing the site, and setting up temporary facilities.' },
+  { id:2, title:'Phase 2 — Foundation & Framing',     duration:'6 Weeks', detail:'Pouring the concrete foundation, erecting structural framing, and weatherproofing.' },
+  { id:3, title:'Phase 3 — MEP & Drywall',            duration:'8 Weeks', detail:'Installing Mechanical, Electrical, and Plumbing systems, followed by insulation and drywall.' },
+  { id:4, title:'Phase 4 — Finishes & Handover',      duration:'4 Weeks', detail:'Painting, flooring, fixtures, final inspections, and full project handover.' },
+];
+
+function Timeline() {
+  const [active, setActive] = useState(1);
+  return (
+    <div style={{background:D.bgCard,borderRadius:D.radius,boxShadow:D.shadow,padding:'32px',marginBottom:'24px',border:`1px solid ${D.border}`}}>
+      <p style={{fontFamily:D.fontB,fontSize:'11px',letterSpacing:'2px',textTransform:'uppercase',color:D.accent,fontWeight:700,marginBottom:'24px'}}>Interactive Project Timeline</p>
+      {PHASES.map((ph,i) => {
+        const on = active === ph.id;
+        return (
+          <div key={ph.id} style={{display:'flex',gap:'16px',marginBottom: i<PHASES.length-1 ? '0':'0'}}>
+            <div style={{display:'flex',flexDirection:'column',alignItems:'center',flexShrink:0}}>
+              <button onClick={()=>setActive(on?null:ph.id)}
+                style={{width:'34px',height:'34px',borderRadius:'50%',background: on ? D.accent:'#f1f5f9',border:`2px solid ${on ? D.accent:D.border}`,color: on ? '#fff':D.muted,fontFamily:D.fontD,fontWeight:800,fontSize:'13px',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.2s',flexShrink:0}}>
+                {ph.id}
+              </button>
+              {i < PHASES.length-1 && <div style={{width:'2px',height:'100%',minHeight:'24px',background:D.border,margin:'4px 0'}}></div>}
+            </div>
+            <div onClick={()=>setActive(on?null:ph.id)}
+              style={{flex:1,cursor:'pointer',paddingBottom:'20px',borderBottom: i<PHASES.length-1 ? `1px solid ${D.border}`:'none',marginBottom:'0',paddingTop:'4px'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <span style={{fontFamily:D.fontD,fontWeight:700,fontSize:'15px',color: on ? D.accent:D.text,transition:'color 0.2s'}}>{ph.title}</span>
+                <span style={{fontFamily:D.fontB,fontSize:'12px',color:D.muted,background:'#f8fafc',border:`1px solid ${D.border}`,padding:'3px 10px',borderRadius:'999px',flexShrink:0,marginLeft:'12px'}}>{ph.duration}</span>
+              </div>
+              <div style={{overflow:'hidden',maxHeight: on ? '80px':'0',transition:'max-height 0.35s ease',opacity: on?1:0}}>
+                <p style={{fontFamily:D.fontB,fontSize:'13px',color:D.muted,lineHeight:1.6,marginTop:'8px'}}>{ph.detail}</p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── BORING PDF ── */
+function BoringPdf() {
+  return (
+    <div style={{background:'#f5f2ec',border:'1px solid #ccc',borderRadius:'4px',padding:'48px 56px',fontFamily:'Georgia,serif',color:'#2a2a2a',maxWidth:'720px',margin:'0 auto',boxShadow:'0 8px 40px rgba(0,0,0,0.12)'}}>
+      <div style={{borderBottom:'2px solid #111',paddingBottom:'16px',marginBottom:'28px',textAlign:'center'}}>
+        <div style={{fontWeight:700,fontSize:'20px',letterSpacing:'3px',textTransform:'uppercase'}}>Acme Construction & Engineering</div>
+        <div style={{fontSize:'12px',color:'#888',marginTop:'4px'}}>PROPOSAL FOR SERVICES</div>
+      </div>
+      {[
+        ['1. Project Overview','This document outlines the proposed scope of work, timeline, and budget for the commercial build-out at 123 Business Parkway. All work performed in accordance with local building codes. Valid for 30 days from issue.'],
+        ['2. Estimated Timeline','[See attached table — Phase 1: Site Prep, 4 wks. Phase 2: Foundation, 6 wks. Phase 3: MEP, 8 wks. Phase 4: Finishes, 4 wks.]'],
+        ['3. Budget Breakdown','Site Preparation: $45,000 · Materials & Foundation: $120,000 · Labor & Framing: $180,000 · MEP: $95,000 · Finishes: $60,000. Total: $500,000.'],
+        ['4. Payment Terms','20% deposit required to commence. 30% on Phase 2 completion. 30% on Phase 3 completion. 20% balance on handover.'],
+      ].map(([h,b]) => (
+        <div key={h} style={{marginBottom:'22px'}}>
+          <div style={{fontWeight:700,fontSize:'14px',marginBottom:'8px'}}>{h}</div>
+          <p style={{fontSize:'12px',lineHeight:1.85,color:'#555'}}>{b}</p>
+        </div>
+      ))}
+      <div style={{marginTop:'48px',paddingTop:'16px',borderTop:'1px solid #ccc',fontSize:'10px',color:'#aaa',textAlign:'center'}}>CONFIDENTIAL — Do not distribute. Page 1 of 12.</div>
+    </div>
+  );
+}
+
+/* ── INTERACTIVE PROPOSAL ── */
+const BASE = 300000;
+const ADDONS_INIT = [
+  { id:'mat',  name:'Premium Materials',   desc:'High-end finishes & imported stone.',        price:85000, on:false },
+  { id:'exp',  name:'Expedited Schedule',  desc:'Finish 4 weeks early, fast-track delivery.', price:50000, on:false },
+  { id:'land', name:'Exterior Landscaping',desc:'Full hardscaping & drought-resistant plants.',price:40000, on:true  },
+  { id:'smart',name:'Smart Building',      desc:'Integrated automation & climate control.',    price:25000, on:false },
+];
+
+function Proposal() {
+  const [addons, setAddons]   = useState(ADDONS_INIT);
+  const [approved, setApproved] = useState(false);
+  const [sigMode, setSigMode] = useState('draw');
+  const [sigText, setSigText] = useState('');
+  const [payMode, setPayMode] = useState('bank');
+
+  const total   = BASE + addons.filter(a=>a.on).reduce((s,a)=>s+a.price,0);
+  const fmt     = n => '$'+n.toLocaleString();
+  const deposit = total*0.2, p1=total*0.3, p2=total*0.3, final=total*0.2;
+
+  function toggle(id) { if(!approved) setAddons(addons.map(a=>a.id===id?{...a,on:!a.on}:a)); }
+
+  const tabBtn = (label, active, onClick, color='accent') => ({
+    flex:1, padding:'9px 0', background: active ? (color==='accent'?D.accent:'#0f172a'):'transparent',
+    color: active ? '#fff':D.muted, border:'none', cursor:'pointer',
+    fontFamily:D.fontB, fontWeight:600, fontSize:'13px', borderRadius:'6px', transition:'all 0.2s',
+    onClick
+  });
+
+  if (approved) return (
+    <div style={{background:D.bgCard,borderRadius:D.radius,boxShadow:D.shadow,overflow:'hidden',border:`1px solid ${D.border}`}}>
+      <div style={{background:'linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%)',padding:'40px',textAlign:'center',position:'relative'}}>
+        <div style={{width:'56px',height:'56px',background:'rgba(255,255,255,0.15)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',fontSize:'24px'}}>✓</div>
+        <div style={{fontFamily:D.fontD,fontWeight:800,fontSize:'24px',color:'#fff',marginBottom:'8px'}}>Proposal Approved</div>
+        <div style={{fontFamily:D.fontB,fontSize:'15px',color:'rgba(255,255,255,0.75)'}}>Total locked at <strong style={{color:'#fff'}}>{fmt(total)}</strong></div>
+        <button onClick={()=>setApproved(false)} style={{position:'absolute',top:'20px',right:'20px',background:'rgba(255,255,255,0.15)',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'6px',cursor:'pointer',fontFamily:D.fontB,fontSize:'12px'}}>← Back</button>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0'}}>
+        {/* Signature */}
+        <div style={{padding:'36px',borderRight:`1px solid ${D.border}`}}>
+          <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'18px',color:D.text,marginBottom:'4px'}}>Step 1 — Sign</div>
+          <div style={{fontFamily:D.fontB,fontSize:'13px',color:D.muted,marginBottom:'20px'}}>Authorise the build-out with your signature.</div>
+          <div style={{display:'flex',gap:'4px',background:'#f8fafc',padding:'4px',borderRadius:'8px',marginBottom:'16px'}}>
+            {['draw','type','upload'].map(m=>(
+              <button key={m} onClick={()=>setSigMode(m)}
+                style={{flex:1,padding:'8px',background: sigMode===m ? '#fff':'transparent',color: sigMode===m ? D.text:D.muted,border:'none',cursor:'pointer',borderRadius:'6px',fontFamily:D.fontB,fontWeight:600,fontSize:'12px',textTransform:'capitalize',boxShadow: sigMode===m ? D.shadow:'none',transition:'all 0.2s'}}>{m}</button>
+            ))}
+          </div>
+          {sigMode==='draw' && <SignaturePad />}
+          {sigMode==='type' && (
+            <div>
+              <input type="text" placeholder="Type your full name" value={sigText} onChange={e=>setSigText(e.target.value)}
+                style={{width:'100%',background:'#f8fafc',border:`1.5px solid ${D.border}`,color:D.text,padding:'11px 14px',borderRadius:'8px',fontFamily:D.fontB,fontSize:'14px',boxSizing:'border-box',marginBottom:'12px',outline:'none'}} />
+              {sigText && <div style={{padding:'16px 20px',background:'#fafbff',border:`1.5px solid ${D.accentMd}`,borderRadius:'8px',fontFamily:'Georgia,serif',fontSize:'28px',fontStyle:'italic',color:D.accent,minHeight:'70px',display:'flex',alignItems:'center'}}>{sigText}</div>}
+            </div>
+          )}
+          {sigMode==='upload' && (
+            <div style={{border:`2px dashed ${D.accentMd}`,borderRadius:'8px',height:'130px',display:'flex',alignItems:'center',justifyContent:'center',background:'#fafbff'}}>
+              <label style={{cursor:'pointer',background:D.accent,color:'#fff',padding:'10px 24px',borderRadius:'8px',fontFamily:D.fontB,fontWeight:600,fontSize:'13px'}}>
+                Choose Image <input type="file" accept="image/*" style={{display:'none'}} />
+              </label>
+            </div>
+          )}
+        </div>
+        {/* Payment */}
+        <div style={{padding:'36px'}}>
+          <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'18px',color:D.text,marginBottom:'4px'}}>Step 2 — Deposit</div>
+          <div style={{fontFamily:D.fontB,fontSize:'13px',color:D.muted,marginBottom:'20px'}}>Pay your 20% deposit ({fmt(deposit)}) to lock your dates.</div>
+          <div style={{display:'flex',gap:'4px',background:'#f8fafc',padding:'4px',borderRadius:'8px',marginBottom:'20px'}}>
+            {[['bank','Bank Transfer'],['card','Credit Card']].map(([m,l])=>(
+              <button key={m} onClick={()=>setPayMode(m)}
+                style={{flex:1,padding:'8px',background: payMode===m ? '#fff':'transparent',color: payMode===m ? D.text:D.muted,border:'none',cursor:'pointer',borderRadius:'6px',fontFamily:D.fontB,fontWeight:600,fontSize:'12px',boxShadow: payMode===m ? D.shadow:'none',transition:'all 0.2s'}}>{l}</button>
+            ))}
+          </div>
+          {payMode==='bank' ? (
+            <div style={{background:'#f8fafc',border:`1px solid ${D.border}`,borderRadius:'10px',padding:'20px'}}>
+              {[['Bank','First Caribbean Intl.'],['Account','Acme Build-outs Ltd.'],['Routing','122000661'],['Account No.','4455 6677 8899']].map(([l,v])=>(
+                <div key={l} style={{display:'flex',justifyContent:'space-between',padding:'9px 0',borderBottom:`1px solid ${D.border}`,fontFamily:D.fontB,fontSize:'13px'}}>
+                  <span style={{color:D.muted}}>{l}</span>
+                  <span style={{color:D.text,fontWeight:600,fontFamily:l.includes('No')||l==='Routing'?'monospace':D.fontB}}>{v}</span>
+                </div>
+              ))}
+              <p style={{marginTop:'12px',fontSize:'12px',color:D.muted,lineHeight:1.6}}>Email payment ref to <span style={{color:D.accent,fontWeight:600}}>billing@acmebuilds.com</span></p>
+            </div>
+          ) : (
+            <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+              {[['Card Number','**** **** **** ****'],['Expiry','MM / YY'],['CVC','···']].map(([l,ph])=>(
+                <div key={l}>
+                  <div style={{fontFamily:D.fontB,fontSize:'11px',color:D.muted,letterSpacing:'1px',textTransform:'uppercase',marginBottom:'5px'}}>{l}</div>
+                  <input type="text" placeholder={ph} style={{width:'100%',background:'#f8fafc',border:`1.5px solid ${D.border}`,color:D.text,padding:'11px 14px',borderRadius:'8px',fontFamily:'monospace',fontSize:'14px',boxSizing:'border-box',outline:'none'}} />
+                </div>
+              ))}
+            </div>
+          )}
+          <button style={{width:'100%',marginTop:'20px',background:'linear-gradient(135deg,#6366f1,#7c3aed)',color:'#fff',border:'none',padding:'14px',borderRadius:'8px',fontFamily:D.fontD,fontWeight:700,fontSize:'15px',cursor:'pointer',boxShadow:'0 4px 16px rgba(99,102,241,0.35)'}}>
+            {payMode==='card' ? 'Complete Booking' : "I've Sent the Transfer"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      {/* Overview */}
+      <div style={{background:D.bgCard,borderRadius:D.radius,boxShadow:D.shadow,border:`1px solid ${D.border}`,borderTop:'3px solid #6366f1',padding:'36px',marginBottom:'24px'}}>
+        <div style={{fontFamily:D.fontD,fontWeight:800,fontSize:'24px',color:D.text,marginBottom:'8px'}}>Acme Commercial Build-out</div>
+        <p style={{fontFamily:D.fontB,fontSize:'14px',color:D.muted,lineHeight:1.65,maxWidth:'560px',marginBottom:'24px'}}>A modern, interactive proposal for 123 Business Parkway. Every figure is live — adjust your scope and the total updates instantly.</p>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px'}}>
+          {[['✓ Quality Assured','Premium materials, all local codes exceeded.'],['✓ Turnkey Delivery','Structure, MEP, and finishes. One contract.'],['⏱ 30-Day Window','Pricing locked for 30 days from issue.']].map(([t,b],i)=>(
+            <div key={i} style={{background:'#f8fafc',border:`1px solid ${D.border}`,borderRadius:'10px',padding:'18px 20px'}}>
+              <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'13px',color:D.text,marginBottom:'6px'}}>{t}</div>
+              <div style={{fontFamily:D.fontB,fontSize:'12px',color:D.muted,lineHeight:1.5}}>{b}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Timeline */}
+      <Timeline />
+
+      {/* Calculator + Payment */}
+      <div style={{display:'grid',gridTemplateColumns:'7fr 5fr',gap:'0',borderRadius:D.radius,overflow:'hidden',boxShadow:D.shadow,border:`1px solid ${D.border}`}}>
+        {/* Calculator */}
+        <div style={{padding:'36px',background:D.bgCard,borderRight:`1px solid ${D.border}`}}>
+          <div style={{fontFamily:D.fontD,fontWeight:800,fontSize:'19px',color:D.text,marginBottom:'4px'}}>Project Scope</div>
+          <div style={{fontFamily:D.fontB,fontSize:'13px',color:D.muted,marginBottom:'24px'}}>Select add-ons below — total updates live.</div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'#f8fafc',border:`1px solid ${D.border}`,borderRadius:'10px',padding:'14px 18px',marginBottom:'20px'}}>
+            <div>
+              <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'14px',color:D.text}}>Base Build-out Scope</div>
+              <div style={{fontFamily:D.fontB,fontSize:'12px',color:D.muted}}>Standard materials & timeline</div>
+            </div>
+            <div style={{fontFamily:'monospace',fontSize:'18px',fontWeight:700,color:D.text}}>{fmt(BASE)}</div>
+          </div>
+          <div style={{fontFamily:D.fontB,fontSize:'11px',color:D.muted,letterSpacing:'1.5px',textTransform:'uppercase',marginBottom:'12px'}}>Optional Upgrades</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'28px'}}>
+            {addons.map(a=>(
+              <div key={a.id} onClick={()=>toggle(a.id)}
+                style={{padding:'16px',border:`1.5px solid ${a.on ? D.accent:D.border}`,background: a.on ? D.accentLt:'#fafbff',borderRadius:'10px',cursor:'pointer',transition:'all 0.2s',position:'relative'}}>
+                <div style={{position:'absolute',top:'12px',right:'12px',width:'18px',height:'18px',background: a.on ? D.accent:'transparent',border:`2px solid ${a.on ? D.accent:D.border}`,borderRadius:'4px',display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.2s'}}>
+                  {a.on && <span style={{color:'#fff',fontSize:'10px',fontWeight:700}}>✓</span>}
+                </div>
+                <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'13px',color: a.on ? D.accent:D.text,marginBottom:'4px',paddingRight:'22px'}}>{a.name}</div>
+                <div style={{fontFamily:D.fontB,fontSize:'11px',color:D.muted,marginBottom:'10px',lineHeight:1.4}}>{a.desc}</div>
+                <div style={{fontFamily:'monospace',fontSize:'13px',fontWeight:600,color:D.muted}}>+{fmt(a.price)}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',paddingTop:'20px',borderTop:`1px solid ${D.border}`}}>
+            <div style={{fontFamily:D.fontB,fontSize:'15px',fontWeight:600,color:D.text}}>Total Investment</div>
+            <div style={{fontFamily:'monospace',fontSize:'30px',fontWeight:700,color:D.accent,transition:'color 0.3s'}}>{fmt(total)}</div>
+          </div>
+        </div>
+        {/* Payment schedule */}
+        <div style={{padding:'36px',background:'linear-gradient(160deg,#4f46e5 0%,#6d28d9 100%)',display:'flex',flexDirection:'column'}}>
+          <div style={{fontFamily:D.fontD,fontWeight:800,fontSize:'19px',color:'#fff',marginBottom:'4px'}}>Payment Schedule</div>
+          <div style={{fontFamily:D.fontB,fontSize:'13px',color:'rgba(255,255,255,0.65)',marginBottom:'28px'}}>Milestones aligned with progress.</div>
+          <div style={{flex:1}}>
+            {[['20% Deposit',deposit,true,'Due on signing to lock dates.'],['30% Progress 1',p1,false,'Phase 2 structural completion.'],['30% Progress 2',p2,false,'Phase 3 MEP completion.'],['20% Handover',final,false,'Final inspection & handover.']].map(([l,amt,first,note],i)=>(
+              <div key={i} style={{padding:'16px 0',borderBottom:'1px solid rgba(255,255,255,0.12)',display:'flex',gap:'12px',alignItems:'flex-start'}}>
+                <div style={{width:'10px',height:'10px',borderRadius:'50%',background: first ? '#fff':'rgba(255,255,255,0.3)',marginTop:'5px',flexShrink:0,boxShadow: first ? '0 0 8px rgba(255,255,255,0.6)':''}}></div>
+                <div style={{flex:1}}>
+                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:'3px'}}>
+                    <span style={{fontFamily:D.fontB,fontWeight:600,fontSize:'13px',color: first ? '#fff':'rgba(255,255,255,0.8)'}}>{l}</span>
+                    <span style={{fontFamily:'monospace',fontSize:'13px',fontWeight:700,color:'#fff'}}>{fmt(amt)}</span>
+                  </div>
+                  <span style={{fontFamily:D.fontB,fontSize:'11px',color:'rgba(255,255,255,0.5)'}}>{note}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button onClick={()=>setApproved(true)}
+            style={{marginTop:'28px',width:'100%',background:'#fff',color:'#4f46e5',border:'none',padding:'15px',borderRadius:'8px',fontFamily:D.fontD,fontWeight:700,fontSize:'15px',cursor:'pointer',boxShadow:'0 4px 16px rgba(0,0,0,0.2)',transition:'transform 0.15s'}}>
+            Approve & Sign →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── DEMO TOGGLE WRAPPER ── */
+function DemoSection() {
+  const [view, setView] = useState('interactive');
+  return (
+    <div>
+      {/* Toggle pills */}
+      <div style={{display:'flex',justifyContent:'center',marginBottom:'40px'}}>
+        <div style={{display:'flex',background:'#fff',borderRadius:'999px',padding:'5px',boxShadow:'0 2px 16px rgba(15,23,42,0.10)',border:`1px solid ${D.border}`}}>
+          {[['pdf','📄 Static PDF'],['interactive','⚡ PropelDeck Proposal']].map(([v,label])=>(
+            <button key={v} onClick={()=>setView(v)}
+              style={{padding:'11px 28px',background: view===v ? (v==='pdf'?'#0f172a':D.accent):'transparent',color: view===v ? '#fff':D.muted,border:'none',cursor:'pointer',fontFamily:D.fontD,fontWeight:700,fontSize:'14px',borderRadius:'999px',transition:'all 0.25s',letterSpacing:'0.2px'}}>
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Banner */}
+      {view==='pdf' ? (
+        <div style={{background:D.redLt,border:`1px solid #fecaca`,borderRadius:'10px',padding:'18px 24px',marginBottom:'28px',maxWidth:'700px',margin:'0 auto 28px'}}>
+          <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'14px',color:D.red,marginBottom:'10px'}}>Why this loses deals:</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px'}}>
+            {['Hard to read on mobile','Client can\'t adjust scope live','No signature, payment or tracking','Zero insight after you hit send'].map(r=>(
+              <div key={r} style={{fontFamily:D.fontB,fontSize:'13px',color:'#7f1d1d',display:'flex',gap:'7px',alignItems:'center'}}><span style={{color:D.red,fontWeight:700}}>✕</span>{r}</div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div style={{background:D.greenLt,border:'1px solid #bbf7d0',borderRadius:'10px',padding:'18px 24px',marginBottom:'28px',maxWidth:'700px',margin:'0 auto 28px'}}>
+          <div style={{fontFamily:D.fontD,fontWeight:700,fontSize:'14px',color:D.green,marginBottom:'10px'}}>Why this wins contracts:</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px'}}>
+            {['Fully mobile-optimised','Live calculator — client configures scope','One-click sign & pay in the proposal','Real-time open & engagement tracking'].map(r=>(
+              <div key={r} style={{fontFamily:D.fontB,fontSize:'13px',color:'#14532d',display:'flex',gap:'7px',alignItems:'center'}}><span style={{color:D.green,fontWeight:700}}>✓</span>{r}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {view==='pdf' ? <BoringPdf /> : <Proposal />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('demo-root')).render(<DemoSection />);
+</script>
+
+</body>
+</html>

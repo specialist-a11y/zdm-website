@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Ad Account Audit — ZDM INC</title>
+  <meta name="description" content="Get a free 30-minute performance audit of your ad accounts. We'll show you exactly where your budget is going — and what to fix. Limited spots.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:      #0A0A0A;
+      --off-black:  #141414;
+      --dark-grey:  #1E1E1E;
+      --mid-grey:   #3A3A3A;
+      --grey:       #888888;
+      --light-grey: #D4D4D4;
+      --off-white:  #F5F5F0;
+      --white:      #FFFFFF;
+      --lime:       #C8FF00;
+      --lime-dim:   #A8D800;
+      --lime-glow:  rgba(200,255,0,0.15);
+      --font-display: 'Bebas Neue', 'Impact', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    #cursor-dot {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, opacity .2s;
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 1.5px solid var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: transform .12s cubic-bezier(.23,1,.32,1), width .3s, height .3s, opacity .3s, border-radius .3s;
+      mix-blend-mode: difference;
+    }
+    body.cursor-hover #cursor-dot  { width: 12px; height: 12px; }
+    body.cursor-hover #cursor-ring { width: 64px; height: 64px; opacity: .5; }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: var(--lime);
+      z-index: 10000;
+      width: 0%;
+      box-shadow: 0 0 12px var(--lime);
+    }
+
+    /* ── NOISE ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .025;
+      pointer-events: none;
+      z-index: 9997;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,10,10,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .4s;
+    }
+    nav.scrolled { border-bottom-color: var(--lime); }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: .04em;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 36px; height: 36px;
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      color: var(--black);
+      font-family: var(--font-display);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-logo-mark::after {
+      content: 'Z';
+      position: absolute; inset: 0;
+      display: grid;
+      place-items: center;
+      background: var(--black);
+      color: var(--lime);
+      transform: translateY(100%);
+      transition: transform .3s cubic-bezier(.23,1,.32,1);
+    }
+    .nav-logo:hover .nav-logo-mark::after { transform: translateY(0); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      position: relative;
+      transition: color .2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--lime);
+      transition: width .3s cubic-bezier(.23,1,.32,1);
+    }
+    .nav-links a:hover { color: var(--lime); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-back {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color .2s;
+    }
+    .nav-back svg { transition: transform .2s; }
+    .nav-back:hover { color: var(--lime); }
+    .nav-back:hover svg { transform: translateX(-4px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 80px;
+      padding: 140px 40px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-bg-z {
+      position: absolute;
+      top: 50%;
+      right: -8%;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: clamp(300px, 55vw, 900px);
+      line-height: .8;
+      color: var(--off-black);
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -.05em;
+    }
+
+    .hero-content { position: relative; z-index: 10; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border: 1px solid var(--lime);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp .8s .2s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--lime);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)} }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 110px);
+      line-height: .88;
+      letter-spacing: -.01em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .headline-line { display: block; overflow: hidden; }
+    .headline-line-inner {
+      display: block;
+      transform: translateY(110%);
+      animation: slideUp .9s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .headline-line:nth-child(1) .headline-line-inner { animation-delay: .35s; }
+    .headline-line:nth-child(2) .headline-line-inner { animation-delay: .5s; }
+    .headline-line:nth-child(3) .headline-line-inner { animation-delay: .65s; color: var(--lime); }
+    @keyframes slideUp { to { transform: translateY(0); } }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--light-grey);
+      line-height: 1.6;
+      max-width: 480px;
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fadeUp .8s .7s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    .hero-sub strong { color: var(--lime); font-weight: 600; }
+
+    .hero-trust {
+      display: flex;
+      gap: 32px;
+      opacity: 0;
+      animation: fadeUp .8s .9s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    .trust-item { display: flex; align-items: center; gap: 8px; }
+    .trust-dot { width: 5px; height: 5px; background: var(--lime); border-radius: 50%; flex-shrink: 0; }
+    .trust-item span { font-family: var(--font-mono); font-size: 11px; color: var(--grey); letter-spacing: .06em; text-transform: uppercase; }
+
+    /* ── FORM PANEL ── */
+    .form-panel {
+      position: relative;
+      z-index: 10;
+      background: var(--off-black);
+      border: 1px solid var(--dark-grey);
+      padding: 48px;
+      opacity: 0;
+      animation: fadeUp .9s .4s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    .form-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--lime);
+    }
+
+    .form-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .form-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      opacity: .7;
+    }
+    .form-spots {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey);
+      letter-spacing: .06em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .spots-dot { width: 5px; height: 5px; background: #ff6b35; border-radius: 50%; animation: pulse 1.5s infinite; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--grey);
+      margin-bottom: 8px;
+    }
+    .form-group label span { color: var(--lime); margin-left: 2px; }
+
+    .form-control {
+      width: 100%;
+      background: var(--dark-grey);
+      border: 1px solid var(--mid-grey);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+      border-radius: 0;
+    }
+    .form-control::placeholder { color: var(--grey); }
+    .form-control:focus {
+      border-color: var(--lime);
+      box-shadow: 0 0 0 3px rgba(200,255,0,.08);
+    }
+    select.form-control {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    select.form-control option { background: var(--dark-grey); }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .platform-check {
+      position: relative;
+    }
+    .platform-check input {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .platform-check label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--dark-grey);
+      border: 1px solid var(--mid-grey);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--grey);
+      margin-bottom: 0;
+    }
+    .platform-check input:checked + label {
+      border-color: var(--lime);
+      background: rgba(200,255,0,.06);
+      color: var(--lime);
+    }
+    .platform-check label .check-icon {
+      width: 14px; height: 14px;
+      border: 1px solid var(--mid-grey);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .platform-check input:checked + label .check-icon {
+      background: var(--lime);
+      border-color: var(--lime);
+    }
+    .platform-check input:checked + label .check-icon::after {
+      content: '';
+      width: 4px; height: 7px;
+      border-right: 1.5px solid var(--black);
+      border-bottom: 1.5px solid var(--black);
+      transform: rotate(45deg) translateY(-1px);
+      display: block;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 28px;
+      padding: 18px 32px;
+      background: var(--lime);
+      color: var(--black);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border: 2px solid var(--lime);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .submit-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--black);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .35s cubic-bezier(.23,1,.32,1);
+    }
+    .submit-btn:hover { color: var(--lime); }
+    .submit-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+    .submit-btn span { position: relative; z-index: 1; }
+    .submit-btn svg { position: relative; z-index: 1; transition: transform .2s; }
+    .submit-btn:hover svg { transform: translateX(4px); }
+
+    .form-disclaimer {
+      text-align: center;
+      margin-top: 16px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey);
+      letter-spacing: .05em;
+      line-height: 1.6;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-container {
+      background: var(--lime);
+      padding: 18px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-track span {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--black);
+      margin-right: 36px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .marquee-track span.sep { color: var(--lime-dim); }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 0; }
+    section.alt { background: var(--off-black); }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 16px;
+      opacity: .7;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5vw, 72px);
+      line-height: .9;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .section-body {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--light-grey);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ── WHAT'S INCLUDED ── */
+    .audit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .audit-item {
+      background: var(--off-black);
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background .3s;
+    }
+    .audit-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--lime);
+      transition: width .4s cubic-bezier(.23,1,.32,1);
+    }
+    .audit-item:hover { background: #1a1a0a; }
+    .audit-item:hover::after { width: 100%; }
+
+    .audit-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--lime);
+      letter-spacing: .14em;
+      opacity: .5;
+      margin-bottom: 20px;
+    }
+    .audit-icon {
+      width: 48px; height: 48px;
+      margin-bottom: 20px;
+    }
+    .audit-item h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: .04em;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .audit-item p {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+    .audit-item ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 14px;
+    }
+    .audit-item ul li {
+      font-size: 13px;
+      color: var(--grey);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .audit-item ul li::before {
+      content: '→';
+      color: var(--lime);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 64px;
+      border: 1px solid var(--dark-grey);
+    }
+    .step {
+      padding: 48px 40px;
+      position: relative;
+      border-right: 1px solid var(--dark-grey);
+    }
+    .step:last-child { border-right: none; }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 80px;
+      line-height: .8;
+      color: var(--off-black);
+      margin-bottom: 24px;
+      letter-spacing: -.02em;
+    }
+    .step h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: .04em;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .step p { font-size: 14px; color: var(--grey); line-height: 1.7; }
+    .step-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--lime);
+      border: 1px solid rgba(200,255,0,.25);
+      padding: 4px 10px;
+      margin-bottom: 20px;
+    }
+    .step-connector {
+      position: absolute;
+      top: 50%; right: -1px;
+      transform: translateY(-50%);
+      width: 20px; height: 20px;
+      background: var(--black);
+      border: 1px solid var(--lime);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .step-connector svg { color: var(--lime); }
+    .step:last-child .step-connector { display: none; }
+
+    /* ── PROOF STATS ── */
+    .proof-strip {
+      background: var(--lime);
+      padding: 60px 0;
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .proof-item {
+      text-align: center;
+      padding: 0 24px;
+      border-right: 1px solid rgba(0,0,0,.15);
+    }
+    .proof-item:last-child { border-right: none; }
+    .proof-num {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 80px);
+      color: var(--black);
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+    .proof-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(0,0,0,.6);
+      margin-top: 8px;
+    }
+
+    /* ── WHAT YOU'LL FIND ── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .finding-item {
+      background: var(--off-black);
+      padding: 36px 40px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      border: 1px solid transparent;
+      transition: border-color .3s;
+    }
+    .finding-item:hover { border-color: rgba(200,255,0,.15); }
+    .finding-pct {
+      font-family: var(--font-display);
+      font-size: 52px;
+      color: var(--lime);
+      line-height: .9;
+      letter-spacing: -.02em;
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+    .finding-item h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: .04em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .finding-item p { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .faq-list { margin-top: 64px; }
+    .faq-item {
+      border-bottom: 1px solid var(--dark-grey);
+    }
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 0;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--white);
+      gap: 24px;
+      transition: color .2s;
+    }
+    .faq-q:hover { color: var(--lime); }
+    .faq-toggle {
+      width: 32px; height: 32px;
+      border: 1px solid var(--dark-grey);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+      color: var(--lime);
+      font-family: var(--font-mono);
+      transition: background .2s, border-color .2s, transform .3s;
+    }
+    .faq-item.open .faq-toggle {
+      background: var(--lime);
+      color: var(--black);
+      border-color: var(--lime);
+      transform: rotate(45deg);
+    }
+    .faq-a {
+      display: none;
+      padding-bottom: 28px;
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--light-grey);
+      line-height: 1.75;
+      max-width: 700px;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta {
+      padding: 120px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .bottom-cta-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200,255,0,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .bottom-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 8vw, 120px);
+      line-height: .88;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .bottom-cta h2 .lime { color: var(--lime); }
+    .bottom-cta p { font-size: 18px; font-weight: 300; color: var(--light-grey); max-width: 500px; margin: 0 auto 48px; }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 48px;
+      background: var(--lime);
+      color: var(--black);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--lime);
+      position: relative;
+      overflow: hidden;
+      transition: color .3s;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--black);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .35s cubic-bezier(.23,1,.32,1);
+    }
+    .cta-btn:hover { color: var(--lime); }
+    .cta-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+    .cta-btn span, .cta-btn svg { position: relative; z-index: 1; }
+    .cta-btn:hover svg { transform: translateX(4px); }
+    .cta-btn svg { transition: transform .2s; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--off-black);
+      border-top: 1px solid var(--dark-grey);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: .06em;
+      color: var(--grey);
+    }
+    .footer-tagline {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey);
+      letter-spacing: .1em;
+    }
+    .footer-tagline span { color: var(--lime); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ── SUCCESS STATE ── */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .form-success.show { display: block; }
+    .success-icon {
+      width: 64px; height: 64px;
+      background: var(--lime);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .form-success h3 {
+      font-family: var(--font-display);
+      font-size: 36px;
+      letter-spacing: .04em;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .form-success p { font-size: 15px; color: var(--grey); line-height: 1.7; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 48px; padding: 120px 24px 80px; }
+      .hero-bg-z { display: none; }
+      .audit-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid { grid-template-columns: 1fr; border: none; }
+      .step { border-right: none; border-bottom: 1px solid var(--dark-grey); padding: 40px 24px; }
+      .proof-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .findings-grid { grid-template-columns: 1fr; }
+      .container { padding: 0 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-panel { padding: 32px 24px; }
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .audit-grid { grid-template-columns: 1fr; }
+      .proof-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="progress-bar"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">Z</div>
+    ZDM INC
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#results">Results</a></li>
+  </ul>
+  <a href="index.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    Back to site
+  </a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bg-z" aria-hidden="true">Z</div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Free — No Obligation — Limited Spots
+    </div>
+    <h1 class="hero-headline">
+      <span class="headline-line"><span class="headline-line-inner">Find Where</span></span>
+      <span class="headline-line"><span class="headline-line-inner">Your Budget</span></span>
+      <span class="headline-line"><span class="headline-line-inner">Is Leaking.</span></span>
+    </h1>
+    <p class="hero-sub">
+      We'll audit your ad accounts in 30 minutes and show you <strong>exactly what's costing you revenue</strong> — broken tracking, wasted spend, underperforming audiences, and what to fix first.
+    </p>
+    <div class="hero-trust">
+      <div class="trust-item">
+        <div class="trust-dot"></div>
+        <span>30 minutes</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-dot"></div>
+        <span>Zero cost</span>
+      </div>
+      <div class="trust-item">
+        <div class="trust-dot"></div>
+        <span>No pitch</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-panel">
+    <div class="form-label-row">
+      <span class="form-eyebrow">Audit Application</span>
+      <span class="form-spots">
+        <span class="spots-dot"></span>
+        4 spots left this week
+      </span>
+    </div>
+
+    <form id="audit-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span>*</span></label>
+          <input type="text" class="form-control" id="fname" name="fname" placeholder="Jane" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name <span>*</span></label>
+          <input type="text" class="form-control" id="lname" name="lname" placeholder="Smith" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Business Email <span>*</span></label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="jane@yourbusiness.com" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Business Name <span>*</span></label>
+          <input type="text" class="form-control" id="biz" name="biz" placeholder="Your Business" required>
+        </div>
+        <div class="form-group">
+          <label>Website</label>
+          <input type="url" class="form-control" id="website" name="website" placeholder="yoursite.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Monthly Ad Spend <span>*</span></label>
+        <select class="form-control" id="adspend" name="adspend" required>
+          <option value="" disabled selected>Select your current monthly spend</option>
+          <option value="under-500">Under $500/month</option>
+          <option value="500-2000">$500 – $2,000/month</option>
+          <option value="2000-5000">$2,000 – $5,000/month</option>
+          <option value="5000-15000">$5,000 – $15,000/month</option>
+          <option value="15000-50000">$15,000 – $50,000/month</option>
+          <option value="50000+">$50,000+/month</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Platforms You're Running <span>*</span></label>
+        <div class="platform-grid">
+          <div class="platform-check">
+            <input type="checkbox" id="p-meta" name="platforms" value="meta">
+            <label for="p-meta"><span class="check-icon"></span>Meta Ads</label>
+          </div>
+          <div class="platform-check">
+            <input type="checkbox" id="p-google" name="platforms" value="google">
+            <label for="p-google"><span class="check-icon"></span>Google Ads</label>
+          </div>
+          <div class="platform-check">
+            <input type="checkbox" id="p-tiktok" name="platforms" value="tiktok">
+            <label for="p-tiktok"><span class="check-icon"></span>TikTok Ads</label>
+          </div>
+          <div class="platform-check">
+            <input type="checkbox" id="p-linkedin" name="platforms" value="linkedin">
+            <label for="p-linkedin"><span class="check-icon"></span>LinkedIn Ads</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Biggest Challenge Right Now</label>
+        <select class="form-control" id="challenge" name="challenge">
+          <option value="" disabled selected>Select your main pain point</option>
+          <option value="high-cac">Rising cost per acquisition / CAC</option>
+          <option value="low-roas">Low ROAS — spend isn't returning enough</option>
+          <option value="no-attribution">Can't tell what's actually working</option>
+          <option value="scaling">Scaling spend without scaling results</option>
+          <option value="lead-quality">Low quality leads (B2B)</option>
+          <option value="no-system">No structured system — running on guesswork</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span>Claim My Free Audit</span>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+
+      <p class="form-disclaimer">No credit card. No commitment. We'll confirm your spot within 24 hours.</p>
+    </form>
+
+    <div class="form-success" id="form-success">
+      <div class="success-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 14l6 6L23 8" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="square"/></svg>
+      </div>
+      <h3>You're In.</h3>
+      <p>We've received your application and will confirm your audit slot within 24 hours. Check your inbox — we'll send a calendar invite with everything you need.</p>
+      <p style="margin-top:16px;font-family:'DM Mono',monospace;font-size:11px;color:#C8FF00;letter-spacing:.06em;">Zero Distance to Market.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-container">
+  <div class="marquee-track">
+    <span>Ad Account Audit</span><span class="sep"> · </span>
+    <span>Tracking Diagnosis</span><span class="sep"> · </span>
+    <span>ROAS Analysis</span><span class="sep"> · </span>
+    <span>Audience Review</span><span class="sep"> · </span>
+    <span>Creative Audit</span><span class="sep"> · </span>
+    <span>Attribution Fix</span><span class="sep"> · </span>
+    <span>CAC Breakdown</span><span class="sep"> · </span>
+    <span>Growth Roadmap</span><span class="sep"> · </span>
+    <span>Ad Account Audit</span><span class="sep"> · </span>
+    <span>Tracking Diagnosis</span><span class="sep"> · </span>
+    <span>ROAS Analysis</span><span class="sep"> · </span>
+    <span>Audience Review</span><span class="sep"> · </span>
+    <span>Creative Audit</span><span class="sep"> · </span>
+    <span>Attribution Fix</span><span class="sep"> · </span>
+    <span>CAC Breakdown</span><span class="sep"> · </span>
+    <span>Growth Roadmap</span><span class="sep"> · </span>
+  </div>
+</div>
+
+<!-- ── PROOF STRIP ── -->
+<div class="proof-strip">
+  <div class="proof-grid">
+    <div class="proof-item">
+      <div class="proof-num">87%</div>
+      <div class="proof-label">of audits find broken or missing tracking</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">3.8×</div>
+      <div class="proof-label">Average ROAS improvement after fixes</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">−45%</div>
+      <div class="proof-label">Average CAC reduction in 60 days</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">30</div>
+      <div class="proof-label">Minutes. That's all the audit takes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHAT'S INCLUDED ── -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-eyebrow">What We Cover</p>
+      <h2 class="section-title">Six Things<br>We Check First</h2>
+      <p class="section-body">Every audit follows the same methodology. No guesswork — just a structured diagnostic of every part of your paid media engine.</p>
+    </div>
+    <div class="audit-grid reveal">
+      <div class="audit-item">
+        <div class="audit-num">01</div>
+        <svg class="audit-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="28" width="10" height="16" fill="#C8FF00" opacity=".3"/>
+          <rect x="19" y="18" width="10" height="26" fill="#C8FF00" opacity=".6"/>
+          <rect x="34" y="8" width="10" height="36" fill="#C8FF00"/>
+        </svg>
+        <h3>Campaign Performance</h3>
+        <p>We analyse every active campaign against industry benchmarks and your historical data.</p>
+        <ul>
+          <li>ROAS by campaign and ad set</li>
+          <li>CTR, CPC, CPM analysis</li>
+          <li>Budget allocation efficiency</li>
+          <li>Underperforming segment identification</li>
+        </ul>
+      </div>
+      <div class="audit-item">
+        <div class="audit-num">02</div>
+        <svg class="audit-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="16" stroke="#C8FF00" stroke-width="2" opacity=".4"/>
+          <circle cx="24" cy="24" r="8" fill="#C8FF00" opacity=".8"/>
+          <line x1="24" y1="4" x2="24" y2="44" stroke="#C8FF00" stroke-width="1.5" opacity=".3"/>
+          <line x1="4" y1="24" x2="44" y2="24" stroke="#C8FF00" stroke-width="1.5" opacity=".3"/>
+        </svg>
+        <h3>Tracking & Attribution</h3>
+        <p>Broken pixels and misconfigured GA4 are the #1 reason ad spend goes dark. We verify every touchpoint.</p>
+        <ul>
+          <li>Meta Pixel + CAPI verification</li>
+          <li>GA4 event tracking audit</li>
+          <li>Conversion deduplication check</li>
+          <li>Attribution window settings</li>
+        </ul>
+      </div>
+      <div class="audit-item">
+        <div class="audit-num">03</div>
+        <svg class="audit-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="16" height="16" fill="#C8FF00" opacity=".5"/>
+          <rect x="26" y="6" width="16" height="16" fill="#C8FF00" opacity=".3"/>
+          <rect x="6" y="26" width="16" height="16" fill="#C8FF00" opacity=".3"/>
+          <rect x="26" y="26" width="16" height="16" fill="#C8FF00" opacity=".8"/>
+        </svg>
+        <h3>Audience Architecture</h3>
+        <p>Are you reaching the right people — or wasting budget on audiences that never convert?</p>
+        <ul>
+          <li>Cold audience quality assessment</li>
+          <li>Retargeting pool size and health</li>
+          <li>Lookalike seed quality</li>
+          <li>Audience overlap analysis</li>
+        </ul>
+      </div>
+      <div class="audit-item">
+        <div class="audit-num">04</div>
+        <svg class="audit-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="12" width="40" height="28" stroke="#C8FF00" stroke-width="2" opacity=".4"/>
+          <line x1="4" y1="20" x2="44" y2="20" stroke="#C8FF00" stroke-width="1.5" opacity=".3"/>
+          <line x1="16" y1="12" x2="16" y2="40" stroke="#C8FF00" stroke-width="1.5" opacity=".3"/>
+          <circle cx="10" cy="16" r="2" fill="#C8FF00" opacity=".8"/>
+          <circle cx="10" cy="30" r="2" fill="#C8FF00" opacity=".5"/>
+        </svg>
+        <h3>Creative & Copy Review</h3>
+        <p>We identify which creatives are fatigued, which angles are missing, and where your message is losing people.</p>
+        <ul>
+          <li>Ad fatigue signals</li>
+          <li>Hook and copy effectiveness</li>
+          <li>Format performance breakdown</li>
+          <li>Creative testing structure</li>
+        </ul>
+      </div>
+      <div class="audit-item">
+        <div class="audit-num">05</div>
+        <svg class="audit-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 40L20 24l8 8 12-16" stroke="#C8FF00" stroke-width="2" stroke-linecap="square" opacity=".8"/>
+          <circle cx="8" cy="40" r="3" fill="#C8FF00" opacity=".5"/>
+          <circle cx="20" cy="24" r="3" fill="#C8FF00" opacity=".5"/>
+          <circle cx="28" cy="32" r="3" fill="#C8FF00" opacity=".5"/>
+          <circle cx="40" cy="16" r="3" fill="#C8FF00" opacity=".5"/>
+        </svg>
+        <h3>Funnel & Landing Page</h3>
+        <p>Traffic without conversion is just cost. We review what happens after the click.</p>
+        <ul>
+          <li>Post-click drop-off points</li>
+          <li>Landing page CVR benchmark</li>
+          <li>Form and CTA friction analysis</li>
+          <li>Mobile experience check</li>
+        </ul>
+      </div>
+      <div class="audit-item">
+        <div class="audit-num">06</div>
+        <svg class="audit-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 8h32v32H8z" stroke="#C8FF00" stroke-width="2" opacity=".3"/>
+          <path d="M8 8l16 16 16-16" stroke="#C8FF00" stroke-width="2" stroke-linecap="square" opacity=".8"/>
+          <line x1="24" y1="24" x2="24" y2="40" stroke="#C8FF00" stroke-width="2" opacity=".6"/>
+        </svg>
+        <h3>Scaling Readiness</h3>
+        <p>You'll leave knowing exactly what needs to be in place before you spend another dollar scaling.</p>
+        <ul>
+          <li>Account structure scalability</li>
+          <li>Budget headroom by campaign</li>
+          <li>Constraint identification</li>
+          <li>90-day growth roadmap</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="alt">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-eyebrow">The Process</p>
+      <h2 class="section-title">Three Steps.<br>Seven Days.</h2>
+      <p class="section-body">From application to audit complete in under a week. No lengthy onboarding, no back-and-forth. Just a clean, fast process.</p>
+    </div>
+    <div class="steps-grid reveal">
+      <div class="step">
+        <div class="step-tag">Day 1</div>
+        <div class="step-num">01</div>
+        <h3>Apply & Connect</h3>
+        <p>Fill in the form. We'll send you an access request within 24 hours — read-only access to your ad accounts and analytics. No payment details, no sensitive data.</p>
+        <div class="step-connector">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="#C8FF00" stroke-width="1.5" stroke-linecap="square"/></svg>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-tag">Day 2–4</div>
+        <div class="step-num">02</div>
+        <h3>We Run the Audit</h3>
+        <p>Our team spends 48 hours inside your accounts. We use a structured diagnostic framework across all six areas — no shortcuts, no surface-level observations.</p>
+        <div class="step-connector">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="#C8FF00" stroke-width="1.5" stroke-linecap="square"/></svg>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-tag">Day 5–7</div>
+        <div class="step-num">03</div>
+        <h3>30-Minute Findings Call</h3>
+        <p>We walk you through every finding, prioritised by revenue impact. You'll leave with a clear action list — whether you work with us or not. The audit is yours to keep.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT YOU'LL FIND ── -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-eyebrow">Common Findings</p>
+      <h2 class="section-title">What Most Audits<br>Uncover</h2>
+      <p class="section-body">Based on the accounts we've reviewed. These aren't edge cases — they're the norm.</p>
+    </div>
+    <div class="findings-grid reveal">
+      <div class="finding-item">
+        <div class="finding-pct">87%</div>
+        <div>
+          <h3>Tracking Errors</h3>
+          <p>Broken or duplicate pixels, misconfigured GA4 events, and missing server-side events that cause Meta to underreport conversions — leading to wasted spend on audiences that are actually converting.</p>
+        </div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-pct">73%</div>
+        <div>
+          <h3>Budget Misallocation</h3>
+          <p>More than half the ad budget sitting in campaigns that haven't driven a single conversion in 30+ days, while top-performing campaigns are budget-constrained.</p>
+        </div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-pct">68%</div>
+        <div>
+          <h3>No Retargeting System</h3>
+          <p>Warm traffic — people who visited the site, viewed products, or engaged with ads — not being retargeted. This is typically the highest-ROAS segment, being left completely untouched.</p>
+        </div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-pct">61%</div>
+        <div>
+          <h3>Ad Creative Fatigue</h3>
+          <p>The same 2–3 creatives running for 60–90+ days with declining CTR and rising CPM, but no testing pipeline in place to refresh and replace underperforming assets.</p>
+        </div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-pct">54%</div>
+        <div>
+          <h3>Scaling Bottlenecks</h3>
+          <p>Campaign structures that can't scale past a certain spend threshold — budget increases that cause CPAs to spike instead of improve, due to audience or structural constraints.</p>
+        </div>
+      </div>
+      <div class="finding-item">
+        <div class="finding-pct">49%</div>
+        <div>
+          <h3>Landing Page Disconnect</h3>
+          <p>A clear message mismatch between ad copy and landing page, causing above-average bounce rates and below-benchmark conversion rates despite decent ad-level CTR.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="alt">
+  <div class="container" style="max-width:860px;">
+    <div class="reveal">
+      <p class="section-eyebrow">Questions</p>
+      <h2 class="section-title">Answered.</h2>
+    </div>
+    <div class="faq-list reveal">
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Is this actually free?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Yes — completely. There is no hidden cost, no credit card required, and no obligation to work with us afterward. The audit is a deliverable we provide to demonstrate how we think and what we find. If you want to work together after, great. If not, the findings are yours to act on however you like.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          What access do you need?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Read-only access to your Meta Business Manager and/or Google Ads account, and Viewer access to your GA4. We never need payment method access, admin controls, or the ability to make changes. Everything we do is observational during the audit phase. We'll send you a step-by-step guide for granting access.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Is there a minimum ad spend to qualify?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">No hard minimum, but the audit is most valuable if you're actively running campaigns — even at $500–$1,000/month. If you're pre-launch or not yet running ads, we'd suggest booking a free strategy call instead, which we can arrange separately.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          How long does the audit call take?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">The findings call is 30 minutes. We respect your time — we come prepared with a structured presentation of findings prioritised by revenue impact, so we're not wasting time on the call. You can ask questions throughout.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          What happens after the audit?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">You receive a written summary of findings and recommended actions within 24 hours of the call. If there's a fit to work together, we'll present a proposal. There's no pressure, no follow-up sequence, and no hard close. If the audit doesn't demonstrate clear value, we haven't earned the right to ask.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          How many spots are available?
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">We take on a maximum of 5 audits per week to ensure quality. Slots are confirmed on a first-come, first-served basis. If we're at capacity, we'll let you know your position in the queue and expected wait time — typically no longer than 7–10 days.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── BOTTOM CTA ── -->
+<div class="bottom-cta">
+  <div class="bottom-cta-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <h2 class="reveal">
+      Stop Guessing.<br>
+      <span class="lime">Start Knowing.</span>
+    </h2>
+    <p class="reveal reveal-delay-1">Your competitors aren't spending more — they're spending smarter. Find out exactly what they know that you don't.</p>
+    <a href="#audit-form" class="cta-btn reveal reveal-delay-2">
+      <span>Book My Free Audit</span>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M10 4l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">ZDM INC</div>
+  <div class="footer-tagline">Zero Distance to Market. <span>— zdminc.com</span></div>
+</footer>
+
+<script>
+// ── CURSOR ──
+(function() {
+  var dot  = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  var mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, label, select, input, textarea, .faq-q').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { document.body.classList.add('cursor-hover'); });
+    el.addEventListener('mouseleave', function() { document.body.classList.remove('cursor-hover'); });
+  });
+})();
+
+// ── PROGRESS BAR ──
+(function() {
+  var bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', function() {
+    var pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    bar.style.width = pct + '%';
+  }, { passive: true });
+})();
+
+// ── NAV SCROLL ──
+(function() {
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+})();
+
+// ── REVEAL ON SCROLL ──
+(function() {
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(function(el) { io.observe(el); });
+})();
+
+// ── FAQ ──
+(function() {
+  document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = q.parentElement;
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); i.querySelector('.faq-toggle').textContent = '+'; });
+      if (!isOpen) {
+        item.classList.add('open');
+        item.querySelector('.faq-toggle').textContent = '+';
+      }
+    });
+  });
+})();
+
+// ── FORM SUBMIT ──
+(function() {
+  var form    = document.getElementById('audit-form');
+  var success = document.getElementById('form-success');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Basic validation
+    var required = form.querySelectorAll('[required]');
+    var valid = true;
+    required.forEach(function(f) {
+      f.style.borderColor = '';
+      if (!f.value.trim()) {
+        f.style.borderColor = '#ff6b6b';
+        valid = false;
+      }
+    });
+    if (!valid) return;
+
+    // Check at least one platform selected
+    var platforms = form.querySelectorAll('input[name="platforms"]:checked');
+    if (platforms.length === 0) {
+      form.querySelectorAll('.platform-check label').forEach(function(l) {
+        l.style.borderColor = '#ff6b6b';
+      });
+      setTimeout(function() {
+        form.querySelectorAll('.platform-check label').forEach(function(l) { l.style.borderColor = ''; });
+      }, 2000);
+      return;
+    }
+
+    // Simulate submission (replace with actual endpoint / Formspree / etc.)
+    var btn = form.querySelector('.submit-btn');
+    btn.querySelector('span').textContent = 'Submitting…';
+    btn.disabled = true;
+
+    setTimeout(function() {
+      form.style.display = 'none';
+      success.classList.add('show');
+      // Scroll the panel into view
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 800);
+  });
+})();
+</script>
+
+</body>
+</html>

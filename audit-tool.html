@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZDM INC — AI Audit Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:     #0A0A0A;
+      --bg:        #141414;
+      --surface:   #1E1E1E;
+      --surface2:  #242424;
+      --mid-grey:  #3A3A3A;
+      --grey:      #888888;
+      --light:     #F5F5F0;
+      --white:     #FFFFFF;
+      --lime:      #C8FF00;
+      --lime-dim:  rgba(200,255,0,0.12);
+      --lime-mid:  rgba(200,255,0,0.25);
+      --border:    rgba(255,255,255,0.07);
+      --red:       #FF5A5A;
+      --orange:    #FF9B35;
+      --font-d: 'Bebas Neue', sans-serif;
+      --font-b: 'DM Sans', sans-serif;
+      --font-m: 'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-b); background: var(--bg); color: var(--light); line-height: 1.6; overflow-x: hidden; }
+
+    /* ── LAYOUT ── */
+    .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--black);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 0 28px 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .sidebar-logo h1 {
+      font-family: var(--font-d);
+      font-size: 26px;
+      letter-spacing: 0.06em;
+      color: var(--lime);
+      line-height: 1;
+    }
+    .sidebar-logo p { font-family: var(--font-m); font-size: 10px; color: var(--grey); letter-spacing: 0.1em; margin-top: 4px; text-transform: uppercase; }
+
+    .step-list { list-style: none; padding: 0 16px; flex: 1; }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .step-item.active { opacity: 1; background: rgba(200,255,0,0.06); pointer-events: auto; }
+    .step-item.done { opacity: 0.7; pointer-events: auto; }
+    .step-item.done:hover { background: rgba(255,255,255,0.04); }
+    .step-num {
+      width: 28px; height: 28px;
+      border: 1px solid var(--mid-grey);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-m);
+      font-size: 11px;
+      color: var(--grey);
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .step-item.active .step-num { border-color: var(--lime); color: var(--lime); background: rgba(200,255,0,0.1); }
+    .step-item.done .step-num { border-color: var(--lime); background: var(--lime); color: var(--black); font-weight: 700; }
+    .step-item.done .step-num::after { content: '✓'; font-size: 12px; }
+    .step-item.done .step-num-text { display: none; }
+    .step-label { font-size: 13px; font-weight: 500; color: var(--light); }
+    .step-sub { font-size: 11px; color: var(--grey); font-family: var(--font-m); }
+
+    .sidebar-model {
+      padding: 20px 28px;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .sidebar-model label { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--grey); display: block; margin-bottom: 8px; }
+    .sidebar-model select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--mid-grey);
+      color: var(--light);
+      font-family: var(--font-m);
+      font-size: 12px;
+      padding: 8px 12px;
+      outline: none;
+      cursor: pointer;
+      border-radius: 0;
+      appearance: none;
+    }
+
+    /* ── MAIN ── */
+    .main { padding: 48px 56px; max-width: 900px; }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .panel-eyebrow { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--lime); opacity: 0.7; margin-bottom: 12px; }
+    .panel-title { font-family: var(--font-d); font-size: 44px; letter-spacing: 0.03em; color: var(--light); line-height: 1; margin-bottom: 12px; }
+    .panel-sub { font-size: 15px; color: var(--grey); line-height: 1.7; margin-bottom: 40px; max-width: 560px; }
+
+    /* ── FORM ELEMENTS ── */
+    .form-group { margin-bottom: 24px; }
+    .form-group label { display: block; font-family: var(--font-m); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--grey); margin-bottom: 8px; }
+    .form-group label span { color: var(--lime); }
+    .form-control {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--mid-grey);
+      color: var(--light);
+      font-family: var(--font-b);
+      font-size: 14px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      border-radius: 0;
+      appearance: none;
+    }
+    .form-control:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(200,255,0,0.08); }
+    .form-control::placeholder { color: var(--grey); opacity: 0.6; }
+    select.form-control {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    select.form-control option { background: var(--surface); }
+    textarea.form-control { resize: vertical; min-height: 140px; font-family: var(--font-m); font-size: 12px; line-height: 1.6; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-hint { font-family: var(--font-m); font-size: 11px; color: var(--grey); margin-top: 6px; line-height: 1.5; }
+    .form-hint a { color: var(--lime); text-decoration: none; }
+
+    /* ── INPUT TABS ── */
+    .input-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+    .input-tab {
+      padding: 10px 20px;
+      font-family: var(--font-m);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--grey);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .input-tab:hover { color: var(--light); }
+    .input-tab.active { color: var(--lime); border-bottom-color: var(--lime); }
+    .input-pane { display: none; }
+    .input-pane.active { display: block; }
+
+    /* ── API KEY SECTION ── */
+    .api-box {
+      background: var(--surface);
+      border: 1px solid var(--mid-grey);
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .api-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--lime); }
+    .api-box h3 { font-family: var(--font-m); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lime); margin-bottom: 12px; }
+    .api-key-row { display: flex; gap: 12px; }
+    .api-key-row input { flex: 1; background: var(--bg); border: 1px solid var(--mid-grey); color: var(--light); font-family: var(--font-m); font-size: 13px; padding: 10px 14px; outline: none; transition: border-color 0.2s; border-radius: 0; }
+    .api-key-row input:focus { border-color: var(--lime); }
+    .api-key-row button { background: var(--surface2); border: 1px solid var(--mid-grey); color: var(--grey); font-family: var(--font-m); font-size: 11px; padding: 10px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.2s; white-space: nowrap; }
+    .api-key-row button:hover { border-color: var(--lime); color: var(--lime); }
+    .api-status { font-family: var(--font-m); font-size: 11px; margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+    .api-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--grey); }
+    .api-status.saved .api-status-dot { background: var(--lime); }
+    .api-status.saved { color: var(--lime); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      font-family: var(--font-m);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 2px solid;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s;
+    }
+    .btn svg { transition: transform 0.2s; }
+    .btn:hover svg { transform: translateX(3px); }
+    .btn-primary { background: var(--lime); color: var(--black); border-color: var(--lime); }
+    .btn-primary::before { content: ''; position: absolute; inset: 0; background: var(--black); transform: scaleX(0); transform-origin: right; transition: transform 0.35s cubic-bezier(0.23,1,0.32,1); }
+    .btn-primary:hover { color: var(--lime); }
+    .btn-primary:hover::before { transform: scaleX(1); transform-origin: left; }
+    .btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
+    .btn-outline { background: transparent; color: var(--grey); border-color: var(--mid-grey); }
+    .btn-outline:hover { color: var(--light); border-color: var(--grey); }
+    .btn-ghost { background: transparent; color: var(--lime); border-color: rgba(200,255,0,0.3); font-size: 12px; padding: 10px 20px; }
+    .btn-ghost:hover { background: rgba(200,255,0,0.06); border-color: var(--lime); }
+    .btn-row { display: flex; gap: 12px; align-items: center; margin-top: 40px; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    /* ── METRICS GRID ── */
+    .metrics-section { margin-bottom: 32px; }
+    .metrics-section h4 { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--lime); opacity: 0.6; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .metric-input label { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--grey); display: block; margin-bottom: 6px; }
+    .metric-input input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--mid-grey);
+      color: var(--light);
+      font-family: var(--font-m);
+      font-size: 14px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.2s;
+      border-radius: 0;
+    }
+    .metric-input input:focus { border-color: var(--lime); }
+    .metric-input input::placeholder { color: var(--grey); opacity: 0.5; }
+
+    /* ── ANALYZING SCREEN ── */
+    .analyzing-screen { text-align: center; padding: 60px 0 40px; }
+    .pulse-ring {
+      width: 80px; height: 80px;
+      border: 2px solid var(--lime);
+      border-radius: 50%;
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: ringPulse 2s ease-in-out infinite;
+    }
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border: 1px solid rgba(200,255,0,0.3);
+      border-radius: 50%;
+      animation: ringPulse 2s ease-in-out infinite 0.3s;
+    }
+    .pulse-ring::after {
+      content: '';
+      position: absolute;
+      inset: -24px;
+      border: 1px solid rgba(200,255,0,0.1);
+      border-radius: 50%;
+      animation: ringPulse 2s ease-in-out infinite 0.6s;
+    }
+    @keyframes ringPulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(1.05)} }
+    .pulse-z { font-family: var(--font-d); font-size: 36px; color: var(--lime); }
+    .analyzing-title { font-family: var(--font-d); font-size: 36px; letter-spacing: 0.04em; color: var(--light); margin-bottom: 8px; }
+    .analyzing-status { font-family: var(--font-m); font-size: 12px; color: var(--grey); letter-spacing: 0.08em; margin-bottom: 40px; }
+    .analyzing-status span { color: var(--lime); }
+
+    .stream-output {
+      background: var(--surface);
+      border: 1px solid var(--mid-grey);
+      padding: 28px 32px;
+      text-align: left;
+      min-height: 200px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: var(--font-m);
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(245,245,240,0.7);
+      white-space: pre-wrap;
+      margin-bottom: 24px;
+      border-left: 3px solid var(--lime);
+    }
+    .stream-cursor { display: inline-block; width: 8px; height: 14px; background: var(--lime); margin-left: 2px; animation: blink 0.8s infinite; vertical-align: middle; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+    /* ── REPORT ── */
+    .report-header {
+      background: var(--black);
+      border: 1px solid var(--border);
+      padding: 40px 48px;
+      margin-bottom: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--lime); }
+    .report-meta { font-family: var(--font-m); font-size: 10px; color: var(--grey); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; display: flex; gap: 24px; }
+    .report-meta span { display: flex; align-items: center; gap: 6px; }
+    .report-meta-dot { width: 4px; height: 4px; background: var(--lime); border-radius: 50%; }
+    .report-title { font-family: var(--font-d); font-size: 52px; letter-spacing: 0.03em; color: var(--light); line-height: 1; margin-bottom: 8px; }
+    .report-biz { font-family: var(--font-d); font-size: 28px; letter-spacing: 0.04em; color: var(--lime); }
+
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .score-gauge { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+    .score-gauge svg { transform: rotate(-90deg); }
+    .score-gauge-num {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .score-big { font-family: var(--font-d); font-size: 32px; line-height: 1; }
+    .score-label-small { font-family: var(--font-m); font-size: 8px; color: var(--grey); letter-spacing: 0.1em; text-transform: uppercase; }
+    .score-desc { flex: 1; }
+    .score-desc h3 { font-family: var(--font-d); font-size: 22px; letter-spacing: 0.04em; color: var(--light); margin-bottom: 6px; }
+    .score-desc p { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+    .report-actions { display: flex; gap: 10px; margin-top: 24px; }
+    .report-btn { background: var(--surface); border: 1px solid var(--mid-grey); color: var(--grey); font-family: var(--font-m); font-size: 11px; padding: 8px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.2s; display: flex; align-items: center; gap: 6px; border-radius: 0; }
+    .report-btn:hover { border-color: var(--lime); color: var(--lime); }
+    .report-btn.active { background: var(--lime); color: var(--black); border-color: var(--lime); }
+
+    .report-body {
+      background: var(--black);
+      border: 1px solid var(--border);
+      padding: 48px;
+    }
+    /* Markdown-like report styling */
+    #report-content h2 {
+      font-family: var(--font-d);
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: var(--lime);
+      margin: 40px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(200,255,0,0.15);
+      line-height: 1;
+    }
+    #report-content h2:first-child { margin-top: 0; }
+    #report-content h3 { font-family: var(--font-d); font-size: 20px; letter-spacing: 0.04em; color: var(--light); margin: 24px 0 10px; }
+    #report-content p { font-size: 14px; color: rgba(245,245,240,0.8); line-height: 1.8; margin-bottom: 12px; }
+    #report-content ul, #report-content ol { padding-left: 0; list-style: none; margin-bottom: 16px; }
+    #report-content li { font-size: 14px; color: rgba(245,245,240,0.75); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; line-height: 1.6; }
+    #report-content li::before { content: '→'; color: var(--lime); font-size: 12px; flex-shrink: 0; margin-top: 2px; font-family: var(--font-m); }
+    #report-content ol li::before { content: counter(li, decimal-leading-zero); counter-increment: li; background: rgba(200,255,0,0.1); border: 1px solid rgba(200,255,0,0.2); padding: 1px 6px; font-family: var(--font-m); font-size: 10px; color: var(--lime); }
+    #report-content ol { counter-reset: li; }
+    #report-content strong { color: var(--light); font-weight: 600; }
+    #report-content em { color: var(--lime); font-style: normal; font-family: var(--font-m); font-size: 12px; }
+    #report-content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+    #report-content blockquote { border-left: 3px solid var(--lime); padding: 12px 20px; background: rgba(200,255,0,0.04); margin: 16px 0; font-size: 13px; color: rgba(245,245,240,0.7); font-family: var(--font-m); }
+
+    /* Severity badges auto-inserted by JS */
+    .sev-critical { background: rgba(255,90,90,0.12); border: 1px solid rgba(255,90,90,0.3); color: #ff5a5a; font-family: var(--font-m); font-size: 9px; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; vertical-align: middle; margin-left: 6px; }
+    .sev-high { background: rgba(255,155,53,0.12); border: 1px solid rgba(255,155,53,0.3); color: #ff9b35; font-family: var(--font-m); font-size: 9px; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; vertical-align: middle; margin-left: 6px; }
+    .sev-medium { background: rgba(200,255,0,0.12); border: 1px solid rgba(200,255,0,0.25); color: var(--lime); font-family: var(--font-m); font-size: 9px; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; vertical-align: middle; margin-left: 6px; }
+
+    /* ── PRIORITY ACTIONS BOX ── */
+    .priority-box {
+      background: linear-gradient(135deg, #0d1a00 0%, var(--surface) 100%);
+      border: 1px solid rgba(200,255,0,0.25);
+      padding: 32px 36px;
+      margin: 32px 0;
+    }
+    .priority-box h3 { font-family: var(--font-d); font-size: 22px; letter-spacing: 0.04em; color: var(--lime); margin-bottom: 20px; }
+
+    /* ── ERROR / NOTICE ── */
+    .notice { background: var(--surface); border: 1px solid var(--mid-grey); padding: 20px 24px; font-size: 13px; color: var(--grey); line-height: 1.7; margin-bottom: 24px; }
+    .notice.warn { border-color: rgba(255,155,53,0.4); background: rgba(255,155,53,0.06); color: #ff9b35; }
+    .notice.error { border-color: rgba(255,90,90,0.4); background: rgba(255,90,90,0.06); color: #ff5a5a; }
+    .notice strong { color: var(--light); }
+    .notice code { font-family: var(--font-m); font-size: 12px; background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 3px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main { padding: 32px 24px; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .report-header { padding: 28px; }
+      .report-body { padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>ZDM INC</h1>
+    <p>AI Audit Engine</p>
+  </div>
+  <ul class="step-list" id="step-nav">
+    <li class="step-item active" data-step="1">
+      <div class="step-num"><span class="step-num-text">1</span></div>
+      <div><div class="step-label">Setup</div><div class="step-sub">API key + account</div></div>
+    </li>
+    <li class="step-item" data-step="2">
+      <div class="step-num"><span class="step-num-text">2</span></div>
+      <div><div class="step-label">Data Input</div><div class="step-sub">CSV or manual metrics</div></div>
+    </li>
+    <li class="step-item" data-step="3">
+      <div class="step-num"><span class="step-num-text">3</span></div>
+      <div><div class="step-label">Context</div><div class="step-sub">Goals + challenges</div></div>
+    </li>
+    <li class="step-item" data-step="4">
+      <div class="step-num"><span class="step-num-text">4</span></div>
+      <div><div class="step-label">Analysing</div><div class="step-sub">AI running audit</div></div>
+    </li>
+    <li class="step-item" data-step="5">
+      <div class="step-num"><span class="step-num-text">5</span></div>
+      <div><div class="step-label">Report</div><div class="step-sub">Full audit output</div></div>
+    </li>
+  </ul>
+  <div class="sidebar-model">
+    <label>Claude Model</label>
+    <select id="model-select">
+      <option value="claude-sonnet-4-6">Sonnet 4.6 — Fast</option>
+      <option value="claude-opus-4-7" selected>Opus 4.7 — Best analysis</option>
+    </select>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- ═══ STEP 1: SETUP ═══ -->
+  <div class="panel active" id="panel-1">
+    <p class="panel-eyebrow">Step 01 of 05</p>
+    <h2 class="panel-title">Setup</h2>
+    <p class="panel-sub">Connect your Claude API key and enter basic account info. Your key is stored locally and never leaves your browser.</p>
+
+    <div class="api-box">
+      <h3>Claude API Key</h3>
+      <div class="api-key-row">
+        <input type="password" id="api-key-input" placeholder="sk-ant-api03-…" autocomplete="off">
+        <button onclick="saveApiKey()">Save Key</button>
+      </div>
+      <div class="api-status" id="api-status">
+        <div class="api-status-dot"></div>
+        <span>No key saved</span>
+      </div>
+      <p class="form-hint" style="margin-top:10px;">Get your API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. This tool makes direct API calls from your browser — for internal/agency use only.</p>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Business / Client Name <span>*</span></label>
+        <input type="text" class="form-control" id="biz-name" placeholder="Acme Store">
+      </div>
+      <div class="form-group">
+        <label>Business Type <span>*</span></label>
+        <select class="form-control" id="biz-type">
+          <option value="" disabled selected>Select type</option>
+          <option value="ecommerce">E-Commerce (DTC / Shopify)</option>
+          <option value="b2b-saas">B2B SaaS</option>
+          <option value="b2b-services">B2B Services / Agency</option>
+          <option value="local">Local Service Business</option>
+          <option value="lead-gen">Lead Generation</option>
+          <option value="marketplace">Marketplace / App</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Monthly Ad Budget</label>
+        <select class="form-control" id="biz-budget">
+          <option value="" disabled selected>Select range</option>
+          <option value="under-1k">Under $1,000</option>
+          <option value="1k-5k">$1,000 – $5,000</option>
+          <option value="5k-15k">$5,000 – $15,000</option>
+          <option value="15k-50k">$15,000 – $50,000</option>
+          <option value="50k+">$50,000+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Primary Goal</label>
+        <select class="form-control" id="biz-goal">
+          <option value="" disabled selected>Select goal</option>
+          <option value="lower-cac">Lower CAC / cost per acquisition</option>
+          <option value="improve-roas">Improve ROAS</option>
+          <option value="scale-spend">Scale ad spend profitably</option>
+          <option value="fix-tracking">Fix attribution / tracking</option>
+          <option value="overall">Overall health check</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goToStep(2)">
+        <span>Continue</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 2: DATA INPUT ═══ -->
+  <div class="panel" id="panel-2">
+    <p class="panel-eyebrow">Step 02 of 05</p>
+    <h2 class="panel-title">Data Input</h2>
+    <p class="panel-sub">Paste your exported CSV data or enter key metrics manually. The more data you provide, the more specific the audit findings.</p>
+
+    <div class="input-tabs">
+      <div class="input-tab active" onclick="switchInputTab('manual')">Manual Metrics</div>
+      <div class="input-tab" onclick="switchInputTab('meta')">Meta CSV</div>
+      <div class="input-tab" onclick="switchInputTab('google')">Google CSV</div>
+      <div class="input-tab" onclick="switchInputTab('both')">Both CSVs</div>
+    </div>
+
+    <!-- MANUAL -->
+    <div class="input-pane active" id="input-manual">
+      <div class="notice">
+        <strong>How to get these numbers:</strong> Open Meta Ads Manager or Google Ads → switch to last 30 days → note the account-level metrics below. The more complete your inputs, the deeper the analysis.
+      </div>
+
+      <div class="metrics-section">
+        <h4>Overall Account</h4>
+        <div class="metrics-grid">
+          <div class="metric-input"><label>Total Spend (30d)</label><input type="text" id="m-spend" placeholder="e.g. $8,400"></div>
+          <div class="metric-input"><label>Total Revenue / Value</label><input type="text" id="m-revenue" placeholder="e.g. $31,200"></div>
+          <div class="metric-input"><label>Overall ROAS</label><input type="text" id="m-roas" placeholder="e.g. 3.7x"></div>
+          <div class="metric-input"><label>Cost Per Acquisition</label><input type="text" id="m-cpa" placeholder="e.g. $42"></div>
+          <div class="metric-input"><label>Total Conversions</label><input type="text" id="m-convs" placeholder="e.g. 200"></div>
+          <div class="metric-input"><label>Conv. Rate (%)</label><input type="text" id="m-cvr" placeholder="e.g. 1.8%"></div>
+        </div>
+      </div>
+
+      <div class="metrics-section">
+        <h4>Ad Performance</h4>
+        <div class="metrics-grid">
+          <div class="metric-input"><label>Avg CTR (%)</label><input type="text" id="m-ctr" placeholder="e.g. 1.2%"></div>
+          <div class="metric-input"><label>Avg CPC</label><input type="text" id="m-cpc" placeholder="e.g. $1.40"></div>
+          <div class="metric-input"><label>Avg CPM</label><input type="text" id="m-cpm" placeholder="e.g. $16.80"></div>
+          <div class="metric-input"><label>Avg Frequency</label><input type="text" id="m-freq" placeholder="e.g. 3.4"></div>
+          <div class="metric-input"><label>Total Impressions</label><input type="text" id="m-impr" placeholder="e.g. 500,000"></div>
+          <div class="metric-input"><label>Total Reach</label><input type="text" id="m-reach" placeholder="e.g. 147,000"></div>
+        </div>
+      </div>
+
+      <div class="metrics-section">
+        <h4>Campaign Breakdown (paste up to 5 top/bottom campaigns)</h4>
+        <textarea class="form-control" id="m-campaigns" placeholder="e.g.
+Campaign: Prospecting - Broad | Spend: $2,100 | ROAS: 4.2x | CPM: $14 | CTR: 1.4%
+Campaign: Retargeting - 30d | Spend: $800 | ROAS: 7.8x | CPM: $22 | CTR: 2.1%
+Campaign: Cold - Lookalike | Spend: $1,600 | ROAS: 1.9x | CPM: $18 | CTR: 0.6%
+(paste your own — any format works)"></textarea>
+      </div>
+
+      <div class="metrics-section">
+        <h4>Platforms Running</h4>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--grey);font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">
+            <input type="checkbox" id="p-meta" value="Meta Ads" style="accent-color:var(--lime)"> Meta
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--grey);font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">
+            <input type="checkbox" id="p-google" value="Google Ads" style="accent-color:var(--lime)"> Google
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--grey);font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">
+            <input type="checkbox" id="p-tiktok" value="TikTok Ads" style="accent-color:var(--lime)"> TikTok
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--grey);font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">
+            <input type="checkbox" id="p-linkedin" value="LinkedIn Ads" style="accent-color:var(--lime)"> LinkedIn
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- META CSV -->
+    <div class="input-pane" id="input-meta">
+      <div class="notice">
+        <strong>How to export from Meta Ads Manager:</strong> Open Ads Manager → select last 30 days → click <code>Export</code> → choose CSV. Paste the full CSV content below (including headers).
+      </div>
+      <div class="form-group">
+        <label>Meta Ads Export (CSV)</label>
+        <textarea class="form-control" id="csv-meta" style="min-height:280px;font-size:11px;" placeholder="Paste your Meta Ads Manager CSV export here…
+
+Campaign name,Delivery,Budget,Amount spent,Reach,Impressions,CPM,Link clicks,CPC,CTR,Purchases,Purchase ROAS,Cost per purchase
+Prospecting - Broad,Active,$100/day,$2100,45000,120000,$17.50,1500,$1.40,1.25%,50,4.2x,$42.00
+…"></textarea>
+      </div>
+    </div>
+
+    <!-- GOOGLE CSV -->
+    <div class="input-pane" id="input-google">
+      <div class="notice">
+        <strong>How to export from Google Ads:</strong> Open Google Ads → Campaigns → click the download icon → CSV. Paste the content below.
+      </div>
+      <div class="form-group">
+        <label>Google Ads Export (CSV)</label>
+        <textarea class="form-control" id="csv-google" style="min-height:280px;font-size:11px;" placeholder="Paste your Google Ads campaign report CSV here…
+
+Campaign,Campaign type,Status,Budget,Impr.,Clicks,CTR,Avg. CPC,Cost,Conversions,Conv. rate,Cost / conv.,ROAS
+Brand Search,Search,Enabled,$50/day,12000,800,6.67%,$0.80,$640,60,7.50%,$10.67,8.2
+Generic - Performance Max,Performance max,Enabled,$200/day,85000,1100,1.29%,$2.40,$2640,40,3.64%,$66.00,3.1
+…"></textarea>
+      </div>
+    </div>
+
+    <!-- BOTH -->
+    <div class="input-pane" id="input-both">
+      <div class="form-group">
+        <label>Meta Ads CSV</label>
+        <textarea class="form-control" id="csv-both-meta" style="min-height:200px;font-size:11px;" placeholder="Paste Meta Ads Manager CSV…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Google Ads CSV</label>
+        <textarea class="form-control" id="csv-both-google" style="min-height:200px;font-size:11px;" placeholder="Paste Google Ads CSV…"></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goToStep(1)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+        <span>Back</span>
+      </button>
+      <button class="btn btn-primary" onclick="goToStep(3)">
+        <span>Continue</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 3: CONTEXT ═══ -->
+  <div class="panel" id="panel-3">
+    <p class="panel-eyebrow">Step 03 of 05</p>
+    <h2 class="panel-title">Context</h2>
+    <p class="panel-sub">A few more questions to make the audit findings specific and actionable rather than generic.</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>How Long Running Paid Ads?</label>
+        <select class="form-control" id="ctx-duration">
+          <option value="" disabled selected>Select</option>
+          <option value="new">Less than 3 months (new account)</option>
+          <option value="growing">3–12 months</option>
+          <option value="established">1–3 years</option>
+          <option value="mature">3+ years</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Biggest Challenge Right Now</label>
+        <select class="form-control" id="ctx-challenge">
+          <option value="" disabled selected>Select</option>
+          <option value="high-cac">Rising CAC / cost per acquisition</option>
+          <option value="low-roas">Low ROAS — not enough return</option>
+          <option value="attribution">Can't tell what's actually working</option>
+          <option value="scaling">Spend increases but results don't</option>
+          <option value="lead-quality">Poor lead quality (B2B)</option>
+          <option value="creative-fatigue">Ads burning out quickly</option>
+          <option value="no-system">No structured approach — feels like guesswork</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Are You Running Retargeting Campaigns?</label>
+      <select class="form-control" id="ctx-retargeting">
+        <option value="" disabled selected>Select</option>
+        <option value="yes-active">Yes — active and performing well</option>
+        <option value="yes-poor">Yes — but results are weak</option>
+        <option value="no">No — not running retargeting yet</option>
+        <option value="unsure">Unsure / not set up properly</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Tracking Setup</label>
+      <select class="form-control" id="ctx-tracking">
+        <option value="" disabled selected>Select</option>
+        <option value="full">Full — pixel, CAPI, GA4 all confirmed working</option>
+        <option value="basic">Basic — pixel installed but not fully verified</option>
+        <option value="broken">Suspect issues — conversions don't match reality</option>
+        <option value="minimal">Minimal — only basic page views tracked</option>
+        <option value="unsure">Unsure of current tracking status</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Anything Specific You Want the Audit to Focus On?</label>
+      <textarea class="form-control" id="ctx-notes" style="min-height:100px;" placeholder="e.g. 'Our CPMs jumped 40% in the last 3 weeks and we don't know why' or 'We scaled spend from $5k to $20k and ROAS dropped from 4x to 1.8x' or 'We have a new product launch next month'…"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goToStep(2)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+        <span>Back</span>
+      </button>
+      <button class="btn btn-primary" onclick="runAudit()">
+        <span>Run Audit</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 4: ANALYSING ═══ -->
+  <div class="panel" id="panel-4">
+    <div class="analyzing-screen">
+      <div class="pulse-ring"><div class="pulse-z">Z</div></div>
+      <h2 class="analyzing-title">Running Audit</h2>
+      <p class="analyzing-status">Analysing with <span id="model-display">claude-opus-4-7</span> — this takes 30–60 seconds</p>
+    </div>
+    <div class="stream-output" id="stream-output"></div>
+    <div id="analyzing-error"></div>
+  </div>
+
+  <!-- ═══ STEP 5: REPORT ═══ -->
+  <div class="panel" id="panel-5">
+    <div class="report-header">
+      <div class="report-meta">
+        <span><div class="report-meta-dot"></div>ZDM INC — AI Audit Engine</span>
+        <span id="report-date"></span>
+        <span id="report-biz-meta"></span>
+      </div>
+      <div class="report-title">Ad Account Audit</div>
+      <div class="report-biz" id="report-biz-name"></div>
+      <div class="score-row">
+        <div class="score-gauge">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="var(--surface)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="var(--lime)" stroke-width="8"
+              stroke-dasharray="251.2"
+              stroke-dashoffset="251.2"
+              stroke-linecap="round"
+              id="score-circle"/>
+          </svg>
+          <div class="score-gauge-num">
+            <div class="score-big" id="score-number" style="color:var(--lime)">—</div>
+            <div class="score-label-small">/100</div>
+          </div>
+        </div>
+        <div class="score-desc">
+          <h3 id="score-title">Account Health</h3>
+          <p id="score-summary">Analysing…</p>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button class="report-btn" onclick="copyReport()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="3" width="8" height="8" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="1" width="8" height="8" stroke="currentColor" stroke-width="1.5" fill="var(--surface)"/></svg>
+          Copy Report
+        </button>
+        <button class="report-btn" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="6" stroke="currentColor" stroke-width="1.5"/><path d="M4 4V2h6v2M4 10v2h6v-2" stroke="currentColor" stroke-width="1.5"/></svg>
+          Print
+        </button>
+        <button class="report-btn" onclick="runNewAudit()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7a5 5 0 1 1 1.5 3.5M2 7V3M2 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          New Audit
+        </button>
+      </div>
+    </div>
+    <div class="report-body">
+      <div id="report-content"></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ── STATE ──
+var state = {
+  step: 1,
+  inputTab: 'manual',
+  apiKey: localStorage.getItem('zdm-api-key') || '',
+  fullReport: ''
+};
+
+// ── INIT ──
+(function init() {
+  if (state.apiKey) {
+    document.getElementById('api-key-input').value = state.apiKey;
+    setApiStatus(true);
+  }
+  document.getElementById('report-date').textContent = new Date().toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' });
+})();
+
+// ── API KEY ──
+function saveApiKey() {
+  var key = document.getElementById('api-key-input').value.trim();
+  if (!key) return;
+  state.apiKey = key;
+  localStorage.setItem('zdm-api-key', key);
+  setApiStatus(true);
+}
+function setApiStatus(saved) {
+  var el = document.getElementById('api-status');
+  if (saved) {
+    el.className = 'api-status saved';
+    el.innerHTML = '<div class="api-status-dot"></div><span>Key saved</span>';
+  } else {
+    el.className = 'api-status';
+    el.innerHTML = '<div class="api-status-dot"></div><span>No key saved</span>';
+  }
+}
+
+// ── NAVIGATION ──
+function goToStep(n) {
+  if (n === 1 || n <= state.step + 1) {
+    showStep(n);
+  }
+}
+function showStep(n) {
+  // Update panels
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('panel-' + n).classList.add('active');
+
+  // Update sidebar
+  document.querySelectorAll('.step-item').forEach(function(item) {
+    var s = parseInt(item.dataset.step);
+    item.classList.remove('active', 'done');
+    if (s === n) item.classList.add('active');
+    else if (s < n) { item.classList.add('done'); item.querySelector('.step-num-text').textContent = ''; }
+    item.style.opacity = (s <= n || s <= state.step) ? '' : '';
+    if (s <= n) item.style.opacity = '1'; else item.style.opacity = '0.4';
+    if (s <= n) item.style.pointerEvents = 'auto'; else item.style.pointerEvents = 'none';
+  });
+
+  state.step = Math.max(state.step, n);
+  window.scrollTo(0, 0);
+}
+
+// ── INPUT TABS ──
+function switchInputTab(tab) {
+  state.inputTab = tab;
+  document.querySelectorAll('.input-tab').forEach(function(t, i) {
+    var tabs = ['manual','meta','google','both'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.input-pane').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('input-' + tab).classList.add('active');
+}
+
+// ── BUILD PROMPT DATA ──
+function buildAuditData() {
+  var bizName   = document.getElementById('biz-name').value.trim() || 'Client Account';
+  var bizType   = document.getElementById('biz-type').value || 'Not specified';
+  var budget    = document.getElementById('biz-budget').value || 'Not specified';
+  var goal      = document.getElementById('biz-goal').value || 'Overall health check';
+  var duration  = document.getElementById('ctx-duration').value || 'Not specified';
+  var challenge = document.getElementById('ctx-challenge').value || 'Not specified';
+  var retarg    = document.getElementById('ctx-retargeting').value || 'Not specified';
+  var tracking  = document.getElementById('ctx-tracking').value || 'Not specified';
+  var notes     = document.getElementById('ctx-notes').value.trim();
+
+  var dataSection = '';
+
+  if (state.inputTab === 'manual') {
+    var platforms = [];
+    ['meta','google','tiktok','linkedin'].forEach(function(p) {
+      var el = document.getElementById('p-' + p);
+      if (el && el.checked) platforms.push(el.value);
+    });
+    dataSection = [
+      '=== ACCOUNT METRICS (LAST 30 DAYS) ===',
+      'Total Spend: ' + (document.getElementById('m-spend').value || 'Not provided'),
+      'Total Revenue/Value: ' + (document.getElementById('m-revenue').value || 'Not provided'),
+      'Overall ROAS: ' + (document.getElementById('m-roas').value || 'Not provided'),
+      'Cost Per Acquisition: ' + (document.getElementById('m-cpa').value || 'Not provided'),
+      'Total Conversions: ' + (document.getElementById('m-convs').value || 'Not provided'),
+      'Conversion Rate: ' + (document.getElementById('m-cvr').value || 'Not provided'),
+      'Average CTR: ' + (document.getElementById('m-ctr').value || 'Not provided'),
+      'Average CPC: ' + (document.getElementById('m-cpc').value || 'Not provided'),
+      'Average CPM: ' + (document.getElementById('m-cpm').value || 'Not provided'),
+      'Average Frequency: ' + (document.getElementById('m-freq').value || 'Not provided'),
+      'Total Impressions: ' + (document.getElementById('m-impr').value || 'Not provided'),
+      'Total Reach: ' + (document.getElementById('m-reach').value || 'Not provided'),
+      'Platforms: ' + (platforms.join(', ') || 'Not specified'),
+      '',
+      '=== CAMPAIGN BREAKDOWN ===',
+      document.getElementById('m-campaigns').value.trim() || 'Not provided'
+    ].join('\n');
+
+  } else if (state.inputTab === 'meta') {
+    dataSection = '=== META ADS EXPORT (CSV) ===\n' + (document.getElementById('csv-meta').value.trim() || 'No data provided');
+
+  } else if (state.inputTab === 'google') {
+    dataSection = '=== GOOGLE ADS EXPORT (CSV) ===\n' + (document.getElementById('csv-google').value.trim() || 'No data provided');
+
+  } else if (state.inputTab === 'both') {
+    dataSection = '=== META ADS EXPORT ===\n' + (document.getElementById('csv-both-meta').value.trim() || 'No data provided') +
+                  '\n\n=== GOOGLE ADS EXPORT ===\n' + (document.getElementById('csv-both-google').value.trim() || 'No data provided');
+  }
+
+  return {
+    bizName, bizType, budget, goal, duration, challenge, retarg, tracking, notes, dataSection
+  };
+}
+
+// ── SYSTEM PROMPT ──
+function buildSystemPrompt() {
+  return `You are a senior performance marketing auditor at ZDM INC (Zee Digital Marketing Inc.), a data-driven performance marketing agency. Your philosophy: "Data over opinions. Revenue over reach. Speed over perfection."
+
+You are conducting a comprehensive ad account audit. Your job is to find exactly where money is being wasted, what is working and should be scaled, and what actions will have the highest immediate revenue impact.
+
+AUDIT STANDARDS:
+- Be specific. Reference actual numbers from the data provided. Never give generic advice.
+- Quantify impact where possible ("This campaign has a 3× higher CPM than account average, costing an estimated $X in wasted impressions")
+- Rank every finding by severity: CRITICAL / HIGH / MEDIUM / LOW
+- If data is insufficient in any area, state clearly what data would be needed — do not speculate without evidence
+- Write as a trusted expert, not a sales pitch. Be direct, even if findings are uncomfortable.
+
+OUTPUT FORMAT — use this exact structure with these exact headings:
+
+## ACCOUNT HEALTH SCORE: [X/100]
+[One sentence explaining the score and the single biggest factor driving it]
+
+---
+
+## EXECUTIVE SUMMARY
+[3–4 sentences. The overall situation, the most important finding, and the single highest-leverage action. Be direct.]
+
+---
+
+## CRITICAL FINDINGS
+[Issues requiring immediate action. For each finding: what it is, evidence from data, estimated impact if unresolved. Label each: **[CRITICAL]**, **[HIGH]**, **[MEDIUM]**, or **[LOW]**]
+
+---
+
+## CAMPAIGN PERFORMANCE ANALYSIS
+[Deep analysis of campaign efficiency, ROAS distribution, spend allocation, budget waste, what is working vs. not]
+
+---
+
+## TRACKING & ATTRIBUTION
+[Attribution health, data gaps, pixel/conversion event issues, any signals of under- or over-reporting]
+
+---
+
+## AUDIENCE & TARGETING
+[Audience quality, saturation signals, retargeting coverage, lookalike quality, overlap concerns]
+
+---
+
+## CREATIVE & AD PERFORMANCE
+[CTR trends, frequency signals, ad fatigue, format performance, copy effectiveness, creative testing cadence]
+
+---
+
+## SCALING ANALYSIS
+[Current constraints to scaling, what can be scaled now vs. what needs fixing first, budget headroom by campaign]
+
+---
+
+## PRIORITY ACTIONS
+[Exactly 5 actions. Number them 01–05, ranked by revenue impact. Format each as:
+**[NUMBER]. [ACTION TITLE]**
+Why: [reason, referencing data]
+How: [specific steps]
+Expected impact: [quantified where possible]
+Timeline: [days/weeks]
+]
+
+---
+
+## 90-DAY ROADMAP
+**Month 1 — Fix the Foundation**
+[3–4 bullet points]
+
+**Month 2 — Optimise & Test**
+[3–4 bullet points]
+
+**Month 3 — Scale What Works**
+[3–4 bullet points]`;
+}
+
+// ── USER MESSAGE ──
+function buildUserMessage(data) {
+  return `Please conduct a full ZDM ad account audit for the following account.
+
+=== ACCOUNT INFORMATION ===
+Business Name: ${data.bizName}
+Business Type: ${data.bizType}
+Monthly Ad Budget Range: ${data.budget}
+Primary Goal: ${data.goal}
+How Long Running Ads: ${data.duration}
+Biggest Current Challenge: ${data.challenge}
+Retargeting Status: ${data.retarg}
+Tracking Setup: ${data.tracking}
+${data.notes ? 'Specific Focus Areas: ' + data.notes : ''}
+
+=== PERFORMANCE DATA ===
+${data.dataSection}
+
+Please provide a thorough, specific audit following the ZDM methodology. Reference actual numbers throughout. Do not pad with generic advice.`;
+}
+
+// ── RUN AUDIT ──
+async function runAudit() {
+  if (!state.apiKey) {
+    alert('Please enter and save your Claude API key in Step 1.');
+    goToStep(1);
+    return;
+  }
+
+  var data  = buildAuditData();
+  var model = document.getElementById('model-select').value;
+
+  document.getElementById('model-display').textContent = model;
+  showStep(4);
+
+  var streamOut = document.getElementById('stream-output');
+  var errorDiv  = document.getElementById('analyzing-error');
+  streamOut.innerHTML = '';
+  errorDiv.innerHTML  = '';
+
+  var fullText = '';
+
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': state.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'messages-2023-06-01'
+      },
+      body: JSON.stringify({
+        model: model,
+        max_tokens: 4096,
+        stream: true,
+        system: buildSystemPrompt(),
+        messages: [{ role: 'user', content: buildUserMessage(data) }]
+      })
+    });
+
+    if (!response.ok) {
+      var err = await response.json().catch(function() { return { error: { message: 'HTTP ' + response.status } }; });
+      throw new Error(err.error ? err.error.message : 'API error ' + response.status);
+    }
+
+    var reader  = response.body.getReader();
+    var decoder = new TextDecoder();
+    var cursor  = '<span class="stream-cursor"></span>';
+
+    while (true) {
+      var result = await reader.read();
+      if (result.done) break;
+
+      var chunk = decoder.decode(result.value, { stream: true });
+      var lines = chunk.split('\n');
+
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line.startsWith('data: ')) continue;
+        var raw = line.slice(6);
+        if (raw === '[DONE]') continue;
+        try {
+          var evt = JSON.parse(raw);
+          if (evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta') {
+            fullText += evt.delta.text;
+            streamOut.innerHTML = escapeHtml(fullText) + cursor;
+            streamOut.scrollTop = streamOut.scrollHeight;
+          }
+        } catch(e) { /* skip malformed lines */ }
+      }
+    }
+
+    // Done streaming
+    state.fullReport = fullText;
+    renderReport(fullText, data.bizName);
+    showStep(5);
+
+  } catch (err) {
+    var msg = err.message || 'Unknown error';
+    var isCors = msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('cors');
+    errorDiv.innerHTML = '<div class="notice error">' +
+      '<strong>Audit failed:</strong> ' + escapeHtml(msg) +
+      (isCors ? '<br><br><strong>CORS issue?</strong> Direct browser API calls may be blocked on <code>file://</code>. ' +
+        'Serve this file from a local server: run <code>python3 -m http.server 8000</code> in this directory, ' +
+        'then open <code>http://localhost:8000/audit-tool.html</code>.' : '') +
+      '</div>';
+  }
+}
+
+// ── RENDER REPORT ──
+function renderReport(text, bizName) {
+  // Extract health score
+  var scoreMatch = text.match(/ACCOUNT HEALTH SCORE:\s*(\d+)/i);
+  var score = scoreMatch ? parseInt(scoreMatch[1]) : null;
+
+  // Update gauge
+  if (score !== null) {
+    var circle = document.getElementById('score-circle');
+    var circumference = 251.2;
+    var offset = circumference - (score / 100) * circumference;
+    circle.style.strokeDashoffset = offset;
+    circle.style.stroke = score >= 70 ? 'var(--lime)' : score >= 45 ? '#ff9b35' : '#ff5a5a';
+    document.getElementById('score-number').textContent = score;
+    document.getElementById('score-number').style.color = score >= 70 ? 'var(--lime)' : score >= 45 ? '#ff9b35' : '#ff5a5a';
+    document.getElementById('score-title').textContent = score >= 70 ? 'Healthy Account' : score >= 45 ? 'Needs Attention' : 'Critical Issues';
+  }
+
+  // Extract executive summary for score description
+  var summaryMatch = text.match(/## EXECUTIVE SUMMARY\s*([\s\S]*?)(?=\n---|\n##)/i);
+  if (summaryMatch) {
+    var summaryText = summaryMatch[1].trim().split('\n')[0];
+    document.getElementById('score-summary').textContent = summaryText.substring(0, 160) + (summaryText.length > 160 ? '…' : '');
+  }
+
+  document.getElementById('report-biz-name').textContent = bizName;
+  document.getElementById('report-biz-meta').textContent = bizName;
+
+  // Convert markdown to HTML
+  document.getElementById('report-content').innerHTML = markdownToHtml(text);
+}
+
+// ── MARKDOWN → HTML ──
+function markdownToHtml(md) {
+  var html = md;
+
+  // Section headers — strip leading ##
+  html = html.replace(/^## (.+)$/gm, function(_, title) {
+    // Check for score line — handled separately
+    if (/ACCOUNT HEALTH SCORE/i.test(title)) return '';
+    return '<h2>' + title + '</h2>';
+  });
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+
+  // Bold
+  html = html.replace(/\*\*\[CRITICAL\]\*\*/g, '<span class="sev-critical">CRITICAL</span>');
+  html = html.replace(/\*\*\[HIGH\]\*\*/g, '<span class="sev-high">HIGH</span>');
+  html = html.replace(/\*\*\[MEDIUM\]\*\*/g, '<span class="sev-medium">MEDIUM</span>');
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+  // HR
+  html = html.replace(/^---$/gm, '<hr>');
+
+  // Ordered list items
+  html = html.replace(/^(\d+)\. (.+)$/gm, '<li data-type="ol">$2</li>');
+
+  // Unordered list items
+  html = html.replace(/^[-•] (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/^  [-•] (.+)$/gm, '<li style="padding-left:16px;opacity:0.8">$1</li>');
+
+  // Wrap consecutive li items
+  html = html.replace(/(<li[^>]*>[\s\S]*?<\/li>\n?)+/g, function(match) {
+    if (match.includes('data-type="ol"')) {
+      return '<ol>' + match.replace(/ data-type="ol"/g, '') + '</ol>';
+    }
+    return '<ul>' + match + '</ul>';
+  });
+
+  // Blockquotes
+  html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+
+  // Paragraphs — lines that aren't already html
+  var lines = html.split('\n');
+  var result = [];
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (!line) { result.push(''); continue; }
+    if (line.startsWith('<')) { result.push(line); continue; }
+    result.push('<p>' + line + '</p>');
+  }
+
+  return result.join('\n');
+}
+
+// ── COPY REPORT ──
+function copyReport() {
+  if (!state.fullReport) return;
+  navigator.clipboard.writeText(state.fullReport).then(function() {
+    var btn = event.target.closest('.report-btn');
+    var orig = btn.innerHTML;
+    btn.innerHTML = '✓ Copied';
+    btn.classList.add('active');
+    setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('active'); }, 2000);
+  });
+}
+
+// ── NEW AUDIT ──
+function runNewAudit() {
+  state.step = 1;
+  state.fullReport = '';
+  document.getElementById('stream-output').innerHTML = '';
+  document.getElementById('report-content').innerHTML = '';
+  showStep(1);
+}
+
+// ── UTIL ──
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── STEP NAV CLICKS ──
+document.querySelectorAll('.step-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var s = parseInt(item.dataset.step);
+    if (s <= state.step) goToStep(s);
+  });
+});
+</script>
+
+</body>
+</html>

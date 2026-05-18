@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZDM INC — Instagram Content Storyboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --off-black: #141414;
+      --dark-grey: #1E1E1E;
+      --mid-grey: #3A3A3A;
+      --grey: #888888;
+      --light-grey: #D4D4D4;
+      --off-white: #F5F5F0;
+      --white: #FFFFFF;
+      --lime: #C8FF00;
+      --lime-dark: #A8D800;
+      --font-display: 'Bebas Neue', 'Impact', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--off-black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .sb-header {
+      background: var(--black);
+      border-bottom: 3px solid var(--lime);
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sb-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .sb-logo-mark {
+      width: 44px; height: 44px;
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: var(--black);
+    }
+    .sb-logo-text {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+    .sb-meta {
+      text-align: right;
+    }
+    .sb-meta-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      color: var(--lime);
+      letter-spacing: 0.05em;
+    }
+    .sb-meta-sub {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 4px;
+    }
+
+    /* ─── CONTAINER ─── */
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 60px; }
+
+    /* ─── SECTION TITLES ─── */
+    .section-header {
+      padding: 60px 0 32px;
+      border-bottom: 1px solid var(--dark-grey);
+      margin-bottom: 40px;
+    }
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--lime);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 56px;
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    /* ─── INSTAGRAM PROFILE MOCK ─── */
+    .ig-profile {
+      background: var(--black);
+      border: 1px solid var(--dark-grey);
+      border-radius: 12px;
+      padding: 40px 48px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .ig-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 56px;
+      color: var(--black);
+      border: 3px solid var(--lime);
+      box-shadow: 0 0 0 3px var(--black), 0 0 0 5px var(--lime);
+    }
+    .ig-profile-info h2 {
+      font-family: var(--font-body);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .ig-handle {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--grey);
+      margin-bottom: 16px;
+    }
+    .ig-stats {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 20px;
+    }
+    .ig-stat-num {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--white);
+    }
+    .ig-stat-label {
+      font-size: 14px;
+      color: var(--grey);
+    }
+    .ig-bio {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--light-grey);
+      max-width: 480px;
+    }
+    .ig-bio strong { color: var(--lime); font-weight: 600; }
+    .ig-bio a { color: var(--lime); text-decoration: none; }
+
+    /* ─── HIGHLIGHTS ─── */
+    .ig-highlights {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--dark-grey);
+    }
+    .highlight-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .highlight-ring {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 0 3px var(--off-black), 0 0 0 5px var(--lime);
+    }
+    .highlight-ring svg { display: block; }
+    .highlight-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── CONTENT PILLARS ─── */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      margin-bottom: 60px;
+    }
+    .pillar {
+      background: var(--black);
+      padding: 32px 24px;
+      border-top: 3px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .pillar:hover { background: var(--dark-grey); border-top-color: var(--lime); }
+    .pillar-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lime);
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+    }
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--white);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .pillar-desc {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.5;
+    }
+    .pillar-freq {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--mid-grey);
+      margin-top: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── FEED GRID ─── */
+    .feed-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    /* ─── INSTAGRAM POST DESIGNS ─── */
+    .post-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .post {
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .post-label {
+      background: var(--dark-grey);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .post-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lime);
+      letter-spacing: 0.1em;
+    }
+    .post-type {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ─── POST 1: BRAND STATEMENT ─── */
+    .p1 {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 4%, 32px);
+    }
+    .p1-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--lime);
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.5%, 11px);
+      color: var(--lime);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+    .p1-badge-dot { width: 5px; height: 5px; background: var(--lime); border-radius: 50%; }
+    .p1-headline {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 6vw, 52px);
+      line-height: 0.88;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .p1-handle {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.4%, 11px);
+      color: var(--grey);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── POST 2: BRAND INTRO ─── */
+    .p2 {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4%, 32px);
+      gap: clamp(8px, 2%, 16px);
+      text-align: center;
+    }
+    .p2-mark {
+      width: clamp(36px, 10%, 60px);
+      height: clamp(36px, 10%, 60px);
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: clamp(22px, 6%, 40px);
+      color: var(--black);
+    }
+    .p2-brand {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 7vw, 56px);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .p2-tagline {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.4%, 11px);
+      color: var(--lime);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .p2-sub {
+      font-family: var(--font-mono);
+      font-size: clamp(6px, 1.2%, 9px);
+      color: var(--grey);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── POST 3: MANIFESTO ─── */
+    .p3 {
+      background: var(--off-white);
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 40px);
+    }
+    .p3-label {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.3%, 10px);
+      color: #888;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .p3-lines {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 1.5%, 12px);
+    }
+    .p3-line {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 3.6vw, 30px);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--black);
+    }
+    .p3-line em { font-style: normal; color: #B0C000; }
+    .p3-sig {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.2%, 10px);
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── POST 4: ROAS STAT ─── */
+    .p4 {
+      background: var(--lime);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 40px);
+    }
+    .p4-eyebrow {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.3%, 10px);
+      color: rgba(0,0,0,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .p4-num {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 16vw, 120px);
+      line-height: 0.8;
+      color: var(--black);
+      letter-spacing: -0.02em;
+    }
+    .p4-label {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 3vw, 24px);
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1;
+    }
+    .p4-sub {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.3%, 10px);
+      color: rgba(0,0,0,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── POST 5: THEM VS US ─── */
+    .p5 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .p5-them {
+      background: #1a1a1a;
+      padding: clamp(12px, 4%, 32px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .p5-us {
+      background: var(--black);
+      padding: clamp(12px, 4%, 32px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 2px solid var(--lime);
+    }
+    .p5-col-label {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.3%, 10px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: clamp(8px, 2%, 16px);
+    }
+    .p5-them .p5-col-label { color: #555; }
+    .p5-us .p5-col-label { color: var(--lime); }
+    .p5-items {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 1.5%, 10px);
+      flex: 1;
+    }
+    .p5-item {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.5%, 11px);
+      line-height: 1.2;
+    }
+    .p5-them .p5-item { color: #444; text-decoration: line-through; text-decoration-color: #333; }
+    .p5-us .p5-item { color: var(--light-grey); }
+    .p5-us .p5-item::before { content: '> '; color: var(--lime); }
+
+    /* ─── POST 6: STATS GRID ─── */
+    .p6 {
+      background: var(--black);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+    }
+    .p6-cell {
+      background: var(--off-black);
+      padding: clamp(12px, 4%, 32px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: background 0.3s;
+    }
+    .p6-cell:hover { background: var(--dark-grey); }
+    .p6-num {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 7vw, 52px);
+      color: var(--lime);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .p6-label {
+      font-family: var(--font-mono);
+      font-size: clamp(6px, 1.2%, 9px);
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── POST 7: SERVICE SPOTLIGHT ─── */
+    .p7 {
+      background: var(--off-black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 36px);
+      position: relative;
+      overflow: hidden;
+    }
+    .p7-bg-num {
+      position: absolute;
+      bottom: -10px; right: -8px;
+      font-family: var(--font-display);
+      font-size: clamp(80px, 20vw, 160px);
+      color: rgba(200,255,0,0.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .p7-num {
+      font-family: var(--font-mono);
+      font-size: clamp(8px, 1.5%, 12px);
+      color: var(--lime);
+      letter-spacing: 0.12em;
+    }
+    .p7-name {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 5.5vw, 44px);
+      text-transform: uppercase;
+      line-height: 0.9;
+      position: relative;
+    }
+    .p7-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3px, 1%, 8px);
+      position: relative;
+    }
+    .p7-features li {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.3%, 10px);
+      color: var(--light-grey);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .p7-features li::before { content: '>'; color: var(--lime); }
+
+    /* ─── POST 8: PROCESS ─── */
+    .p8 {
+      background: var(--black);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .p8-phase {
+      background: var(--off-black);
+      padding: clamp(8px, 3%, 20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .p8-phase-num {
+      font-family: var(--font-mono);
+      font-size: clamp(6px, 1.2%, 9px);
+      color: var(--lime);
+      letter-spacing: 0.1em;
+      margin-bottom: clamp(4px, 1%, 8px);
+    }
+    .p8-phase-name {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 3.5vw, 28px);
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--white);
+    }
+    .p8-phase-bg {
+      position: absolute;
+      bottom: -8px; right: -6px;
+      font-family: var(--font-display);
+      font-size: clamp(40px, 10vw, 80px);
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+    }
+
+    /* ─── POST 9: CTA ─── */
+    .p9 {
+      background: var(--lime);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 40px);
+      position: relative;
+      overflow: hidden;
+    }
+    .p9-bg-z {
+      position: absolute;
+      bottom: -30px; right: -20px;
+      font-family: var(--font-display);
+      font-size: clamp(120px, 30vw, 240px);
+      color: rgba(0,0,0,0.06);
+      line-height: 1;
+    }
+    .p9-eyebrow {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.3%, 10px);
+      color: rgba(0,0,0,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .p9-headline {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 10vw, 80px);
+      text-transform: uppercase;
+      line-height: 0.85;
+      color: var(--black);
+      position: relative;
+    }
+    .p9-headline .outline {
+      -webkit-text-stroke: 2px var(--black);
+      color: transparent;
+    }
+    .p9-cta-row {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 1%, 8px);
+      position: relative;
+    }
+    .p9-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--black);
+      color: var(--lime);
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.5%, 11px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: clamp(6px, 1.5%, 12px) clamp(10px, 2.5%, 20px);
+      width: fit-content;
+    }
+    .p9-url {
+      font-family: var(--font-mono);
+      font-size: clamp(7px, 1.2%, 9px);
+      color: rgba(0,0,0,0.45);
+      text-transform: lowercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── CAPTION AREA ─── */
+    .captions-section { margin-top: 60px; }
+    .caption-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .caption-card {
+      background: var(--black);
+      border: 1px solid var(--dark-grey);
+      border-top: 2px solid var(--lime);
+      padding: 28px;
+    }
+    .caption-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .caption-post-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lime);
+      letter-spacing: 0.1em;
+    }
+    .caption-pillar-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey);
+      border: 1px solid var(--mid-grey);
+      padding: 2px 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .caption-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .caption-text {
+      font-size: 13px;
+      color: var(--light-grey);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .caption-hashtags {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lime);
+      line-height: 1.8;
+    }
+    .caption-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey);
+      border-top: 1px solid var(--dark-grey);
+      padding-top: 12px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ─── STORIES SECTION ─── */
+    .stories-section { margin-top: 80px; }
+    .stories-row {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+    .story-wrap {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .story {
+      width: 220px;
+      height: 390px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .story-label {
+      background: var(--dark-grey);
+      width: 220px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .story-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lime);
+      letter-spacing: 0.1em;
+    }
+    .story-type {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
+
+    /* Story 1 — Welcome */
+    .s1 {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 24px;
+    }
+    .s1-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .s1-mark {
+      width: 32px; height: 32px;
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--black);
+    }
+    .s1-brand-text {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+    .s1-mid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .s1-intro {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--lime);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .s1-headline {
+      font-family: var(--font-display);
+      font-size: 42px;
+      line-height: 0.88;
+      text-transform: uppercase;
+    }
+    .s1-headline .s1-lime { color: var(--lime); }
+    .s1-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .s1-tagline {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .s1-swipe {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--lime);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Story 2 — Results */
+    .s2 {
+      background: var(--lime);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .s2-bg-z {
+      position: absolute;
+      bottom: -30px; right: -20px;
+      font-family: var(--font-display);
+      font-size: 220px;
+      color: rgba(0,0,0,0.06);
+      line-height: 1;
+    }
+    .s2-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: rgba(0,0,0,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .s2-mid {
+      position: relative;
+    }
+    .s2-stat {
+      font-family: var(--font-display);
+      font-size: 96px;
+      color: var(--black);
+      line-height: 0.85;
+    }
+    .s2-stat-label {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--black);
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .s2-bottom {
+      position: relative;
+    }
+    .s2-cta {
+      font-family: var(--font-display);
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+    .s2-handle {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: rgba(0,0,0,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Story 3 — CTA */
+    .s3 {
+      background: linear-gradient(160deg, var(--black) 40%, #2a3a00 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 24px;
+    }
+    .s3-top {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .s3-mid { display: flex; flex-direction: column; gap: 6px; }
+    .s3-pre {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--lime);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .s3-headline {
+      font-family: var(--font-display);
+      font-size: 52px;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .s3-headline .s3-lime { color: var(--lime); }
+    .s3-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .s3-btn {
+      background: var(--lime);
+      color: var(--black);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 12px 18px;
+      text-align: center;
+    }
+    .s3-url {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--grey);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── SCHEDULE TABLE ─── */
+    .schedule-section { margin-top: 80px; margin-bottom: 100px; }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+    }
+    .schedule-table th {
+      background: var(--lime);
+      color: var(--black);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 16px 20px;
+      text-align: left;
+    }
+    .schedule-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--dark-grey);
+      font-size: 14px;
+      color: var(--light-grey);
+      vertical-align: top;
+    }
+    .schedule-table tr:nth-child(even) td { background: var(--black); }
+    .schedule-table tr:nth-child(odd) td { background: var(--off-black); }
+    .schedule-table tr:hover td { background: var(--dark-grey); }
+    td .post-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lime);
+      font-weight: 600;
+    }
+    td .pillar-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey);
+      border: 1px solid var(--mid-grey);
+      padding: 2px 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── FOOTER ─── */
+    .sb-footer {
+      background: var(--black);
+      border-top: 2px solid var(--lime);
+      padding: 32px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sb-footer-text {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .sb-footer-mark {
+      font-family: var(--font-display);
+      font-size: 24px;
+      color: var(--lime);
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE HEADER -->
+  <header class="sb-header">
+    <div class="sb-logo">
+      <div class="sb-logo-mark">Z</div>
+      <div class="sb-logo-text">ZDM INC</div>
+    </div>
+    <div class="sb-meta">
+      <div class="sb-meta-title">INSTAGRAM CONTENT STORYBOARD</div>
+      <div class="sb-meta-sub">Wave 01 — Launch Content &nbsp;·&nbsp; 9 Feed Posts &nbsp;·&nbsp; 3 Story Concepts</div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ─── 01. INSTAGRAM PROFILE ─── -->
+    <div class="section-header">
+      <div class="section-number">01 // Profile Overview</div>
+      <div class="section-title">The Account</div>
+    </div>
+
+    <div class="ig-profile">
+      <div class="ig-avatar">Z</div>
+      <div class="ig-profile-info">
+        <h2>ZDM Inc.</h2>
+        <div class="ig-handle">@zdm.inc</div>
+        <div class="ig-stats">
+          <div><span class="ig-stat-num">9</span> <span class="ig-stat-label">posts</span></div>
+          <div><span class="ig-stat-num">—</span> <span class="ig-stat-label">followers</span></div>
+          <div><span class="ig-stat-num">0</span> <span class="ig-stat-label">following</span></div>
+        </div>
+        <div class="ig-bio">
+          Zee Digital Marketing Inc.<br>
+          Performance marketing engineered for scale.<br>
+          Data over opinions. Revenue over reach. Speed over perfection.<br>
+          100% Data-driven decisions. We replace guesswork with systems engineered for scale.<br>
+          <a href="https://zdminc.com/audit">🔗 zdminc.com/audit</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ig-highlights">
+      <!-- Results: ascending bar chart -->
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="17" width="7" height="11" fill="#0A0A0A"/>
+            <rect x="12" y="10" width="7" height="18" fill="#0A0A0A"/>
+            <rect x="22" y="2" width="7" height="26" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Results</div>
+      </div>
+      <!-- Services: 2×2 squares grid -->
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="12" height="12" fill="#0A0A0A"/>
+            <rect x="17" y="2" width="12" height="12" fill="#0A0A0A"/>
+            <rect x="2" y="17" width="12" height="12" fill="#0A0A0A"/>
+            <rect x="17" y="17" width="12" height="12" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Services</div>
+      </div>
+      <!-- Case Studies: diagonal up-right arrow -->
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="5" y1="25" x2="25" y2="5" stroke="#0A0A0A" stroke-width="3" stroke-linecap="square"/>
+            <polyline points="13,5 25,5 25,17" fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Case Studies</div>
+      </div>
+      <!-- Process: 4 phases connected -->
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="11" width="5" height="8" fill="#0A0A0A"/>
+            <rect x="7" y="14" width="3" height="2" fill="#0A0A0A"/>
+            <rect x="11" y="11" width="5" height="8" fill="#0A0A0A"/>
+            <rect x="17" y="14" width="3" height="2" fill="#0A0A0A"/>
+            <rect x="21" y="11" width="5" height="8" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Process</div>
+      </div>
+      <!-- Tips: Z shape (on-brand mark) -->
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="5,5 25,5 5,25 25,25" stroke="#0A0A0A" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Tips</div>
+      </div>
+    </div>
+
+    <!-- ─── 02. CONTENT PILLARS ─── -->
+    <div class="section-header">
+      <div class="section-number">02 // Strategy</div>
+      <div class="section-title">Content Pillars</div>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-num">01 //</div>
+        <div class="pillar-title">Brand Authority</div>
+        <div class="pillar-desc">Bold statements, manifesto lines, and identity posts that establish ZDM as the challenger brand.</div>
+        <div class="pillar-freq">3× / month</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02 //</div>
+        <div class="pillar-title">Results & Proof</div>
+        <div class="pillar-desc">Stats, ROAS numbers, CAC reduction figures, and client outcome highlights. Let data do the talking.</div>
+        <div class="pillar-freq">4× / month</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03 //</div>
+        <div class="pillar-title">Education</div>
+        <div class="pillar-desc">Service spotlights, process breakdowns, and performance tips that prove expertise and attract leads.</div>
+        <div class="pillar-freq">4× / month</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04 //</div>
+        <div class="pillar-title">Contrast</div>
+        <div class="pillar-desc">"Them vs Us" comparisons that call out agency status-quo and position ZDM as the obvious upgrade.</div>
+        <div class="pillar-freq">2× / month</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">05 //</div>
+        <div class="pillar-title">CTA</div>
+        <div class="pillar-desc">Direct-response posts driving audit requests and DMs. Conversion-focused copy, always with a clear next step.</div>
+        <div class="pillar-freq">3× / month</div>
+      </div>
+    </div>
+
+    <!-- ─── 03. FEED GRID ─── -->
+    <div class="section-header">
+      <div class="section-number">03 // Wave 01 — Feed Posts</div>
+      <div class="section-title">The 3×3 Grid</div>
+    </div>
+
+    <div class="feed-grid">
+
+      <!-- POST 1 -->
+      <div class="post-wrap">
+        <div class="post p1">
+          <div class="p1-badge">
+            <div class="p1-badge-dot"></div>
+            Data-Driven Growth
+          </div>
+          <div class="p1-headline">
+            <span style="color:var(--white)">Most Agencies<br>Run Campaigns.</span><br>
+            <span style="color:var(--lime)">We Build<br>Systems.</span>
+          </div>
+          <div class="p1-handle">@zdm.inc &nbsp;·&nbsp; zdminc.com</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 01</span>
+          <span class="post-type">Brand Statement</span>
+        </div>
+      </div>
+
+      <!-- POST 2 -->
+      <div class="post-wrap">
+        <div class="post p2">
+          <div class="p2-mark">Z</div>
+          <div class="p2-brand">ZDM INC</div>
+          <div class="p2-tagline">Zero Distance to Market.</div>
+          <div class="p2-sub">Zee Digital Marketing Inc. &nbsp;·&nbsp; Est. 2026</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 02</span>
+          <span class="post-type">Brand Identity</span>
+        </div>
+      </div>
+
+      <!-- POST 3 -->
+      <div class="post-wrap">
+        <div class="post p3">
+          <div class="p3-label">The ZDM Manifesto</div>
+          <div class="p3-lines">
+            <div class="p3-line">Data over <em>Opinions.</em></div>
+            <div class="p3-line">Revenue over <em>Reach.</em></div>
+            <div class="p3-line">Speed over <em>Perfection.</em></div>
+          </div>
+          <div class="p3-sig">— ZDM Inc. &nbsp;·&nbsp; @zdm.inc</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 03</span>
+          <span class="post-type">Manifesto</span>
+        </div>
+      </div>
+
+      <!-- POST 4 -->
+      <div class="post-wrap">
+        <div class="post p4">
+          <div class="p4-eyebrow">The proof ///</div>
+          <div>
+            <div class="p4-num">3.8<span style="font-size:0.6em">x</span></div>
+            <div class="p4-label">Average ROAS<br>Increase</div>
+          </div>
+          <div class="p4-sub">ZDM client average &nbsp;·&nbsp; zdminc.com/audit</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 04</span>
+          <span class="post-type">Results / Stat</span>
+        </div>
+      </div>
+
+      <!-- POST 5 -->
+      <div class="post-wrap">
+        <div class="post p5">
+          <div class="p5-them">
+            <div class="p5-col-label">Other Agencies</div>
+            <div class="p5-items">
+              <div class="p5-item">Vanity metrics</div>
+              <div class="p5-item">Guess &amp; check</div>
+              <div class="p5-item">Set &amp; forget</div>
+              <div class="p5-item">Pretty reports</div>
+              <div class="p5-item">One-size ads</div>
+            </div>
+          </div>
+          <div class="p5-us">
+            <div class="p5-col-label">ZDM INC</div>
+            <div class="p5-items">
+              <div class="p5-item">Revenue growth</div>
+              <div class="p5-item">Data systems</div>
+              <div class="p5-item">24/7 optimise</div>
+              <div class="p5-item">Real profit</div>
+              <div class="p5-item">ML targeting</div>
+            </div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 05</span>
+          <span class="post-type">Contrast</span>
+        </div>
+      </div>
+
+      <!-- POST 6 -->
+      <div class="post-wrap">
+        <div class="post p6">
+          <div class="p6-cell">
+            <div class="p6-num">45%</div>
+            <div class="p6-label">Avg. CAC Reduction</div>
+          </div>
+          <div class="p6-cell">
+            <div class="p6-num">3.8x</div>
+            <div class="p6-label">Avg ROAS Increase</div>
+          </div>
+          <div class="p6-cell">
+            <div class="p6-num">150+</div>
+            <div class="p6-label">Brands to Scale · 2028</div>
+          </div>
+          <div class="p6-cell">
+            <div class="p6-num">98%</div>
+            <div class="p6-label">Client Retention</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 06</span>
+          <span class="post-type">Stats Grid</span>
+        </div>
+      </div>
+
+      <!-- POST 7 -->
+      <div class="post-wrap">
+        <div class="post p7">
+          <div class="p7-bg-num">01</div>
+          <div class="p7-num">001 // Service</div>
+          <div class="p7-name">Performance<br><span style="color:var(--lime)">Marketing</span></div>
+          <ul class="p7-features">
+            <li>Meta &amp; Google Ads Management</li>
+            <li>Omnichannel Retargeting</li>
+            <li>Predictive Budget Allocation</li>
+            <li>ML Audience Targeting</li>
+          </ul>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 07</span>
+          <span class="post-type">Service Spotlight</span>
+        </div>
+      </div>
+
+      <!-- POST 8 -->
+      <div class="post-wrap">
+        <div class="post p8">
+          <div class="p8-phase">
+            <div class="p8-phase-num">Phase 01</div>
+            <div class="p8-phase-name">Diag<br>nose</div>
+            <div class="p8-phase-bg">1</div>
+          </div>
+          <div class="p8-phase">
+            <div class="p8-phase-num">Phase 02</div>
+            <div class="p8-phase-name">Engi<br>neer</div>
+            <div class="p8-phase-bg">2</div>
+          </div>
+          <div class="p8-phase">
+            <div class="p8-phase-num">Phase 03</div>
+            <div class="p8-phase-name">Exe<br>cute</div>
+            <div class="p8-phase-bg">3</div>
+          </div>
+          <div class="p8-phase">
+            <div class="p8-phase-num">Phase 04</div>
+            <div class="p8-phase-name" style="color:var(--lime)">Com<br>pound</div>
+            <div class="p8-phase-bg">4</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 08</span>
+          <span class="post-type">Process</span>
+        </div>
+      </div>
+
+      <!-- POST 9 -->
+      <div class="post-wrap">
+        <div class="post p9">
+          <div class="p9-bg-z">Z</div>
+          <div class="p9-eyebrow">Start scaling ///</div>
+          <div class="p9-headline">
+            Ready<br><span class="outline">To Scale?</span>
+          </div>
+          <div class="p9-cta-row">
+            <div class="p9-cta-btn">Initiate Free Audit →</div>
+            <div class="p9-url">zdminc.com/audit</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 09</span>
+          <span class="post-type">CTA</span>
+        </div>
+      </div>
+
+    </div><!-- end feed-grid -->
+
+    <!-- ─── 04. CAPTIONS ─── -->
+    <div class="captions-section">
+      <div class="section-header">
+        <div class="section-number">04 // Copy</div>
+        <div class="section-title">Caption Bank</div>
+      </div>
+      <div class="caption-grid">
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 01</span>
+            <span class="caption-pillar-tag">Brand Authority</span>
+          </div>
+          <div class="caption-title">Brand Statement</div>
+          <div class="caption-text">Most agencies hand you a report and call it a strategy.<br><br>We hand you a system — predictive, automated, and engineered to compound over time.<br><br>The difference? Data isn't our backup. It's our foundation.</div>
+          <div class="caption-hashtags">#ZDMInc #PerformanceMarketing #DataDriven #DigitalMarketing #GrowthAgency #MarketingStrategy #ScaleYourBusiness</div>
+          <div class="caption-note">📌 Note: Post on launch day. Pin this to the top of feed.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 02</span>
+            <span class="caption-pillar-tag">Brand Authority</span>
+          </div>
+          <div class="caption-title">Brand Identity</div>
+          <div class="caption-text">ZDM Inc. — Zee Digital Marketing Inc.<br><br>Zero Distance to Market.<br><br>We're the challenger agency built for brands that refuse to guess. Established 2026. Ready to scale 150+ brands by 2028.</div>
+          <div class="caption-hashtags">#ZDMInc #ZeeDigitalMarketing #NewAgency #MarketingAgency #LaunchDay #ZeroDistanceToMarket</div>
+          <div class="caption-note">📌 Note: Use as second post. Great for Reels cover frame too.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 03</span>
+            <span class="caption-pillar-tag">Brand Authority</span>
+          </div>
+          <div class="caption-title">The Manifesto</div>
+          <div class="caption-text">Three principles we refuse to compromise on.<br><br>📊 Data over opinions — feelings don't pay invoices.<br>💰 Revenue over reach — vanity metrics are a trap.<br>⚡ Speed over perfection — ship, test, iterate, win.<br><br>This is the ZDM way.</div>
+          <div class="caption-hashtags">#ZDMManifesto #MarketingPhilosophy #DataDriven #ROI #PaidMedia #GrowthMindset #PerformanceMarketing</div>
+          <div class="caption-note">📌 Note: Strong engagement driver. Ask followers which principle resonates most.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 04</span>
+            <span class="caption-pillar-tag">Results & Proof</span>
+          </div>
+          <div class="caption-title">3.8× ROAS</div>
+          <div class="caption-text">3.8× return on ad spend.<br><br>Not a one-time win. Not a cherry-picked case study.<br>Our client average.<br><br>When your campaigns are built on data systems instead of guesswork, this is what happens. Book your free audit. Link in bio.</div>
+          <div class="caption-hashtags">#ROAS #ReturnOnAdSpend #PaidAds #MetaAds #GoogleAds #PerformanceMarketing #EcommerceMarketing #ZDMInc</div>
+          <div class="caption-note">📌 Note: Include "Book your free audit" CTA in every results post.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 05</span>
+            <span class="caption-pillar-tag">Contrast</span>
+          </div>
+          <div class="caption-title">Them vs Us</div>
+          <div class="caption-text">Still paying for vanity?<br><br>Other agencies deliver pretty dashboards. ZDM delivers revenue.<br><br>The gap isn't strategy — it's standards. We kill what doesn't work and scale what does. Every single day.</div>
+          <div class="caption-hashtags">#AgencyLife #MarketingAgency #ZDMInc #PaidMedia #GrowthMarketing #DigitalAgency #MarketingResults</div>
+          <div class="caption-note">📌 Note: Great for carousel — expand each row into its own slide.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 06</span>
+            <span class="caption-pillar-tag">Results & Proof</span>
+          </div>
+          <div class="caption-title">Stats Grid</div>
+          <div class="caption-text">The numbers we're building towards.<br><br>📉 45% average CAC reduction<br>📈 3.8× average ROAS increase<br>🏷️ 150+ brands to be scaled by 2028<br>🤝 98% client retention rate<br><br>These aren't goals. They're the benchmark.</div>
+          <div class="caption-hashtags">#ZDMInc #MarketingStats #CAC #CustomerAcquisition #RevenueGrowth #PerformanceMarketing #GrowthAgency</div>
+          <div class="caption-note">📌 Note: Pair with a Reel showing the stat counter animation from the website.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 07</span>
+            <span class="caption-pillar-tag">Education</span>
+          </div>
+          <div class="caption-title">Performance Marketing</div>
+          <div class="caption-text">Performance Marketing done right isn't about spending more — it's about spending smarter.<br><br>At ZDM we run:<br>→ Meta &amp; Google Ads built to scale<br>→ Omnichannel retargeting sequences<br>→ ML-powered predictive budget allocation<br><br>Your next customer is already online. We find them.</div>
+          <div class="caption-hashtags">#PerformanceMarketing #MetaAds #GoogleAds #PaidMedia #EcommerceAds #ZDMInc #DigitalMarketing #MediaBuying</div>
+          <div class="caption-note">📌 Note: Create a series — post one service spotlight per week.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 08</span>
+            <span class="caption-pillar-tag">Education</span>
+          </div>
+          <div class="caption-title">The ZDM System</div>
+          <div class="caption-text">4 phases. Zero guesswork.<br><br>01 — Diagnose: Deep audit of your funnel, spend, and conversion architecture.<br>02 — Engineer: Systems and frameworks before we spend a dollar.<br>03 — Execute: Launch, monitor, kill what fails, scale what wins.<br>04 — Compound: Each iteration makes the machine smarter.<br><br>This is how we turn campaigns into engines.</div>
+          <div class="caption-hashtags">#ZDMSystem #MarketingProcess #GrowthStrategy #PerformanceMarketing #ZDMInc #MarketingFramework</div>
+          <div class="caption-note">📌 Note: Works great as a carousel (one phase per slide).</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 09</span>
+            <span class="caption-pillar-tag">CTA</span>
+          </div>
+          <div class="caption-title">Ready to Scale?</div>
+          <div class="caption-text">Your competitors are already scaling.<br><br>Stop leaving revenue on the table. Book your free ZDM audit today — we'll dig into your funnel, your spend, and your conversion architecture and show you exactly where you're bleeding money.<br><br>No pitch. Just data. Link in bio ↑</div>
+          <div class="caption-hashtags">#ZDMInc #FreeAudit #ScaleYourBusiness #DigitalMarketing #MarketingAgency #GrowthMarketing #StartScaling</div>
+          <div class="caption-note">📌 Note: This is the conversion post. Run as an ad too. A/B test caption length.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── 05. STORIES ─── -->
+    <div class="stories-section">
+      <div class="section-header">
+        <div class="section-number">05 // Stories &amp; Reels Covers</div>
+        <div class="section-title">Story Concepts</div>
+      </div>
+
+      <div class="stories-row">
+
+        <!-- STORY 1 -->
+        <div class="story-wrap">
+          <div class="story s1">
+            <div class="s1-top">
+              <div class="s1-mark">Z</div>
+              <div class="s1-brand-text">ZDM INC</div>
+            </div>
+            <div class="s1-mid">
+              <div class="s1-intro">// Introducing</div>
+              <div class="s1-headline">
+                We Build<br><span class="s1-lime">Systems.</span><br>Not Just<br>Campaigns.
+              </div>
+            </div>
+            <div class="s1-bottom">
+              <div class="s1-tagline">Zero Distance to Market.</div>
+              <div class="s1-swipe">↑ Swipe up · zdminc.com</div>
+            </div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 01</span>
+            <span class="story-type">Welcome</span>
+          </div>
+        </div>
+
+        <!-- STORY 2 -->
+        <div class="story-wrap">
+          <div class="story s2">
+            <div class="s2-bg-z">Z</div>
+            <div class="s2-eyebrow">The proof // ZDM client avg.</div>
+            <div class="s2-mid">
+              <div class="s2-stat">3.8x</div>
+              <div class="s2-stat-label">Average ROAS<br>Increase</div>
+            </div>
+            <div class="s2-bottom">
+              <div class="s2-cta">Your brand next?</div>
+              <div class="s2-handle">↑ Tap · Start your audit · @zdm.inc</div>
+            </div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 02</span>
+            <span class="story-type">Results</span>
+          </div>
+        </div>
+
+        <!-- STORY 3 -->
+        <div class="story-wrap">
+          <div class="story s3">
+            <div class="s3-top">// Free audit · no pitch · just data</div>
+            <div class="s3-mid">
+              <div class="s3-pre">It's time to</div>
+              <div class="s3-headline">
+                Start<br><span class="s3-lime">Scaling.</span>
+              </div>
+            </div>
+            <div class="s3-bottom">
+              <div class="s3-btn">Initiate Your Free Audit →</div>
+              <div class="s3-url">zdminc.com/audit</div>
+            </div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 03</span>
+            <span class="story-type">CTA</span>
+          </div>
+        </div>
+
+        <!-- STORY 4: Manifesto (bonus) -->
+        <div class="story-wrap">
+          <div class="story" style="background:var(--off-white); display:flex; flex-direction:column; justify-content:space-between; padding: 28px 24px;">
+            <div style="font-family:var(--font-mono); font-size:9px; color:#888; text-transform:uppercase; letter-spacing:0.12em;">The ZDM Manifesto</div>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="font-family:var(--font-display); font-size:32px; color:#0A0A0A; text-transform:uppercase; line-height:0.9;">Data Over<br><span style="color:#8aaa00">Opinions.</span></div>
+              <div style="font-family:var(--font-display); font-size:32px; color:#0A0A0A; text-transform:uppercase; line-height:0.9;">Revenue Over<br><span style="color:#8aaa00">Reach.</span></div>
+              <div style="font-family:var(--font-display); font-size:32px; color:#0A0A0A; text-transform:uppercase; line-height:0.9;">Speed Over<br><span style="color:#8aaa00">Perfection.</span></div>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:9px; color:#888; text-transform:uppercase; letter-spacing:0.1em;">— ZDM Inc. @zdm.inc</div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 04</span>
+            <span class="story-type">Manifesto</span>
+          </div>
+        </div>
+
+        <!-- STORY 5: Service (bonus) -->
+        <div class="story-wrap">
+          <div class="story" style="background:var(--off-black); display:flex; flex-direction:column; justify-content:space-between; padding: 28px 24px; overflow:hidden; position:relative;">
+            <div style="position:absolute; bottom:-20px; right:-10px; font-family:var(--font-display); font-size:180px; color:rgba(200,255,0,0.04); line-height:1;">Z</div>
+            <div style="font-family:var(--font-mono); font-size:9px; color:var(--lime); text-transform:uppercase; letter-spacing:0.12em;">002 // Service</div>
+            <div>
+              <div style="font-family:var(--font-display); font-size:44px; text-transform:uppercase; line-height:0.88; color:var(--white);">CRM &<br><span style="color:var(--lime)">Automation</span></div>
+              <div style="margin-top:16px; display:flex; flex-direction:column; gap:6px;">
+                <div style="font-family:var(--font-mono); font-size:10px; color:var(--light-grey);">> HubSpot &amp; Salesforce</div>
+                <div style="font-family:var(--font-mono); font-size:10px; color:var(--light-grey);">> Lead Scoring &amp; Routing</div>
+                <div style="font-family:var(--font-mono); font-size:10px; color:var(--light-grey);">> Behavioral Sequences</div>
+              </div>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:9px; color:var(--grey); text-transform:uppercase; letter-spacing:0.1em;">↑ Tap · zdminc.com</div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 05</span>
+            <span class="story-type">Service Spotlight</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── 06. POSTING SCHEDULE ─── -->
+    <div class="schedule-section">
+      <div class="section-header">
+        <div class="section-number">06 // Launch Plan</div>
+        <div class="section-title">Wave 01 Schedule</div>
+      </div>
+
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Day</th>
+            <th>Post</th>
+            <th>Format</th>
+            <th>Pillar</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Week 1</td>
+            <td>Mon</td>
+            <td><span class="post-tag">Post 01</span> — Brand Statement</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Brand Authority</span></td>
+            <td>Launch day post. Pin to top.</td>
+          </tr>
+          <tr>
+            <td>Week 1</td>
+            <td>Wed</td>
+            <td><span class="post-tag">Post 02</span> — Brand Identity</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Brand Authority</span></td>
+            <td>Introduce the Z mark and full name.</td>
+          </tr>
+          <tr>
+            <td>Week 1</td>
+            <td>Fri</td>
+            <td><span class="post-tag">Post 03</span> — The Manifesto</td>
+            <td>Static / Carousel</td>
+            <td><span class="pillar-badge">Brand Authority</span></td>
+            <td>Ask: which principle resonates? Drive comments.</td>
+          </tr>
+          <tr>
+            <td>Week 2</td>
+            <td>Mon</td>
+            <td><span class="post-tag">Post 04</span> — 3.8× ROAS</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Results & Proof</span></td>
+            <td>Include audit CTA in caption.</td>
+          </tr>
+          <tr>
+            <td>Week 2</td>
+            <td>Wed</td>
+            <td><span class="post-tag">Post 05</span> — Them vs Us</td>
+            <td>Carousel</td>
+            <td><span class="pillar-badge">Contrast</span></td>
+            <td>Expand each row to its own slide. Strong share driver.</td>
+          </tr>
+          <tr>
+            <td>Week 2</td>
+            <td>Fri</td>
+            <td><span class="post-tag">Post 06</span> — Stats Grid</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Results & Proof</span></td>
+            <td>Consider a Reel version with animated counters.</td>
+          </tr>
+          <tr>
+            <td>Week 3</td>
+            <td>Mon</td>
+            <td><span class="post-tag">Post 07</span> — Performance Mktg</td>
+            <td>Carousel</td>
+            <td><span class="pillar-badge">Education</span></td>
+            <td>Start the service spotlight series.</td>
+          </tr>
+          <tr>
+            <td>Week 3</td>
+            <td>Wed</td>
+            <td><span class="post-tag">Post 08</span> — The ZDM System</td>
+            <td>Carousel (4 slides)</td>
+            <td><span class="pillar-badge">Education</span></td>
+            <td>One phase per slide. Strong saves/shares expected.</td>
+          </tr>
+          <tr>
+            <td>Week 3</td>
+            <td>Fri</td>
+            <td><span class="post-tag">Post 09</span> — CTA</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">CTA</span></td>
+            <td>Boost as paid ad. A/B test caption length.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- end container -->
+
+  <!-- PAGE FOOTER -->
+  <footer class="sb-footer">
+    <div class="sb-footer-text">© 2026 Zee Digital Marketing Inc. &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; INTERNAL USE ONLY</div>
+    <div class="sb-footer-mark">ZDM INC</div>
+  </footer>
+
+</body>
+</html>

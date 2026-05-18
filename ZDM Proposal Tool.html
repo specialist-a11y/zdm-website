@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZDM INC | Build Your Growth Proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --off-black: #141414;
+      --dark-grey: #1E1E1E;
+      --mid-grey: #3A3A3A;
+      --grey: #888888;
+      --light-grey: #D4D4D4;
+      --off-white: #F5F5F0;
+      --white: #FFFFFF;
+      --lime: #C8FF00;
+      --lime-dim: #A8D800;
+      --lime-glow: rgba(200,255,0,0.12);
+      --red: #FF3B3B;
+      --font-display: 'Bebas Neue', 'Impact', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    #cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--lime); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1.5px solid var(--lime); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: width 0.3s, height 0.3s, opacity 0.3s;
+      mix-blend-mode: difference;
+    }
+    body.ch #cursor-ring { width: 56px; height: 56px; opacity: 0.5; }
+    @media (max-width: 768px) { body { cursor: auto; } #cursor-dot, #cursor-ring { display: none; } }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 80px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--lime);
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-size: 32px;
+      letter-spacing: 0.04em; color: var(--white);
+      display: flex; align-items: center; gap: 16px; text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 40px; height: 40px; background: var(--lime);
+      display: grid; place-items: center;
+      font-size: 24px; color: var(--black); font-family: var(--font-display);
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--grey); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--lime); }
+    .nav-back {
+      padding: 10px 20px; border: 1px solid var(--dark-grey);
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey);
+      text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+    .nav-back:hover { border-color: var(--lime); color: var(--lime); }
+
+    /* PROGRESS BAR */
+    #pbar { position: fixed; top: 0; left: 0; height: 3px; background: var(--lime); z-index: 10000; width: 0; box-shadow: 0 0 10px var(--lime); }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 160px 40px 80px;
+      max-width: 1440px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end;
+    }
+    .page-hero-label {
+      font-family: var(--font-mono); font-size: 12px; color: var(--lime);
+      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .page-hero-label::before { content: ''; width: 32px; height: 1px; background: var(--lime); }
+    .page-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 9vw, 140px);
+      line-height: 0.85; text-transform: uppercase;
+      color: var(--white); letter-spacing: -0.01em;
+    }
+    .page-hero h1 em { font-style: normal; -webkit-text-stroke: 1px var(--lime); color: transparent; }
+    .page-hero-right {
+      display: flex; flex-direction: column; gap: 32px; padding-bottom: 8px;
+    }
+    .page-hero-desc { font-size: 20px; color: var(--light-grey); line-height: 1.6; font-weight: 300; }
+    .page-hero-desc strong { color: var(--lime); font-weight: 700; }
+    .hero-meta {
+      display: flex; gap: 40px;
+      padding-top: 24px; border-top: 1px solid var(--dark-grey);
+    }
+    .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .hero-meta-val { font-family: var(--font-display); font-size: 36px; color: var(--lime); line-height: 1; }
+    .hero-meta-label { font-family: var(--font-mono); font-size: 11px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* TOOL CONTAINER */
+    .tool-wrap {
+      max-width: 1440px; margin: 0 auto;
+      padding: 0 40px 120px;
+    }
+
+    /* STEP PROGRESS */
+    .step-progress {
+      display: flex; align-items: center; margin-bottom: 64px;
+      border: 2px solid var(--dark-grey);
+      background: var(--off-black);
+    }
+    .step-item {
+      flex: 1; padding: 20px 24px; display: flex; flex-direction: column; gap: 4px;
+      border-right: 1px solid var(--dark-grey); position: relative;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    .step-item:last-child { border-right: none; }
+    .step-item.active { background: var(--lime-glow); }
+    .step-item.done { background: rgba(200,255,0,0.05); }
+    .step-item.active::before {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px;
+      background: var(--lime);
+    }
+    .step-num {
+      font-family: var(--font-mono); font-size: 11px; color: var(--grey);
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .step-item.active .step-num { color: var(--lime); }
+    .step-item.done .step-num { color: var(--lime-dim); }
+    .step-label {
+      font-family: var(--font-display); font-size: 20px; color: var(--grey);
+      text-transform: uppercase; line-height: 1;
+    }
+    .step-item.active .step-label { color: var(--white); }
+    .step-item.done .step-label { color: var(--lime-dim); }
+    .step-check {
+      position: absolute; top: 16px; right: 16px;
+      font-family: var(--font-mono); font-size: 16px; color: var(--lime);
+    }
+
+    /* FORM PANELS */
+    .form-panel { display: none; }
+    .form-panel.active { display: block; animation: panelIn 0.4s cubic-bezier(0.16,1,0.3,1); }
+    @keyframes panelIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    .panel-title {
+      font-family: var(--font-display); font-size: clamp(40px, 5vw, 72px);
+      color: var(--white); text-transform: uppercase; line-height: 0.9;
+      margin-bottom: 12px;
+    }
+    .panel-title em { font-style: normal; color: var(--lime); }
+    .panel-sub { font-family: var(--font-mono); font-size: 14px; color: var(--grey); margin-bottom: 48px; }
+
+    /* FORM ELEMENTS */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+    .form-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label {
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey);
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .form-input {
+      background: var(--off-black); border: 2px solid var(--dark-grey);
+      color: var(--white); font-family: var(--font-body); font-size: 16px;
+      padding: 14px 16px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--lime); }
+    .form-input::placeholder { color: var(--mid-grey); }
+    select.form-input { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+
+    /* OPTION CARDS */
+    .option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--dark-grey); border: 2px solid var(--dark-grey); margin-bottom: 40px; }
+    .option-card {
+      background: var(--off-black); padding: 32px 28px;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: background 0.25s;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .option-card:hover { background: var(--dark-grey); }
+    .option-card.selected { background: var(--lime-glow); border: 2px solid var(--lime); margin: -1px; z-index: 1; }
+    .option-card-icon { font-family: var(--font-display); font-size: 32px; color: var(--lime); line-height: 1; }
+    .option-card-title { font-family: var(--font-display); font-size: 28px; color: var(--white); text-transform: uppercase; line-height: 1; }
+    .option-card.selected .option-card-title { color: var(--lime); }
+    .option-card-desc { font-family: var(--font-mono); font-size: 12px; color: var(--grey); line-height: 1.5; }
+    .option-check {
+      position: absolute; top: 16px; right: 16px;
+      width: 20px; height: 20px; border: 2px solid var(--dark-grey);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; transition: all 0.2s;
+    }
+    .option-card.selected .option-check { background: var(--lime); border-color: var(--lime); color: var(--black); }
+
+    /* BUDGET SLIDER */
+    .budget-track { margin-bottom: 48px; }
+    .budget-display {
+      font-family: var(--font-display); font-size: 80px; color: var(--lime);
+      line-height: 1; margin-bottom: 8px;
+    }
+    .budget-label { font-family: var(--font-mono); font-size: 12px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; }
+    input[type=range] {
+      -webkit-appearance: none; width: 100%; height: 3px;
+      background: var(--dark-grey); outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 24px; height: 24px;
+      background: var(--lime); cursor: pointer;
+      border: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track { height: 3px; }
+
+    /* GOALS */
+    .goals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--dark-grey); border: 2px solid var(--dark-grey); margin-bottom: 40px; }
+    .goal-card {
+      background: var(--off-black); padding: 28px 32px;
+      cursor: pointer; display: flex; align-items: center; gap: 20px;
+      transition: background 0.2s;
+    }
+    .goal-card:hover { background: var(--dark-grey); }
+    .goal-card.selected { background: var(--lime-glow); }
+    .goal-box {
+      width: 24px; height: 24px; border: 2px solid var(--mid-grey); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-family: var(--font-mono); transition: all 0.2s;
+    }
+    .goal-card.selected .goal-box { background: var(--lime); border-color: var(--lime); color: var(--black); }
+    .goal-text { font-family: var(--font-display); font-size: 24px; text-transform: uppercase; color: var(--white); line-height: 1; }
+    .goal-card.selected .goal-text { color: var(--lime); }
+
+    /* NAV BUTTONS */
+    .form-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--dark-grey); }
+    .btn-next {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--lime); color: var(--black);
+      font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 16px 36px; border: 2px solid var(--lime); cursor: pointer;
+      position: relative; overflow: hidden; transition: color 0.3s;
+    }
+    .btn-next::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--black); transform: scaleX(0); transform-origin: right;
+      transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+    }
+    .btn-next:hover { color: var(--lime); }
+    .btn-next:hover::before { transform: scaleX(1); transform-origin: left; }
+    .btn-next span { position: relative; z-index: 1; }
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--grey);
+      font-family: var(--font-mono); font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 14px 24px; border: 1px solid var(--dark-grey); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-back:hover { color: var(--white); border-color: var(--grey); }
+    .btn-disabled { opacity: 0.35; pointer-events: none; }
+
+    /* PROPOSAL OUTPUT */
+    .proposal-output { animation: panelIn 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .proposal-header {
+      background: var(--lime); padding: 60px; margin-bottom: 3px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .proposal-header-left h2 {
+      font-family: var(--font-display); font-size: clamp(48px, 6vw, 96px);
+      color: var(--black); text-transform: uppercase; line-height: 0.85;
+    }
+    .proposal-date {
+      font-family: var(--font-mono); font-size: 13px; color: rgba(0,0,0,0.5);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-top: 16px;
+    }
+    .proposal-ref {
+      font-family: var(--font-display); font-size: 28px; color: var(--black);
+      text-align: right; line-height: 1;
+    }
+    .proposal-ref small { display: block; font-family: var(--font-mono); font-size: 12px; opacity: 0.5; margin-bottom: 8px; }
+
+    .proposal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; background: var(--dark-grey); }
+    .prop-cell { background: var(--off-black); padding: 48px; }
+    .prop-cell.full { grid-column: 1 / -1; }
+    .prop-cell.dark { background: var(--black); }
+    .prop-cell.lime { background: var(--lime); color: var(--black); }
+
+    .prop-label {
+      font-family: var(--font-mono); font-size: 11px; color: var(--lime);
+      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .prop-label::before { content: ''; width: 20px; height: 1px; background: var(--lime); }
+    .prop-cell.lime .prop-label { color: var(--black); }
+    .prop-cell.lime .prop-label::before { background: var(--black); }
+
+    .prop-title { font-family: var(--font-display); font-size: 40px; color: var(--white); text-transform: uppercase; line-height: 1; margin-bottom: 24px; }
+    .prop-cell.lime .prop-title { color: var(--black); }
+
+    .prop-services { display: flex; flex-direction: column; gap: 0; }
+    .prop-service-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0; border-bottom: 1px solid var(--dark-grey);
+    }
+    .prop-service-row:first-child { border-top: 1px solid var(--dark-grey); }
+    .prop-service-name { font-family: var(--font-display); font-size: 24px; color: var(--white); text-transform: uppercase; }
+    .prop-service-tag { font-family: var(--font-mono); font-size: 11px; color: var(--lime); background: var(--lime-glow); padding: 4px 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .prop-roi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .prop-roi-item h3 { font-family: var(--font-display); font-size: clamp(40px, 5vw, 72px); color: var(--lime); line-height: 0.9; }
+    .prop-roi-item p { font-family: var(--font-mono); font-size: 12px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 8px; }
+
+    .prop-timeline { display: flex; flex-direction: column; gap: 0; }
+    .prop-phase {
+      display: grid; grid-template-columns: 80px 1fr;
+      border-bottom: 1px solid var(--dark-grey); padding: 20px 0;
+    }
+    .prop-phase-num { font-family: var(--font-mono); font-size: 12px; color: var(--lime); display: flex; align-items: center; }
+    .prop-phase-content {}
+    .prop-phase-title { font-family: var(--font-display); font-size: 24px; color: var(--white); text-transform: uppercase; line-height: 1; }
+    .prop-phase-desc { font-size: 14px; color: var(--grey); margin-top: 4px; }
+
+    .prop-invest { }
+    .prop-invest-amount { font-family: var(--font-display); font-size: clamp(48px, 7vw, 100px); color: var(--black); line-height: 0.85; margin-bottom: 8px; }
+    .prop-invest-period { font-family: var(--font-mono); font-size: 14px; color: rgba(0,0,0,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 32px; }
+    .prop-invest-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .prop-invest-list li { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 13px; color: var(--black); }
+    .prop-invest-list li::before { content: '>'; font-weight: bold; color: var(--black); }
+
+    .prop-cta-row {
+      background: var(--black); padding: 48px; border-top: 3px solid var(--lime);
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+      flex-wrap: wrap;
+    }
+    .prop-cta-text { font-family: var(--font-display); font-size: clamp(32px, 4vw, 56px); color: var(--white); text-transform: uppercase; line-height: 1; }
+    .prop-cta-text em { font-style: normal; color: var(--lime); }
+    .prop-cta-btns { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .btn-cta-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--lime); color: var(--black);
+      font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 16px 36px; border: 2px solid var(--lime); cursor: pointer;
+      text-decoration: none; transition: all 0.3s;
+    }
+    .btn-cta-primary:hover { background: transparent; color: var(--lime); }
+    .btn-cta-ghost {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: var(--grey);
+      font-family: var(--font-mono); font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 14px 28px; border: 1px solid var(--dark-grey); cursor: pointer;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-cta-ghost:hover { color: var(--white); border-color: var(--grey); }
+
+    /* MARQUEE */
+    .tool-marquee { background: var(--dark-grey); padding: 16px 0; overflow: hidden; white-space: nowrap; margin-bottom: 3px; }
+    .tool-marquee-track { display: inline-flex; animation: marquee 20s linear infinite; }
+    .tool-marquee-track span { font-family: var(--font-mono); font-size: 13px; color: var(--grey); margin-right: 32px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .tool-marquee-track span.sep { color: var(--lime); }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    @media (max-width: 1024px) {
+      .page-hero { grid-template-columns: 1fr; }
+      .option-grid { grid-template-columns: 1fr 1fr; }
+      .proposal-body { grid-template-columns: 1fr; }
+      .prop-roi-grid { grid-template-columns: 1fr 1fr; }
+      .prop-cell.full { grid-column: 1; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .option-grid, .goals-grid { grid-template-columns: 1fr; }
+      .form-grid, .form-grid.cols3 { grid-template-columns: 1fr; }
+      .step-progress { flex-direction: column; }
+      .page-hero { padding: 140px 20px 60px; }
+      .tool-wrap { padding: 0 20px 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="pbar"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="ZDM Inc.html" class="nav-logo">
+      <div class="nav-logo-mark">Z</div>
+      ZDM INC
+    </a>
+    <ul class="nav-links">
+      <li><a href="ZDM Inc.html#about">The Challenger</a></li>
+      <li><a href="ZDM Inc.html#services">Capabilities</a></li>
+      <li><a href="ZDM Inc.html#roi">Results</a></li>
+      <li><a href="#" class="active">Proposal Tool</a></li>
+    </ul>
+    <a href="ZDM Inc.html" class="nav-back">← Back to ZDM</a>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div>
+      <div class="page-hero-label">Growth Proposal Generator</div>
+      <h1>Build Your <em>Attack</em> Plan</h1>
+    </div>
+    <div class="page-hero-right">
+      <p class="page-hero-desc">
+        Answer 4 questions. Get a <strong>data-backed growth proposal</strong> built around your business — services, projected ROI, timelines, and investment. No fluff. No sales call required.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">4</span>
+          <span class="hero-meta-label">Steps</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">~3</span>
+          <span class="hero-meta-label">Minutes</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-val">0</span>
+          <span class="hero-meta-label">Sales calls</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;">
+        <button id="demoBtn" style="display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--grey);font-family:var(--font-mono);font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;padding:12px 24px;border:1px solid var(--dark-grey);cursor:pointer;transition:all 0.2s;">
+          ▶ View Live Demo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="tool-marquee">
+    <div class="tool-marquee-track">
+      <span>Performance</span><span class="sep">//</span><span>CRM</span><span class="sep">//</span><span>Analytics</span><span class="sep">//</span><span>Lead Gen</span><span class="sep">//</span><span>E-Commerce</span><span class="sep">//</span><span>CRO</span><span class="sep">//</span>
+      <span>Performance</span><span class="sep">//</span><span>CRM</span><span class="sep">//</span><span>Analytics</span><span class="sep">//</span><span>Lead Gen</span><span class="sep">//</span><span>E-Commerce</span><span class="sep">//</span><span>CRO</span><span class="sep">//</span>
+    </div>
+  </div>
+
+  <!-- TOOL -->
+  <div class="tool-wrap">
+    <div id="root"></div>
+  </div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const SERVICES = [
+      { id: 'perf', icon: '01', title: 'Performance Marketing', desc: 'Meta, Google, programmatic ads at scale.' },
+      { id: 'crm', icon: '02', title: 'CRM & Automation', desc: 'HubSpot, Salesforce, behavioural sequences.' },
+      { id: 'cro', icon: '03', title: 'Conversion Rate Optimisation', desc: 'A/B testing, UX, landing page architecture.' },
+      { id: 'b2b', icon: '04', title: 'B2B Lead Generation', desc: 'ABM, LinkedIn outreach, enterprise funnels.' },
+      { id: 'ecom', icon: '05', title: 'E-Commerce Scaling', desc: 'DTC growth, dynamic ads, cart recovery.' },
+      { id: 'analytics', icon: '06', title: 'Advanced Analytics', desc: 'Attribution, dashboards, server-side tracking.' },
+    ];
+
+    const GOALS = [
+      { id: 'roas', label: 'Increase ROAS' },
+      { id: 'cac', label: 'Lower Acquisition Cost' },
+      { id: 'leads', label: 'Generate More Leads' },
+      { id: 'revenue', label: 'Scale Monthly Revenue' },
+      { id: 'brand', label: 'Expand Market Share' },
+      { id: 'retention', label: 'Improve Retention & LTV' },
+    ];
+
+    const INDUSTRIES = ['E-Commerce / DTC','SaaS / Software','FinTech','Health & Wellness','Real Estate','Professional Services','Hospitality & Travel','Retail','Other'];
+    const TIMELINES = ['ASAP — Start within 2 weeks','Q2 — Within 1 month','Q3 — Within 3 months','Planning Phase — 3–6 months'];
+
+    const BUDGET_STEPS = [5000,10000,20000,30000,50000,75000,100000,150000,250000];
+
+    function formatBudget(v) {
+      if (v >= 1000000) return '$' + (v/1000000).toFixed(1) + 'M';
+      if (v >= 1000) return '$' + (v/1000).toFixed(0) + 'K';
+      return '$' + v;
+    }
+
+    function genRef() {
+      return 'ZDM-' + Math.floor(Math.random()*9000+1000) + '-' + new Date().getFullYear();
+    }
+
+    /* ─── ROI PROJECTIONS ─────────────────────────────── */
+    function calcROI(budget, services, goals) {
+      const base = budget * 12;
+      const svc = services.length;
+      const multiplier = 1 + (svc * 0.4) + (goals.includes('roas') ? 0.6 : 0) + (goals.includes('revenue') ? 0.5 : 0);
+      const projected = Math.round(base * multiplier / 1000) * 1000;
+      const roas = (2.8 + svc * 0.4 + Math.random() * 0.3).toFixed(1);
+      const cacReduction = Math.min(20 + svc * 5, 55);
+      return { projected, roas, cacReduction };
+    }
+
+    function getPhases(services) {
+      const phases = [
+        { num: '01', title: 'Diagnose', desc: 'Full funnel audit, tech stack review, competitor analysis.' },
+        { num: '02', title: 'Engineer', desc: 'Build systems, automations, creative frameworks — before spending.' },
+        { num: '03', title: 'Execute', desc: 'Launch across all selected channels with real-time monitoring.' },
+      ];
+      if (services.includes('analytics') || services.includes('crm')) {
+        phases.push({ num: '04', title: 'Compound', desc: 'Iterate using attribution data. Every cycle compounds ROI.' });
+      }
+      return phases;
+    }
+
+    /* ─── STEP COMPONENTS ─────────────────────────────── */
+
+    function Step1({ data, setData, onNext }) {
+      const valid = data.company && data.industry;
+      return (
+        <div className="form-panel active">
+          <h2 className="panel-title">Who Are<br/><em>We Fighting For?</em></h2>
+          <p className="panel-sub">// Tell us about your business</p>
+          <div className="form-grid">
+            <div className="form-group">
+              <label className="form-label">Company Name *</label>
+              <input className="form-input" placeholder="Acme Corp" value={data.company} onChange={e => setData({...data, company: e.target.value})} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Your Name</label>
+              <input className="form-input" placeholder="Jane Smith" value={data.contact} onChange={e => setData({...data, contact: e.target.value})} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Industry *</label>
+              <select className="form-input" value={data.industry} onChange={e => setData({...data, industry: e.target.value})}>
+                <option value="">Select industry</option>
+                {INDUSTRIES.map(i => <option key={i}>{i}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Website</label>
+              <input className="form-input" placeholder="www.acmecorp.com" value={data.website} onChange={e => setData({...data, website: e.target.value})} />
+            </div>
+          </div>
+          <div className="form-actions">
+            <div />
+            <button className={`btn-next ${!valid ? 'btn-disabled' : ''}`} onClick={onNext} disabled={!valid}>
+              <span>Next: Set Goals →</span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function Step2({ data, setData, onNext, onBack }) {
+      const toggle = (id) => {
+        const g = data.goals.includes(id) ? data.goals.filter(x=>x!==id) : [...data.goals, id];
+        setData({...data, goals: g});
+      };
+      return (
+        <div className="form-panel active">
+          <h2 className="panel-title">What Does<br/><em>Winning Look Like?</em></h2>
+          <p className="panel-sub">// Select all growth objectives that apply</p>
+          <div className="goals-grid">
+            {GOALS.map(g => (
+              <div key={g.id} className={`goal-card ${data.goals.includes(g.id) ? 'selected' : ''}`} onClick={() => toggle(g.id)}>
+                <div className="goal-box">{data.goals.includes(g.id) ? '✓' : ''}</div>
+                <div className="goal-text">{g.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="form-actions">
+            <button className="btn-back" onClick={onBack}>← Back</button>
+            <button className={`btn-next ${data.goals.length === 0 ? 'btn-disabled' : ''}`} onClick={onNext} disabled={data.goals.length === 0}>
+              <span>Next: Select Services →</span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function Step3({ data, setData, onNext, onBack }) {
+      const toggle = (id) => {
+        const s = data.services.includes(id) ? data.services.filter(x=>x!==id) : [...data.services, id];
+        setData({...data, services: s});
+      };
+      return (
+        <div className="form-panel active">
+          <h2 className="panel-title">Pick Your<br/><em>Weapons.</em></h2>
+          <p className="panel-sub">// Select the capabilities you need — combine for maximum impact</p>
+          <div className="option-grid">
+            {SERVICES.map(s => (
+              <div key={s.id} className={`option-card ${data.services.includes(s.id) ? 'selected' : ''}`} onClick={() => toggle(s.id)}>
+                <div className="option-check">{data.services.includes(s.id) ? '✓' : ''}</div>
+                <div className="option-card-icon">{s.icon}</div>
+                <div className="option-card-title">{s.title}</div>
+                <div className="option-card-desc">{s.desc}</div>
+              </div>
+            ))}
+          </div>
+          <div className="form-actions">
+            <button className="btn-back" onClick={onBack}>← Back</button>
+            <button className={`btn-next ${data.services.length === 0 ? 'btn-disabled' : ''}`} onClick={onNext} disabled={data.services.length === 0}>
+              <span>Next: Set Budget →</span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function Step4({ data, setData, onNext, onBack }) {
+      const [sliderIdx, setSliderIdx] = useState(BUDGET_STEPS.indexOf(data.budget) !== -1 ? BUDGET_STEPS.indexOf(data.budget) : 2);
+      useEffect(() => { setData(d => ({...d, budget: BUDGET_STEPS[sliderIdx]})); }, [sliderIdx]);
+      return (
+        <div className="form-panel active">
+          <h2 className="panel-title">What's The<br/><em>War Chest?</em></h2>
+          <p className="panel-sub">// Your monthly marketing budget (ad spend + management)</p>
+          <div className="budget-track">
+            <div className="budget-display">{formatBudget(BUDGET_STEPS[sliderIdx])}</div>
+            <div className="budget-label">Per month</div>
+            <input type="range" min={0} max={BUDGET_STEPS.length - 1} step={1} value={sliderIdx} onChange={e => setSliderIdx(Number(e.target.value))} />
+            <div style={{display:'flex',justifyContent:'space-between',marginTop:8}}>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--grey)'}}>$5K / mo</span>
+              <span style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--grey)'}}>$250K / mo</span>
+            </div>
+          </div>
+          <div className="form-grid" style={{marginTop:40}}>
+            <div className="form-group">
+              <label className="form-label">Launch Timeline</label>
+              <select className="form-input" value={data.timeline} onChange={e => setData({...data, timeline: e.target.value})}>
+                <option value="">Select timeline</option>
+                {TIMELINES.map(t => <option key={t}>{t}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Current Monthly Revenue (optional)</label>
+              <input className="form-input" placeholder="e.g. $500,000" value={data.revenue} onChange={e => setData({...data, revenue: e.target.value})} />
+            </div>
+          </div>
+          <div className="form-actions">
+            <button className="btn-back" onClick={onBack}>← Back</button>
+            <button className="btn-next" onClick={onNext}>
+              <span>Generate My Proposal →</span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── PROPOSAL OUTPUT ─────────────────────────────── */
+    function ProposalOutput({ data, onReset }) {
+      const roi = calcROI(data.budget, data.services, data.goals);
+      const phases = getPhases(data.services);
+      const selectedServices = SERVICES.filter(s => data.services.includes(s.id));
+      const ref = useRef(genRef()).current;
+      const today = new Date().toLocaleDateString('en-US', { day:'numeric', month:'long', year:'numeric' });
+
+      const investMonthly = Math.round(data.budget * 1.2 / 1000) * 1000;
+
+      // Animate counts
+      const [counted, setCounted] = useState(false);
+      useEffect(() => { setTimeout(() => setCounted(true), 100); }, []);
+
+      return (
+        <div className="proposal-output">
+          {/* Header */}
+          <div className="proposal-header">
+            <div className="proposal-header-left">
+              <h2>Growth<br/>Proposal</h2>
+              <div className="proposal-date">Prepared for {data.company} · {today}</div>
+            </div>
+            <div className="proposal-ref">
+              <small>Reference</small>
+              {ref}
+            </div>
+          </div>
+
+          <div className="proposal-body">
+            {/* Services */}
+            <div className="prop-cell">
+              <div className="prop-label">Selected Capabilities</div>
+              <div className="prop-title">Your Arsenal</div>
+              <div className="prop-services">
+                {selectedServices.map(s => (
+                  <div key={s.id} className="prop-service-row">
+                    <span className="prop-service-name">{s.title}</span>
+                    <span className="prop-service-tag">Active</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ROI Projections */}
+            <div className="prop-cell dark">
+              <div className="prop-label">Projected 12-Month Impact</div>
+              <div className="prop-title">The Numbers</div>
+              <div className="prop-roi-grid">
+                <div className="prop-roi-item">
+                  <h3>{roi.roas}x</h3>
+                  <p>Target ROAS</p>
+                </div>
+                <div className="prop-roi-item">
+                  <h3>{roi.cacReduction}%</h3>
+                  <p>CAC Reduction</p>
+                </div>
+                <div className="prop-roi-item">
+                  <h3>{formatBudget(roi.projected)}</h3>
+                  <p>Rev. Potential</p>
+                </div>
+              </div>
+              <p style={{fontFamily:'var(--font-mono)',fontSize:11,color:'var(--grey)',marginTop:32,lineHeight:1.6}}>
+                * Projections based on {data.industry} benchmarks at {formatBudget(data.budget)}/mo spend across {selectedServices.length} channels. Actual results vary.
+              </p>
+            </div>
+
+            {/* Goals */}
+            <div className="prop-cell">
+              <div className="prop-label">Objectives</div>
+              <div className="prop-title">What We're Attacking</div>
+              <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:8}}>
+                {data.goals.map(g => {
+                  const goal = GOALS.find(x => x.id === g);
+                  return <span key={g} style={{fontFamily:'var(--font-mono)',fontSize:13,color:'var(--lime)',border:'1px solid var(--lime)',padding:'6px 14px',textTransform:'uppercase',letterSpacing:'0.06em'}}>{goal?.label}</span>;
+                })}
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="prop-cell dark">
+              <div className="prop-label">Execution Roadmap</div>
+              <div className="prop-title">The ZDM System</div>
+              <div className="prop-timeline">
+                {phases.map(p => (
+                  <div key={p.num} className="prop-phase">
+                    <div className="prop-phase-num">{p.num}</div>
+                    <div className="prop-phase-content">
+                      <div className="prop-phase-title">{p.title}</div>
+                      <div className="prop-phase-desc">{p.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Investment */}
+            <div className="prop-cell lime full">
+              <div className="prop-label">Investment</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:40,alignItems:'start'}}>
+                <div>
+                  <div className="prop-invest-amount">{formatBudget(investMonthly)}</div>
+                  <div className="prop-invest-period">Per month · minimum 3 months</div>
+                  <ul className="prop-invest-list">
+                    <li>Full onboarding & audit included</li>
+                    <li>Dedicated growth strategist</li>
+                    <li>Weekly performance reports</li>
+                    <li>24/7 campaign monitoring</li>
+                    <li>No lock-in after 3 months</li>
+                  </ul>
+                </div>
+                <div>
+                  <div style={{fontFamily:'var(--font-display)',fontSize:28,color:'var(--black)',textTransform:'uppercase',marginBottom:20,lineHeight:1}}>What Happens Next</div>
+                  <div className="prop-timeline" style={{borderTop:'2px solid rgba(0,0,0,0.2)'}}>
+                    <div className="prop-phase" style={{borderBottomColor:'rgba(0,0,0,0.15)'}}>
+                      <div className="prop-phase-num" style={{color:'var(--black)'}}>Day 1</div>
+                      <div><div className="prop-phase-title" style={{color:'var(--black)',fontSize:18}}>Kick-off call</div><div className="prop-phase-desc" style={{color:'rgba(0,0,0,0.6)'}}>Strategy alignment, access, briefing.</div></div>
+                    </div>
+                    <div className="prop-phase" style={{borderBottomColor:'rgba(0,0,0,0.15)'}}>
+                      <div className="prop-phase-num" style={{color:'var(--black)'}}>Wk 1</div>
+                      <div><div className="prop-phase-title" style={{color:'var(--black)',fontSize:18}}>Full audit</div><div className="prop-phase-desc" style={{color:'rgba(0,0,0,0.6)'}}>Funnel, ad accounts, analytics, competitors.</div></div>
+                    </div>
+                    <div className="prop-phase" style={{borderBottomColor:'rgba(0,0,0,0.15)'}}>
+                      <div className="prop-phase-num" style={{color:'var(--black)'}}>Wk 2</div>
+                      <div><div className="prop-phase-title" style={{color:'var(--black)',fontSize:18}}>System build</div><div className="prop-phase-desc" style={{color:'rgba(0,0,0,0.6)'}}>Campaigns, automations, tracking in place.</div></div>
+                    </div>
+                    <div className="prop-phase" style={{borderBottom:'none'}}>
+                      <div className="prop-phase-num" style={{color:'var(--black)'}}>Wk 3</div>
+                      <div><div className="prop-phase-title" style={{color:'var(--black)',fontSize:18}}>Launch</div><div className="prop-phase-desc" style={{color:'rgba(0,0,0,0.6)'}}>Go live. Monitor. Optimise. Scale.</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Row */}
+          <div className="prop-cta-row">
+            <div className="prop-cta-text">Ready to <em>Execute?</em></div>
+            <div className="prop-cta-btns">
+              <a href={`mailto:scale@zdminc.com?subject=Proposal Enquiry — ${ref}`} className="btn-cta-primary">Send This Proposal →</a>
+              <button className="btn-cta-ghost" onClick={onReset}>← Build Another</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── MAIN APP ────────────────────────────────────── */
+    function App() {
+      const [step, setStep] = useState(1);
+      const [done, setDone] = useState(false);
+      const [formData, setFormData] = useState({
+        company: '', contact: '', industry: '', website: '',
+        goals: [], services: [], budget: 20000, timeline: '', revenue: '',
+      });
+
+      const DEMO_DATA = {
+        company: 'Apex Commerce Co.',
+        contact: 'Jordan Lee',
+        industry: 'E-Commerce / DTC',
+        website: 'www.apexcommerce.io',
+        goals: ['roas', 'cac', 'revenue'],
+        services: ['perf', 'cro', 'ecom', 'analytics'],
+        budget: 50000,
+        timeline: 'ASAP — Start within 2 weeks',
+        revenue: '$1,200,000',
+      };
+
+      useEffect(() => {
+        const btn = document.getElementById('demoBtn');
+        if (!btn) return;
+        btn.addEventListener('mouseenter', () => btn.style.cssText += 'border-color:var(--lime);color:var(--lime);');
+        btn.addEventListener('mouseleave', () => { btn.style.borderColor='var(--dark-grey)'; btn.style.color='var(--grey)'; });
+        btn.addEventListener('click', () => {
+          setFormData(DEMO_DATA);
+          setDone(true);
+          setTimeout(() => {
+            const el = document.getElementById('root');
+            if (el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
+          }, 100);
+        });
+      }, []);
+
+      const steps = [
+        { num: '01', label: 'Business' },
+        { num: '02', label: 'Goals' },
+        { num: '03', label: 'Services' },
+        { num: '04', label: 'Budget' },
+      ];
+
+      function reset() {
+        setDone(false);
+        setStep(1);
+        setFormData({ company:'', contact:'', industry:'', website:'', goals:[], services:[], budget:20000, timeline:'', revenue:'' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      return (
+        <div>
+          {!done && (
+            <div className="step-progress">
+              {steps.map((s, i) => (
+                <div key={s.num} className={`step-item ${step === i+1 ? 'active' : step > i+1 ? 'done' : ''}`}>
+                  <div className="step-num">{s.num}</div>
+                  <div className="step-label">{s.label}</div>
+                  {step > i+1 && <div className="step-check">✓</div>}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!done && step === 1 && <Step1 data={formData} setData={setFormData} onNext={() => setStep(2)} />}
+          {!done && step === 2 && <Step2 data={formData} setData={setFormData} onNext={() => setStep(3)} onBack={() => setStep(1)} />}
+          {!done && step === 3 && <Step3 data={formData} setData={setFormData} onNext={() => setStep(4)} onBack={() => setStep(2)} />}
+          {!done && step === 4 && <Step4 data={formData} setData={setFormData} onNext={() => { setDone(true); window.scrollTo({top:0,behavior:'smooth'}); }} onBack={() => setStep(3)} />}
+
+          {done && <ProposalOutput data={formData} onReset={reset} />}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+
+  <script>
+    // Cursor
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx+'px'; dot.style.top = my+'px';
+    });
+    (function animRing() {
+      rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest('button,a,.option-card,.goal-card')) document.body.classList.add('ch');
+      else document.body.classList.remove('ch');
+    });
+
+    // Progress
+    window.addEventListener('scroll', () => {
+      const s = document.documentElement.scrollTop;
+      const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('pbar').style.width = (s/h*100)+'%';
+    });
+  </script>
+</body>
+</html>

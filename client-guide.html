@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZDM INC — Client Operations Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --lime: #C8FF00;
+    --black: #0A0A0A;
+    --bg: #141414;
+    --surface: #1E1E1E;
+    --mid: #888888;
+    --light: #F5F5F0;
+    --border: rgba(200,255,0,0.12);
+    --border-dim: rgba(255,255,255,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--light);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--lime);
+    z-index: 9999;
+    transition: width 0.1s linear;
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: var(--black);
+    border-right: 1px solid var(--border-dim);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 0 40px;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--lime);
+    padding: 0 24px 24px;
+    border-bottom: 1px solid var(--border-dim);
+    margin-bottom: 20px;
+  }
+  .sidebar-logo span { color: var(--mid); font-size: 11px; display: block; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; margin-top: 2px; }
+
+  .sidebar-nav { list-style: none; flex: 1; }
+  .sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    color: var(--mid);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s, background 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .sidebar-nav li a .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(136,136,136,0.5);
+    min-width: 18px;
+  }
+  .sidebar-nav li a:hover { color: var(--light); background: rgba(255,255,255,0.03); }
+  .sidebar-nav li a.active { color: var(--lime); border-left-color: var(--lime); background: rgba(200,255,0,0.04); }
+  .sidebar-nav li a.active .num { color: rgba(200,255,0,0.5); }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    flex: 1;
+    min-width: 0;
+    padding: 60px 64px;
+    max-width: 1100px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 96px;
+    scroll-margin-top: 40px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--lime);
+    opacity: 0.6;
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.04em;
+    color: var(--light);
+    line-height: 1;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    color: var(--light);
+    margin-bottom: 12px;
+  }
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--lime);
+    margin-bottom: 8px;
+  }
+  p { color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+  ul, ol { padding-left: 20px; color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.9; }
+  li { margin-bottom: 2px; }
+  strong { color: var(--light); font-weight: 600; }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--border); transform: translateY(-2px); }
+  .card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 10px;
+    display: inline-block;
+    border: 1px solid rgba(200,255,0,0.25);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .card h3 { font-size: 16px; margin-bottom: 8px; }
+  .card p { font-size: 13px; margin-bottom: 0; }
+
+  /* ── PILL FILTERS ── */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    color: var(--mid);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .filter-btn:hover { color: var(--light); border-color: rgba(255,255,255,0.2); }
+  .filter-btn.active { background: var(--lime); color: var(--black); border-color: var(--lime); font-weight: 600; }
+
+  /* ── TWO-COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  .info-block {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-dim);
+    font-size: 14px;
+    color: rgba(245,245,240,0.8);
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li input[type="checkbox"] { display: none; }
+  .checklist li .check-box {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--mid);
+    border-radius: 4px;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .checklist li.checked .check-box {
+    background: var(--lime);
+    border-color: var(--lime);
+  }
+  .checklist li.checked .check-box::after {
+    content: '';
+    width: 4px;
+    height: 8px;
+    border-right: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    transform: rotate(45deg) translateY(-1px);
+    display: block;
+  }
+  .checklist li.checked .check-label { text-decoration: line-through; color: var(--mid); }
+  .check-label { flex: 1; }
+  .check-note { font-size: 11px; color: var(--mid); display: block; margin-top: 2px; }
+
+  .checklist-group { margin-bottom: 28px; }
+  .checklist-group-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--lime);
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+  .progress-indicator {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--mid);
+    margin-bottom: 20px;
+  }
+  .progress-indicator span { color: var(--lime); }
+
+  /* ── TABS ── */
+  .tabs-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-dim);
+    margin-bottom: 28px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--mid);
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--light); }
+  .tab-btn.active { color: var(--lime); border-bottom-color: var(--lime); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── ACCORDION ── */
+  .accordion-table { width: 100%; border-collapse: collapse; }
+  .accordion-table thead th {
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .accordion-row td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: rgba(245,245,240,0.8);
+    border-bottom: 1px solid var(--border-dim);
+    vertical-align: top;
+  }
+  .accordion-row:hover td { background: rgba(255,255,255,0.02); }
+  .accordion-row .tool-name { font-weight: 600; color: var(--light); }
+  .accordion-row .tool-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--lime);
+    display: inline-block;
+    border: 1px solid rgba(200,255,0,0.2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-top: 4px;
+  }
+  .expand-btn {
+    background: none;
+    border: 1px solid var(--border-dim);
+    color: var(--mid);
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .expand-btn:hover { border-color: var(--lime); color: var(--lime); }
+  .expand-row { display: none; }
+  .expand-row.open { display: table-row; }
+  .expand-row td {
+    background: rgba(200,255,0,0.03);
+    border-left: 2px solid var(--lime);
+    padding: 16px 20px;
+    font-size: 13px;
+  }
+
+  /* ── KPI TABLE ── */
+  .kpi-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .kpi-table thead th {
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .kpi-table tbody td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: rgba(245,245,240,0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .kpi-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+  .kpi-val { font-family: 'DM Mono', monospace; color: var(--lime); font-weight: 500; }
+  .kpi-channel { font-weight: 600; color: var(--light); }
+  .kpi-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+  .kpi-badge.good { background: rgba(200,255,0,0.12); color: var(--lime); }
+  .kpi-badge.warn { background: rgba(255,180,0,0.12); color: #FFB400; }
+
+  /* ── HIGHLIGHT BLOCK ── */
+  .highlight-block {
+    background: rgba(200,255,0,0.06);
+    border: 1px solid rgba(200,255,0,0.2);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .highlight-block p { color: rgba(245,245,240,0.85); margin-bottom: 0; }
+  .highlight-block strong { color: var(--lime); }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--lime);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 11px; color: var(--mid); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── INLINE BADGE ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+  }
+  .badge-lime { background: rgba(200,255,0,0.12); color: var(--lime); border: 1px solid rgba(200,255,0,0.2); }
+  .badge-mid { background: rgba(136,136,136,0.12); color: var(--mid); border: 1px solid rgba(136,136,136,0.2); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border-dim); margin: 28px 0; }
+
+  /* ── STEP LIST ── */
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+  .step-list li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .step-list li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--lime);
+    background: rgba(200,255,0,0.08);
+    border: 1px solid rgba(200,255,0,0.2);
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-width: 36px;
+    text-align: center;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .step-list li .step-body { flex: 1; }
+  .step-list li .step-body strong { display: block; font-size: 14px; margin-bottom: 4px; }
+  .step-list li .step-body p { margin-bottom: 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    main { padding: 40px 24px; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div class="wrapper">
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">ZDM INC<span>CLIENT OPS GUIDE</span></div>
+  <ul class="sidebar-nav">
+    <li><a href="#s01" class="nav-link"><span class="num">01</span>Ideal Client Profile</a></li>
+    <li><a href="#s02" class="nav-link"><span class="num">02</span>Finding Clients</a></li>
+    <li><a href="#s03" class="nav-link"><span class="num">03</span>Qualifying &amp; Closing</a></li>
+    <li><a href="#s04" class="nav-link"><span class="num">04</span>Onboarding Checklist</a></li>
+    <li><a href="#s05" class="nav-link"><span class="num">05</span>Problems ZDM Solves</a></li>
+    <li><a href="#s06" class="nav-link"><span class="num">06</span>Service Delivery</a></li>
+    <li><a href="#s07" class="nav-link"><span class="num">07</span>Automation Stack</a></li>
+    <li><a href="#s08" class="nav-link"><span class="num">08</span>Tools &amp; Tech Stack</a></li>
+    <li><a href="#s09" class="nav-link"><span class="num">09</span>KPIs &amp; Benchmarks</a></li>
+    <li><a href="#s10" class="nav-link"><span class="num">10</span>Pricing Packages</a></li>
+    <li><a href="#s11" class="nav-link"><span class="num">11</span>Onboarding Emails</a></li>
+    <li><a href="#s12" class="nav-link"><span class="num">12</span>Objection Scripts</a></li>
+  </ul>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+
+<!-- ══════════════════════════════════════════
+     01 — IDEAL CLIENT PROFILE
+══════════════════════════════════════════ -->
+<section class="section" id="s01">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Ideal Client Profile</h2>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-value">$30K</div><div class="stat-label">Min Monthly Ad Spend</div></div>
+    <div class="stat-card"><div class="stat-value">18mo</div><div class="stat-label">Avg Engagement Length</div></div>
+    <div class="stat-card"><div class="stat-value">$5K+</div><div class="stat-label">Min Monthly Retainer</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="info-block">
+      <h4>E-Commerce Segment</h4>
+      <ul>
+        <li>Direct-to-consumer brands, $1M–$30M annual revenue</li>
+        <li>Shopify or WooCommerce storefronts with pixel history</li>
+        <li>Existing product-market fit — not pre-launch</li>
+        <li>AOV of $60 or higher (margins support paid acquisition)</li>
+        <li>Willing to invest minimum $15K/mo in paid media</li>
+        <li>Has creative assets or budget to produce them</li>
+        <li>Primary channels: Meta, Google Shopping, TikTok Ads</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>B2B / Lead-Gen Segment</h4>
+      <ul>
+        <li>Service businesses or SaaS, $500K–$20M annual revenue</li>
+        <li>LTV of $3K+ per closed client</li>
+        <li>Has a functioning CRM (HubSpot, Salesforce, or GHL)</li>
+        <li>Sales team capable of closing warm leads</li>
+        <li>Willing to invest $5K–$15K/mo in paid + automation</li>
+        <li>Active LinkedIn presence preferred</li>
+        <li>Primary channels: LinkedIn Ads, Google Search, Meta Lead Ads</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Psychographic Fit</h3>
+  <div class="two-col">
+    <div class="info-block">
+      <h4>Green Flags</h4>
+      <ul>
+        <li>Founder or CMO is data-literate — reads reports themselves</li>
+        <li>Has tried paid ads before and understands the ramp-up period</li>
+        <li>Treats marketing as an investment, not a cost center</li>
+        <li>Responds to Slack/email within 24 hours</li>
+        <li>Willing to run creative experiments and kill losers fast</li>
+        <li>Has clear revenue goals and ties them to CAC targets</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Red Flags — Walk Away</h4>
+      <ul>
+        <li>"We tried ads before and they never work" (no debrief)</li>
+        <li>Expects ROI in 30 days with no historical data</li>
+        <li>Wants to micromanage ad copy or approve every creative</li>
+        <li>No tracking installed — no pixel, no GA4, no CRM</li>
+        <li>Selling a product with sub-20% margin</li>
+        <li>Churn from two or more agencies in the past year</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Industry Verticals We Prioritize</h3>
+  <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="info-block"><h4>Apparel &amp; Fashion</h4><p>High creative velocity, strong Meta/TikTok performance.</p></div>
+    <div class="info-block"><h4>Health &amp; Wellness</h4><p>Supplement brands, fitness studios, telehealth practices.</p></div>
+    <div class="info-block"><h4>Home Goods</h4><p>Furniture, kitchenware, décor. Strong Google Shopping upside.</p></div>
+    <div class="info-block"><h4>Professional Services</h4><p>Law, finance, consulting. LinkedIn + Google Search stack.</p></div>
+    <div class="info-block"><h4>SaaS / Software</h4><p>Trial-conversion focus. Google + LinkedIn combo.</p></div>
+    <div class="info-block"><h4>Restaurants / Food</h4><p>Local domination plays. Meta + Google LSA.</p></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     02 — FINDING CLIENTS
+══════════════════════════════════════════ -->
+<section class="section" id="s02">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Finding Clients</h2>
+  </div>
+
+  <div class="highlight-block">
+    <p><strong>Core principle:</strong> Every outbound move should feel like a warm introduction. ZDM leads with insight — a competitor analysis, a free audit finding, a specific data point — never a generic pitch.</p>
+  </div>
+
+  <h3>Outbound Channels</h3>
+  <div class="cards-grid">
+    <div class="info-block">
+      <h4>LinkedIn Prospecting</h4>
+      <p>Target founders, CMOs, and marketing directors at companies matching the ICP. Use Sales Navigator to filter by company size, revenue signals, and recent job changes. Send a 3-touch sequence: connection + personalized note → value DM (share relevant stat or audit finding) → soft CTA to a 20-min call.</p>
+      <p style="margin-top:10px;"><strong>Volume:</strong> 15 new connections/day, 5 follow-ups/day.</p>
+    </div>
+    <div class="info-block">
+      <h4>Cold Email Outreach</h4>
+      <p>Use Apollo.io or Hunter.io to source verified emails. Personalize line 1 with a specific company observation (recent product launch, Glassdoor growth signal, ad spend estimate from SimilarWeb). Keep under 90 words. CTA = 1 question, not a meeting request.</p>
+      <p style="margin-top:10px;"><strong>Volume:</strong> 30–50 sends/day from warmed domain. Target 40%+ open rate.</p>
+    </div>
+    <div class="info-block">
+      <h4>Referral System</h4>
+      <p>Every client gets a referral ask at 90 days (when results are first visible). Offer a one-month retainer credit per signed referral. Send a templated "thinking of you" email to past clients quarterly with a new insight or case study to stay top of mind.</p>
+      <p style="margin-top:10px;"><strong>Target:</strong> 30% of new clients from referral within 12 months.</p>
+    </div>
+    <div class="info-block">
+      <h4>Inbound Content</h4>
+      <p>Publish one case study per month (anonymized if needed) with hard numbers — ROAS improvement, CPL reduction, revenue impact. Share on LinkedIn and embed in a ZDM newsletter. Each case study should include a specific industry keyword for organic search.</p>
+      <p style="margin-top:10px;"><strong>Distribution:</strong> LinkedIn post → email list → website blog.</p>
+    </div>
+    <div class="info-block">
+      <h4>Paid Prospecting (Meta)</h4>
+      <p>Run a low-budget awareness campaign ($500–$800/mo) retargeting LinkedIn profile visitors and website visitors. Creative = short-form video with a specific stat ("We reduced this brand's CPL by 47%"). CTA to a free audit landing page.</p>
+      <p style="margin-top:10px;"><strong>Budget:</strong> Reinvest 10% of retainer revenue into ZDM's own ads.</p>
+    </div>
+    <div class="info-block">
+      <h4>Strategic Partnerships</h4>
+      <p>Build referral relationships with web development agencies, Shopify developers, brand designers, and business coaches. They have clients who need paid media — we send them overflow creative projects. Set up a mutual referral agreement in writing.</p>
+      <p style="margin-top:10px;"><strong>Target:</strong> 5 active referral partners maintained at all times.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Outbound Sequence — Email (Template)</h3>
+  <div class="info-block" style="font-family:'DM Mono',monospace; font-size:12px; line-height:1.8; color:rgba(245,245,240,0.7);">
+    <p style="font-family:'DM Mono',monospace; font-size:12px; margin-bottom:8px;"><strong style="color:var(--lime);">SUBJECT:</strong> Quick question about [Brand]'s paid search</p>
+    <p style="font-family:'DM Mono',monospace; font-size:12px; margin-bottom:8px;">Hi [First Name],</p>
+    <p style="font-family:'DM Mono',monospace; font-size:12px; margin-bottom:8px;">Noticed [Brand] is running Google Shopping — your competitor [X] is bidding on your branded terms and likely scooping up bottom-funnel traffic.</p>
+    <p style="font-family:'DM Mono',monospace; font-size:12px; margin-bottom:8px;">We run paid media for DTC brands in [vertical] and caught this exact leak for [similar brand] — plugged it and saw 22% drop in CPA in 6 weeks.</p>
+    <p style="font-family:'DM Mono',monospace; font-size:12px; margin-bottom:0;">Worth a 15-minute call to walk through what we're seeing?</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     03 — QUALIFYING & CLOSING
+══════════════════════════════════════════ -->
+<section class="section" id="s03">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Qualifying &amp; Closing</h2>
+  </div>
+
+  <h3>Discovery Call Framework (BANT+)</h3>
+  <ol class="step-list">
+    <li>
+      <div class="step-body">
+        <strong>Budget</strong>
+        <p>Ask: "What's your current monthly marketing spend, and what portion is allocated to paid channels?" Minimum viable: $5K/mo retainer + $15K/mo ad spend. If below threshold, offer a scaled entry package or refer out.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Authority</strong>
+        <p>Confirm you're speaking with a decision-maker. Ask: "Who else is involved in choosing a marketing partner?" If it's a gatekeeper, request a follow-up call with the founder or CMO before investing more time.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Need</strong>
+        <p>Uncover the real pain. Ask: "What's the #1 metric you'd move to consider this a success in 90 days?" Listen for specific numbers — CAC, ROAS, leads/month. Vague answers = not sales-ready yet.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Timeline</strong>
+        <p>Ask: "When are you looking to get started?" If the answer is "eventually" or "maybe Q3," set a calendar reminder and move on. A deal with no urgency is not a deal.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Tech &amp; Data Access</strong>
+        <p>Confirm: Do they have a pixel installed? GA4 set up with conversions tracked? CRM in use? Access to ad account history? No tracking infrastructure = 30-day setup phase before campaigns can run.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Competitive Context</strong>
+        <p>Ask: "Are you currently working with any other agencies, or evaluating anyone else?" Understand what alternatives they're considering. This tells you how to position the proposal and what objections to pre-empt.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="divider"></div>
+
+  <h3>Proposal &amp; Close Process</h3>
+  <div class="two-col">
+    <div class="info-block">
+      <h4>Proposal Delivery</h4>
+      <ul>
+        <li>Send within 48 hours of discovery call</li>
+        <li>Lead with their specific problem and the revenue at stake</li>
+        <li>Show a 90-day roadmap with milestones (not a list of services)</li>
+        <li>Include one comparable case study with hard numbers</li>
+        <li>Present 2 package options — never 3 or more</li>
+        <li>Use the ZDM Proposal Tool for delivery</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Objection Handling</h4>
+      <ul>
+        <li><strong>"It's too expensive"</strong> — Reframe to cost per acquisition. Ask: "If we get you 50 leads at $X, what does that close rate mean for revenue?"</li>
+        <li><strong>"We need to think about it"</strong> — Set a 48-hour follow-up call. Ask what specific concerns need resolving.</li>
+        <li><strong>"We tried ads before and they didn't work"</strong> — Ask for the account. Do a live audit on the call to show specifically what went wrong.</li>
+        <li><strong>"Can you guarantee results?"</strong> — Never guarantee. Commit to a 60-day performance review clause in the contract.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>Contract Essentials</h3>
+  <div class="info-block">
+    <ul>
+      <li>3-month minimum engagement — no month-to-month until month 4</li>
+      <li>Ad spend billed separately from management fee (client owns the ad accounts)</li>
+      <li>Net-7 payment terms on retainer invoice; Net-0 on ad spend deposits</li>
+      <li>30-day written notice to cancel after initial term</li>
+      <li>IP clause: all creative assets, landing pages, and copy belong to client on exit</li>
+      <li>60-day performance review: if KPIs miss by more than 30%, renegotiate or exit cleanly</li>
+      <li>Non-compete: ZDM will not onboard a direct competitor in the same geo for 6 months</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     04 — ONBOARDING CHECKLIST
+══════════════════════════════════════════ -->
+<section class="section" id="s04">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Onboarding Checklist</h2>
+  </div>
+
+  <div class="highlight-block">
+    <p>All items are saved to <strong>localStorage</strong> — your progress persists between visits. Click any item to mark it complete.</p>
+  </div>
+
+  <div id="onboarding-progress" class="progress-indicator">Progress: <span id="check-count">0</span> / <span id="check-total">0</span> complete</div>
+
+  <!-- GROUP 1 -->
+  <div class="checklist-group">
+    <div class="checklist-group-title">Week 1 — Admin &amp; Access</div>
+    <ul class="checklist" id="cl-admin">
+      <li data-id="ob-1"><div class="check-box"></div><span class="check-label">Contract signed and countersigned — filed in client folder<span class="check-note">Use DocuSign or Bonsai. Store in /Clients/[Name]/Admin.</span></span></li>
+      <li data-id="ob-2"><div class="check-box"></div><span class="check-label">First invoice sent and payment collected (retainer + ad spend deposit)<span class="check-note">Do not start work until payment clears.</span></span></li>
+      <li data-id="ob-3"><div class="check-box"></div><span class="check-label">Client added to project management system (Notion or Asana)<span class="check-note">Create intake workspace from template.</span></span></li>
+      <li data-id="ob-4"><div class="check-box"></div><span class="check-label">Shared Slack channel created — client team invited<span class="check-note">Channel name: #zdm-[clientname]. Pin kickoff doc in channel.</span></span></li>
+      <li data-id="ob-5"><div class="check-box"></div><span class="check-label">Meta Business Manager access granted (admin role)<span class="check-note">Request access to their BM — do not create a new one.</span></span></li>
+      <li data-id="ob-6"><div class="check-box"></div><span class="check-label">Google Ads access granted (standard admin)<span class="check-note">MCC link: accept at manager.google.com.</span></span></li>
+      <li data-id="ob-7"><div class="check-box"></div><span class="check-label">GA4 + Google Search Console view access confirmed<span class="check-note">Confirm conversion events are firing correctly.</span></span></li>
+      <li data-id="ob-8"><div class="check-box"></div><span class="check-label">CRM access granted and lead stages mapped<span class="check-note">Confirm what counts as a qualified lead in their pipeline.</span></span></li>
+    </ul>
+  </div>
+
+  <!-- GROUP 2 -->
+  <div class="checklist-group">
+    <div class="checklist-group-title">Week 1 — Audit &amp; Discovery</div>
+    <ul class="checklist" id="cl-audit">
+      <li data-id="ob-9"><div class="check-box"></div><span class="check-label">Historical ad account audit completed (90 days minimum)<span class="check-note">Document: top campaigns, CPAs, wasted spend, structural issues.</span></span></li>
+      <li data-id="ob-10"><div class="check-box"></div><span class="check-label">Website conversion rate baseline recorded<span class="check-note">Pull from GA4. Session → purchase or session → lead conversion rate.</span></span></li>
+      <li data-id="ob-11"><div class="check-box"></div><span class="check-label">Competitor ad analysis run (Meta Ad Library + SEMrush)<span class="check-note">Document 3–5 main competitors, their creative angles and offers.</span></span></li>
+      <li data-id="ob-12"><div class="check-box"></div><span class="check-label">Client brand kit received (logos, colors, fonts, do-not-use guidelines)<span class="check-note">Store in /Clients/[Name]/Brand Assets.</span></span></li>
+      <li data-id="ob-13"><div class="check-box"></div><span class="check-label">Offer clarity confirmed — what are we selling and at what price?<span class="check-note">Get the full product/offer sheet. Identify hero SKU or lead offer.</span></span></li>
+      <li data-id="ob-14"><div class="check-box"></div><span class="check-label">Kickoff call completed — goals, constraints, and 90-day targets set<span class="check-note">Record the call. Share notes in Slack within 24 hours.</span></span></li>
+    </ul>
+  </div>
+
+  <!-- GROUP 3 -->
+  <div class="checklist-group">
+    <div class="checklist-group-title">Week 2 — Tracking &amp; Infrastructure</div>
+    <ul class="checklist" id="cl-tracking">
+      <li data-id="ob-15"><div class="check-box"></div><span class="check-label">Meta Pixel verified firing on all key pages (add-to-cart, checkout, purchase)<span class="check-note">Use Meta Events Manager to confirm event quality.</span></span></li>
+      <li data-id="ob-16"><div class="check-box"></div><span class="check-label">Meta Conversions API (CAPI) implemented<span class="check-note">Reduces signal loss from iOS 14+. Use Shopify native CAPI or GTM server-side.</span></span></li>
+      <li data-id="ob-17"><div class="check-box"></div><span class="check-label">Google Tag Manager container audited and cleaned<span class="check-note">Remove redundant tags. Confirm GA4 purchase event uses data layer.</span></span></li>
+      <li data-id="ob-18"><div class="check-box"></div><span class="check-label">Offline conversion tracking set up in Google Ads (for B2B)<span class="check-note">Import closed deals from CRM to match to ad clicks.</span></span></li>
+      <li data-id="ob-19"><div class="check-box"></div><span class="check-label">UTM parameter structure defined and documented<span class="check-note">Standard: utm_source / utm_medium / utm_campaign / utm_content / utm_term.</span></span></li>
+      <li data-id="ob-20"><div class="check-box"></div><span class="check-label">Reporting dashboard created and shared with client<span class="check-note">Use Looker Studio template. Connect GA4 + Google Ads + Meta as sources.</span></span></li>
+    </ul>
+  </div>
+
+  <!-- GROUP 4 -->
+  <div class="checklist-group">
+    <div class="checklist-group-title">Week 2–3 — Campaign Build</div>
+    <ul class="checklist" id="cl-campaign">
+      <li data-id="ob-21"><div class="check-box"></div><span class="check-label">Initial creative brief written and approved by client<span class="check-note">Cover: angles, hooks, formats, do/don't rules, CTA options.</span></span></li>
+      <li data-id="ob-22"><div class="check-box"></div><span class="check-label">First creative batch produced (min 5 ad variants — 3 static, 2 video)<span class="check-note">Use brand kit. Each variant tests one distinct angle.</span></span></li>
+      <li data-id="ob-23"><div class="check-box"></div><span class="check-label">Campaign structure built in platform (account → campaign → ad set → ad)<span class="check-note">Follow ZDM naming convention: [Client]-[Channel]-[Objective]-[Date].</span></span></li>
+      <li data-id="ob-24"><div class="check-box"></div><span class="check-label">Audiences defined: cold (Lookalike or keyword), warm (retargeting), hot (cart abandonment)<span class="check-note">Do not collapse all audiences into one ad set.</span></span></li>
+      <li data-id="ob-25"><div class="check-box"></div><span class="check-label">Campaign reviewed internally before launch<span class="check-note">Second pair of eyes on all copy, targeting, budget allocation, and tracking.</span></span></li>
+      <li data-id="ob-26"><div class="check-box"></div><span class="check-label">Client approved campaign launch (written sign-off in Slack or email)<span class="check-note">Never launch without written approval.</span></span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     05 — PROBLEMS ZDM SOLVES
+══════════════════════════════════════════ -->
+<section class="section" id="s05">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Problems ZDM Solves</h2>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All Problems</button>
+    <button class="filter-btn" data-filter="ecom">E-Commerce</button>
+    <button class="filter-btn" data-filter="b2b">B2B</button>
+    <button class="filter-btn" data-filter="both">Both</button>
+  </div>
+
+  <div class="cards-grid" id="problems-grid">
+
+    <div class="card" data-cat="ecom">
+      <span class="card-tag">E-Commerce</span>
+      <h3>High CPA With No Clear Cause</h3>
+      <p>Ad spend is rising but cost per acquisition keeps climbing. Usually caused by creative fatigue, audience saturation, or a tracking gap that's hiding true performance. ZDM runs a full-funnel attribution audit, refreshes creative systematically, and restructures campaign architecture to isolate what's actually driving cost.</p>
+    </div>
+
+    <div class="card" data-cat="both">
+      <span class="card-tag">Both</span>
+      <h3>Tracking Is Broken or Incomplete</h3>
+      <p>Platforms are reporting conversions but the numbers don't match Shopify or the CRM. This happens post-iOS 14 without server-side events, or when GTM tags fire incorrectly. ZDM implements Conversions API, audits the data layer, and reconciles attribution across GA4, Meta, and Google so reporting is trustworthy.</p>
+    </div>
+
+    <div class="card" data-cat="b2b">
+      <span class="card-tag">B2B</span>
+      <h3>Leads Don't Convert to Revenue</h3>
+      <p>The form fills are coming in but the pipeline doesn't move. Usually a qualification problem — campaigns are optimizing for volume over quality. ZDM tightens audience targeting, adds qualifying friction to forms, and implements offline conversion tracking so the algorithm learns from closed-won deals, not just submissions.</p>
+    </div>
+
+    <div class="card" data-cat="ecom">
+      <span class="card-tag">E-Commerce</span>
+      <h3>ROAS Collapses After Scaling</h3>
+      <p>Performance is great at $5K/mo spend but falls apart at $20K. Classic audience exhaustion and bid competition. ZDM uses a modular scaling framework: expand to new audience layers, introduce new creative angles, and distribute budget across geographic or demographic segments before the primary audience saturates.</p>
+    </div>
+
+    <div class="card" data-cat="both">
+      <span class="card-tag">Both</span>
+      <h3>No Retargeting Strategy</h3>
+      <p>All budget is going to cold acquisition with nothing recapturing the 95% of visitors who don't convert. ZDM builds a full retargeting stack: 1-day, 7-day, and 30-day windows with distinct creative and offers for each. For e-commerce: cart abandonment sequences. For B2B: case study and testimonial retargeting.</p>
+    </div>
+
+    <div class="card" data-cat="b2b">
+      <span class="card-tag">B2B</span>
+      <h3>LinkedIn Ads Burning Budget With No Results</h3>
+      <p>LinkedIn CPCs are high by design — but most B2B brands misuse it by running brand awareness to cold audiences with a "contact us" CTA. ZDM restructures LinkedIn campaigns around gated content lead magnets, retargets video viewers and website visitors with case studies, and uses Matched Audiences to target exact company lists.</p>
+    </div>
+
+    <div class="card" data-cat="ecom">
+      <span class="card-tag">E-Commerce</span>
+      <h3>Creative Is Stale and Performing Poorly</h3>
+      <p>The same three ads have been running for six months. Creative is the biggest performance lever in paid media — more impactful than targeting or bidding. ZDM installs a creative testing machine: 8–12 new ad variants per month, structured A/B tests on hooks, formats and CTAs, and a systematic kill/scale framework based on 72-hour data.</p>
+    </div>
+
+    <div class="card" data-cat="both">
+      <span class="card-tag">Both</span>
+      <h3>No Visibility Into What's Actually Working</h3>
+      <p>Marketing reports show clicks and impressions but nothing tied to revenue. Leadership can't make decisions. ZDM builds a Looker Studio dashboard that connects ad platforms to GA4 and the CRM, surfaces CAC by channel, ROAS by campaign, and pipeline velocity — giving the team a single source of truth updated daily.</p>
+    </div>
+
+    <div class="card" data-cat="ecom">
+      <span class="card-tag">E-Commerce</span>
+      <h3>Google Shopping Losing to Competitors</h3>
+      <p>Products are appearing in Shopping but at low impression share, losing to competitors on price or relevance. ZDM audits the Merchant Center feed for title and description optimization, restructures Shopping campaigns by margin tier, and implements Performance Max with proper asset group segmentation and audience signals.</p>
+    </div>
+
+    <div class="card" data-cat="both">
+      <span class="card-tag">Both</span>
+      <h3>Agency Relationship Feels Like a Black Box</h3>
+      <p>Previous agency sent a PDF once a month with numbers but no context, strategy, or proactive communication. ZDM operates with full transparency: clients have live access to the reporting dashboard at all times, a weekly Loom performance update every Monday, and a 60-minute monthly strategy call where we show our work and explain every decision.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     06 — SERVICE DELIVERY PLAYBOOK
+══════════════════════════════════════════ -->
+<section class="section" id="s06">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Service Delivery Playbook</h2>
+  </div>
+
+  <div class="tabs-nav" id="tabs-06">
+    <button class="tab-btn active" data-tab="paid-media">Paid Media</button>
+    <button class="tab-btn" data-tab="creative">Creative Production</button>
+    <button class="tab-btn" data-tab="seo">SEO &amp; Content</button>
+    <button class="tab-btn" data-tab="email">Email &amp; SMS</button>
+    <button class="tab-btn" data-tab="reporting">Reporting Cadence</button>
+  </div>
+
+  <!-- PAID MEDIA -->
+  <div class="tab-panel active" id="tab-paid-media">
+    <div class="two-col">
+      <div class="info-block">
+        <h4>Weekly Responsibilities</h4>
+        <ul>
+          <li>Review spend pacing — correct underspend or overspend by Thursday</li>
+          <li>Check frequency on cold audiences — pause or rotate creative above 2.5</li>
+          <li>Review new creative performance at 72 hours: kill if CPC is 2x average</li>
+          <li>Confirm pixel and conversion tracking are firing correctly</li>
+          <li>Respond to any platform policy flags or disapprovals within 24 hours</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Monthly Responsibilities</h4>
+        <ul>
+          <li>Full performance review: CAC, ROAS, CPL vs. benchmarks</li>
+          <li>Audience refresh — add new Lookalike sources or keyword expansions</li>
+          <li>Budget reallocation based on channel efficiency data</li>
+          <li>Launch one new test per channel (bidding strategy, creative angle, audience)</li>
+          <li>Deliver monthly report with written commentary, not just numbers</li>
+        </ul>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <h3>Campaign Structure Standard</h3>
+    <div class="info-block" style="font-family:'DM Mono',monospace; font-size:12px; line-height:2; color:rgba(245,245,240,0.7);">
+      <span style="color:var(--lime);">ACCOUNT</span><br>
+      ├── <span style="color:var(--light);">CAMPAIGN</span> — Objective + Budget Type<br>
+      │   ├── <span style="color:rgba(245,245,240,0.6);">AD SET 01</span> — Cold: LAL 1-3% (LTV purchasers)<br>
+      │   ├── <span style="color:rgba(245,245,240,0.6);">AD SET 02</span> — Cold: Broad Interest Stack<br>
+      │   ├── <span style="color:rgba(245,245,240,0.6);">AD SET 03</span> — Warm: Site Visitors 7-day<br>
+      │   └── <span style="color:rgba(245,245,240,0.6);">AD SET 04</span> — Hot: Cart Abandoners 1-day<br>
+      │       └── <span style="color:rgba(245,245,240,0.4);">3–5 Ad Variants per set (test angles, not formats)</span>
+    </div>
+    <div class="divider"></div>
+    <h3>Budget Allocation Framework</h3>
+    <div class="cards-grid" style="grid-template-columns: repeat(3,1fr);">
+      <div class="info-block" style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--lime);line-height:1;margin-bottom:6px;">60%</div>
+        <h4 style="margin-bottom:6px;">Prospecting</h4>
+        <p style="font-size:12px;">Cold audience acquisition — feeds the top of funnel</p>
+      </div>
+      <div class="info-block" style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--lime);line-height:1;margin-bottom:6px;">25%</div>
+        <h4 style="margin-bottom:6px;">Retargeting</h4>
+        <p style="font-size:12px;">Mid and bottom-funnel re-engagement</p>
+      </div>
+      <div class="info-block" style="text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--lime);line-height:1;margin-bottom:6px;">15%</div>
+        <h4 style="margin-bottom:6px;">Testing</h4>
+        <p style="font-size:12px;">New audiences, formats, and bidding experiments</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATIVE PRODUCTION -->
+  <div class="tab-panel" id="tab-creative">
+    <div class="highlight-block">
+      <p><strong>Creative is the primary variable in paid media performance.</strong> ZDM treats creative like a media channel — systematic testing, not gut-feel design. Every piece has a hypothesis behind it.</p>
+    </div>
+    <h3>Monthly Creative Cadence</h3>
+    <ol class="step-list">
+      <li><div class="step-body"><strong>Creative Review (Day 1)</strong><p>Pull performance data on all active ads. Identify the top 3 performers and bottom 3. The top performers get iterated; the bottom 3 get killed or paused.</p></div></li>
+      <li><div class="step-body"><strong>Brief Writing (Day 2–3)</strong><p>Write creative briefs for 8–12 new variants. Each brief specifies: the audience pain point being addressed, the hook format (text overlay, spoken, or visual), the proof element (stat, testimonial, demo), and the CTA.</p></div></li>
+      <li><div class="step-body"><strong>Production (Day 4–10)</strong><p>Static ads produced in-house using Figma + brand kit. Video ads: use client UGC, stock footage, or brief a content creator. All videos under 30 seconds with a hook in the first 2 seconds.</p></div></li>
+      <li><div class="step-body"><strong>Review &amp; Approval (Day 11–12)</strong><p>Internal review against brief. Client approval for any new messaging angles. No approval required for creative iterations of already-approved angles.</p></div></li>
+      <li><div class="step-body"><strong>Launch &amp; Monitor (Day 13–15)</strong><p>Upload to ad platform. Monitor CTR, CPC, and hook rate (% watched past 3 seconds) at 72 hours. A/B test one variable at a time.</p></div></li>
+    </ol>
+    <div class="divider"></div>
+    <h3>Creative Formats &amp; When to Use Them</h3>
+    <div class="two-col">
+      <div class="info-block">
+        <h4>Static Image</h4>
+        <ul>
+          <li>Best for: product shots, before/after, offers, testimonial quotes</li>
+          <li>Ideal ratio: 1:1 (feed) and 9:16 (stories)</li>
+          <li>Hook: bold headline text overlay, max 7 words</li>
+          <li>Use for: Google Display, Meta feed, LinkedIn Sponsored</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Short-Form Video (6–30s)</h4>
+        <ul>
+          <li>Best for: product demos, UGC testimonials, problem/solution</li>
+          <li>Ideal ratio: 9:16 for Reels/TikTok; 1:1 for feed</li>
+          <li>Hook: pattern interrupt in first 1.5 seconds</li>
+          <li>Use for: Meta Reels, TikTok Ads, YouTube Shorts</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Carousel</h4>
+        <ul>
+          <li>Best for: product collections, step-by-step processes, feature lists</li>
+          <li>Card 1 = hook, Cards 2–4 = proof, Card 5 = CTA</li>
+          <li>Consistent visual style across all cards</li>
+          <li>Use for: Meta feed retargeting, LinkedIn document ads</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Long-Form Video (60s–3min)</h4>
+        <ul>
+          <li>Best for: brand story, detailed product explanations, case studies</li>
+          <li>Requires strong scripting — use problem → agitation → solution structure</li>
+          <li>Repurpose to YouTube pre-roll and Meta retargeting</li>
+          <li>Use for: warm and hot audiences only — too expensive for cold</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO & CONTENT -->
+  <div class="tab-panel" id="tab-seo">
+    <div class="two-col">
+      <div class="info-block">
+        <h4>Monthly SEO Deliverables</h4>
+        <ul>
+          <li>2–4 long-form blog posts targeting bottom-funnel keywords</li>
+          <li>Technical audit check: Core Web Vitals, crawl errors, broken links</li>
+          <li>1 link-building outreach campaign (HARO, guest post, or digital PR)</li>
+          <li>Monthly rank tracking report for target 30 keywords</li>
+          <li>Schema markup implementation for new content</li>
+          <li>Internal linking pass on new and existing content</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Keyword Strategy</h4>
+        <ul>
+          <li><strong>Bottom-funnel first:</strong> "[product] buy online," "[service] near me," "[brand] review" — these convert</li>
+          <li><strong>Mid-funnel:</strong> "best [category]," "[problem] solution" — captures research phase</li>
+          <li><strong>Top-funnel:</strong> Educational content that seeds retargeting audiences</li>
+          <li>Target keywords with search volume 500–5,000/mo — less competition, real traffic</li>
+          <li>Cluster keywords by topic, not individually</li>
+        </ul>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <h3>Content → Paid Media Flywheel</h3>
+    <div class="info-block">
+      <p>Every SEO article is a retargeting audience seed. Readers of a "best [product type]" article are categorized as research-phase prospects — they get retargeted with a comparison ad and a discount offer. High-performing ad copy is reverse-engineered into organic headlines and meta descriptions. Paid data informs SEO strategy: if "free shipping" crushes in ads, it becomes the hero headline on the landing page and the title tag.</p>
+    </div>
+  </div>
+
+  <!-- EMAIL & SMS -->
+  <div class="tab-panel" id="tab-email">
+    <div class="highlight-block">
+      <p><strong>Email and SMS are the highest-ROI owned channels.</strong> ZDM builds these as revenue recovery systems — not newsletters. Every flow exists to recover lost revenue or extend customer LTV.</p>
+    </div>
+    <h3>Core Email Flows (E-Commerce)</h3>
+    <div class="cards-grid">
+      <div class="info-block">
+        <h4>Welcome Series (5 emails)</h4>
+        <ul>
+          <li>Email 1 (0hr): Welcome + brand story + 10% offer</li>
+          <li>Email 2 (24hr): Social proof + bestseller showcase</li>
+          <li>Email 3 (48hr): Objection handling (returns, quality, origin)</li>
+          <li>Email 4 (72hr): User-generated content + community</li>
+          <li>Email 5 (5 days): Last chance offer + urgency</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Abandoned Cart (3 emails)</h4>
+        <ul>
+          <li>Email 1 (1hr): Soft reminder — "still thinking it over?"</li>
+          <li>Email 2 (24hr): Reinforce value + address top objections</li>
+          <li>Email 3 (72hr): Discount offer or free shipping threshold</li>
+          <li>Target recovery rate: 8–12% of abandoned carts</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Post-Purchase (4 emails)</h4>
+        <ul>
+          <li>Email 1 (0hr): Confirmation + order summary</li>
+          <li>Email 2 (3 days): Product education / how to use</li>
+          <li>Email 3 (7 days): Review request</li>
+          <li>Email 4 (21 days): Cross-sell / complementary product</li>
+        </ul>
+      </div>
+      <div class="info-block">
+        <h4>Win-Back (3 emails)</h4>
+        <ul>
+          <li>Trigger: no purchase in 90 days</li>
+          <li>Email 1: "We miss you" + new arrivals</li>
+          <li>Email 2: Personalized recommendation based on past purchase</li>
+          <li>Email 3: Best offer + sunset warning (last email)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTING -->
+  <div class="tab-panel" id="tab-reporting">
+    <h3>Communication &amp; Reporting Cadence</h3>
+    <ol class="step-list">
+      <li><div class="step-body"><strong>Weekly Loom — Every Monday by 10am</strong><p>3–5 minute screen recording walking through the previous week's performance. Cover: spend vs. budget, top performers, any anomalies, and what's changing this week. No slide deck needed — Loom on the live dashboard.</p></div></li>
+      <li><div class="step-body"><strong>Monthly Strategy Call — First Thursday of the Month</strong><p>60-minute video call. Agenda: review the month's data, revisit 90-day goals, present the next month's test roadmap, surface any budget reallocation recommendations, and address client questions.</p></div></li>
+      <li><div class="step-body"><strong>Monthly Written Report — By the 5th of Each Month</strong><p>Sent via email. Includes: executive summary (3 sentences max), key metrics vs. prior month vs. targets, creative performance breakdown, SEO ranking changes if applicable, and recommended actions.</p></div></li>
+      <li><div class="step-body"><strong>Quarterly Business Review (QBR) — Every 3 Months</strong><p>90-minute call with founder/CMO. Review the full quarter: what worked, what didn't, competitive landscape changes, LTV and CAC trends, and revised targets for the next quarter. Prepare a deck for this one.</p></div></li>
+      <li><div class="step-body"><strong>Real-Time Dashboard — Always On</strong><p>Client has live access to the Looker Studio dashboard at all times. No need to request data — if they have a question at 11pm, they can look themselves. Reduces urgent Slack messages and builds trust.</p></div></li>
+    </ol>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     07 — AUTOMATION STACK
+══════════════════════════════════════════ -->
+<section class="section" id="s07">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Automation Stack</h2>
+  </div>
+
+  <div class="highlight-block">
+    <p>ZDM uses automation to eliminate repetitive operational tasks — not to replace judgment. Every automation has a human review checkpoint before any client-facing output is sent. Click <strong>+</strong> to expand any row for implementation notes.</p>
+  </div>
+
+  <table class="accordion-table">
+    <thead>
+      <tr>
+        <th style="width:36px;"></th>
+        <th>Automation</th>
+        <th>Trigger</th>
+        <th>Tool</th>
+        <th>Category</th>
+      </tr>
+    </thead>
+    <tbody id="automation-tbody">
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a1">+</button></td>
+        <td><span class="tool-name">New Lead → CRM Entry + Slack Alert</span></td>
+        <td>Form submission on any landing page</td>
+        <td>Make (Integromat)</td>
+        <td><span class="tool-cat">Lead Ops</span></td>
+      </tr>
+      <tr class="expand-row" id="a1">
+        <td colspan="5"><strong>How it works:</strong> When a lead form is submitted (Typeform, Webflow, or Gravity Forms), Make triggers a scenario that creates a contact in GoHighLevel or HubSpot, enriches the record with LinkedIn data via Apollo, and sends a Slack message to the #new-leads channel with name, company, and form source. <br><br><strong>Review checkpoint:</strong> Sales rep qualifies the lead before any outreach is triggered.</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a2">+</button></td>
+        <td><span class="tool-name">Weekly Performance Report Generation</span></td>
+        <td>Every Monday at 8am</td>
+        <td>Looker Studio + Make</td>
+        <td><span class="tool-cat">Reporting</span></td>
+      </tr>
+      <tr class="expand-row" id="a2">
+        <td colspan="5"><strong>How it works:</strong> A scheduled Make scenario pulls the prior 7 days of data from Google Ads API and Meta Marketing API, formats it into a Google Sheet, and refreshes the Looker Studio client dashboard. A Slack notification is sent to the account manager reminding them to record the weekly Loom. <br><br><strong>Review checkpoint:</strong> Account manager reviews numbers before recording the Loom — anomalies are flagged to the client proactively, not buried in data.</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a3">+</button></td>
+        <td><span class="tool-name">Ad Spend Pacing Alert</span></td>
+        <td>Daily at 6pm if underspend &gt; 15%</td>
+        <td>Google Ads Scripts + Slack</td>
+        <td><span class="tool-cat">Budget Control</span></td>
+      </tr>
+      <tr class="expand-row" id="a3">
+        <td colspan="5"><strong>How it works:</strong> A Google Ads Script runs daily and compares actual spend against the prorated monthly budget. If spend is more than 15% behind pace, it fires a Slack webhook to the account manager channel with the specific campaign and recommended daily budget adjustment. <br><br><strong>Review checkpoint:</strong> Account manager decides whether to adjust budgets or escalate (e.g., if the account is paused for a client reason).</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a4">+</button></td>
+        <td><span class="tool-name">Client Invoice Generation &amp; Reminder</span></td>
+        <td>1st of each month + 7-day overdue trigger</td>
+        <td>Bonsai or QuickBooks + Make</td>
+        <td><span class="tool-cat">Finance</span></td>
+      </tr>
+      <tr class="expand-row" id="a4">
+        <td colspan="5"><strong>How it works:</strong> On the 1st of the month, Make triggers Bonsai to generate and send the retainer invoice to the client. If unpaid after 7 days, a polite automated reminder is sent. If unpaid after 14 days, a Slack alert fires to the account manager to follow up directly. Campaigns are paused (manually) if payment is 21+ days overdue.<br><br><strong>Review checkpoint:</strong> Account manager handles any disputes or exceptions — the system never auto-pauses campaigns.</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a5">+</button></td>
+        <td><span class="tool-name">Onboarding Task Sequence</span></td>
+        <td>New client contract signed</td>
+        <td>Make + Notion + Gmail</td>
+        <td><span class="tool-cat">Onboarding</span></td>
+      </tr>
+      <tr class="expand-row" id="a5">
+        <td colspan="5"><strong>How it works:</strong> When a contract is signed in DocuSign or Bonsai, Make creates a new client workspace in Notion from a template, assigns all onboarding checklist tasks with due dates, sends the client a welcome email with the onboarding form link, and posts an intro message in the new Slack channel. <br><br><strong>Review checkpoint:</strong> Account manager reviews the workspace and personalizes the welcome email before it sends (Make waits 30 minutes for override).</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a6">+</button></td>
+        <td><span class="tool-name">Creative Performance Kill Alert</span></td>
+        <td>72 hours post-launch if CPC &gt; 2x account avg</td>
+        <td>Meta API + Make + Slack</td>
+        <td><span class="tool-cat">Creative Ops</span></td>
+      </tr>
+      <tr class="expand-row" id="a6">
+        <td colspan="5"><strong>How it works:</strong> A Make scenario polls the Meta Marketing API every 24 hours for newly launched ads. At the 72-hour mark, it calculates CPC for each new ad and compares it to the account's 30-day average. If CPC is more than 2x the average, it sends a Slack message recommending the ad be paused. <br><br><strong>Review checkpoint:</strong> Account manager reviews context (low impressions can inflate CPC artificially) before pausing anything.</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a7">+</button></td>
+        <td><span class="tool-name">Monthly Client Health Score</span></td>
+        <td>Last Friday of each month</td>
+        <td>Google Sheets + Make + Notion</td>
+        <td><span class="tool-cat">Account Health</span></td>
+      </tr>
+      <tr class="expand-row" id="a7">
+        <td colspan="5"><strong>How it works:</strong> A Make scenario pulls data from Google Ads, Meta, Looker Studio, and the Notion task tracker to generate a health score for each active client: KPI performance (40%), communication health (30%), and scope adherence (30%). Scores below 60 trigger a Slack alert for a proactive retention call. <br><br><strong>Review checkpoint:</strong> Account manager reviews the score and adds qualitative notes before any retention action is taken.</td>
+      </tr>
+
+      <tr class="accordion-row">
+        <td><button class="expand-btn" data-target="a8">+</button></td>
+        <td><span class="tool-name">Competitor Ad Library Scrape</span></td>
+        <td>Weekly on Sunday night</td>
+        <td>Apify + Make + Notion</td>
+        <td><span class="tool-cat">Competitive Intel</span></td>
+      </tr>
+      <tr class="expand-row" id="a8">
+        <td colspan="5"><strong>How it works:</strong> An Apify actor scrapes the Meta Ad Library for each client's top 5 competitors and stores new active ads in a Notion database tagged by client and date. Make sends a weekly digest to the account manager with a count of new competitor creatives. Used to inform monthly creative briefs and spot new offer strategies. <br><br><strong>Review checkpoint:</strong> Account manager reviews and selects relevant insights to include in the monthly creative brief.</td>
+      </tr>
+
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════════════════════════════
+     08 — TOOLS & TECH STACK
+══════════════════════════════════════════ -->
+<section class="section" id="s08">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title">Tools &amp; Tech Stack</h2>
+  </div>
+
+  <div class="two-col" style="margin-bottom:16px;">
+    <div class="info-block">
+      <h4>Paid Media &amp; Advertising</h4>
+      <ul>
+        <li><strong>Meta Ads Manager</strong> — Primary e-commerce paid social platform</li>
+        <li><strong>Google Ads</strong> — Search, Shopping, Display, PMax, YouTube</li>
+        <li><strong>LinkedIn Campaign Manager</strong> — B2B prospecting and retargeting</li>
+        <li><strong>TikTok Ads Manager</strong> — Short-form video acquisition for DTC</li>
+        <li><strong>Google Merchant Center</strong> — Feed management for Shopping campaigns</li>
+        <li><strong>DataFeedWatch</strong> — Feed optimization and transformation tool</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Analytics &amp; Tracking</h4>
+      <ul>
+        <li><strong>Google Analytics 4</strong> — Primary web analytics and conversion tracking</li>
+        <li><strong>Google Tag Manager</strong> — Tag deployment and data layer management</li>
+        <li><strong>Meta Events Manager + CAPI</strong> — Server-side conversion API</li>
+        <li><strong>Google Search Console</strong> — Organic search performance monitoring</li>
+        <li><strong>Hotjar</strong> — Heatmaps and session recordings for CRO</li>
+        <li><strong>Triple Whale</strong> — Attribution for Shopify DTC brands (MER view)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-bottom:16px;">
+    <div class="info-block">
+      <h4>Reporting &amp; Dashboards</h4>
+      <ul>
+        <li><strong>Looker Studio</strong> — Primary client reporting dashboards (free)</li>
+        <li><strong>Google Sheets</strong> — Data manipulation and custom calculations</li>
+        <li><strong>Supermetrics</strong> — Data connector for ad platforms → Sheets/Looker</li>
+        <li><strong>Loom</strong> — Async video reporting (weekly Loom to all clients)</li>
+        <li><strong>Notion</strong> — Internal knowledge base and client workspaces</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>CRM &amp; Communication</h4>
+      <ul>
+        <li><strong>GoHighLevel (GHL)</strong> — Primary CRM for client lead management</li>
+        <li><strong>HubSpot</strong> — Used for ZDM's own sales pipeline</li>
+        <li><strong>Slack</strong> — Client communication and internal ops</li>
+        <li><strong>Gmail + Google Workspace</strong> — Email and file management</li>
+        <li><strong>Calendly</strong> — Discovery call and strategy call scheduling</li>
+        <li><strong>DocuSign / Bonsai</strong> — Contract execution and invoicing</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="two-col" style="margin-bottom:16px;">
+    <div class="info-block">
+      <h4>Creative Production</h4>
+      <ul>
+        <li><strong>Figma</strong> — Static ad design, landing page wireframes</li>
+        <li><strong>CapCut</strong> — Fast video editing for short-form ad content</li>
+        <li><strong>Adobe Premiere Pro</strong> — Long-form video editing and brand films</li>
+        <li><strong>Canva</strong> — Rapid iteration of templated static assets</li>
+        <li><strong>ElevenLabs</strong> — AI voiceover for video ads (when needed)</li>
+        <li><strong>Pika / Runway</strong> — AI video generation for B-roll and transitions</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Automation &amp; Integrations</h4>
+      <ul>
+        <li><strong>Make (Integromat)</strong> — Primary automation platform (preferred over Zapier)</li>
+        <li><strong>Apify</strong> — Web scraping for competitor research and lead data</li>
+        <li><strong>Apollo.io</strong> — B2B lead prospecting and email verification</li>
+        <li><strong>Google Ads Scripts</strong> — Custom budget pacing and anomaly detection</li>
+        <li><strong>OpenAI API</strong> — Ad copy generation drafts and brief summaries</li>
+        <li><strong>Klaviyo / Omnisend</strong> — Email and SMS automation for e-commerce clients</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="info-block">
+      <h4>SEO &amp; Research</h4>
+      <ul>
+        <li><strong>Ahrefs</strong> — Primary SEO platform: keywords, backlinks, audits</li>
+        <li><strong>SEMrush</strong> — Competitor analysis and PPC keyword research</li>
+        <li><strong>Screaming Frog</strong> — Technical SEO crawls</li>
+        <li><strong>SimilarWeb</strong> — Traffic intelligence and competitor ad spend estimates</li>
+        <li><strong>Meta Ad Library</strong> — Competitor creative research</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Project Management</h4>
+      <ul>
+        <li><strong>Notion</strong> — Client wikis, SOPs, onboarding workspaces</li>
+        <li><strong>Asana</strong> — Task and project tracking for larger client teams</li>
+        <li><strong>Google Drive</strong> — File storage, organized by client folder structure</li>
+        <li><strong>GitHub</strong> — Tracking tag implementation and landing page code</li>
+        <li><strong>Loom</strong> — Async video for internal reviews and client reporting</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     09 — KPIs & BENCHMARKS
+══════════════════════════════════════════ -->
+<section class="section" id="s09">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 class="section-title">KPIs &amp; Benchmarks</h2>
+  </div>
+
+  <div class="highlight-block">
+    <p>These benchmarks reflect ZDM's internal performance standards across active client accounts. <strong>Green</strong> = meeting or exceeding target. <strong>Yellow</strong> = within 20% of target — monitor closely. Anything below yellow triggers a strategy review in the next weekly check-in.</p>
+  </div>
+
+  <h3>E-Commerce Benchmarks</h3>
+  <table class="kpi-table" style="margin-bottom:36px;">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Channel</th>
+        <th>Target</th>
+        <th>Warning Zone</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="kpi-channel">ROAS</td>
+        <td>Meta Ads</td>
+        <td class="kpi-val">3.5x+</td>
+        <td><span class="kpi-badge warn">2.5–3.5x</span></td>
+        <td>Blended account ROAS. New accounts: 2.0x acceptable in month 1–2.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">ROAS</td>
+        <td>Google Shopping</td>
+        <td class="kpi-val">5.0x+</td>
+        <td><span class="kpi-badge warn">3.5–5.0x</span></td>
+        <td>Shopping tends to outperform Meta on ROAS due to high purchase intent.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Cost Per Purchase</td>
+        <td>Meta Ads</td>
+        <td class="kpi-val">&lt; 30% of AOV</td>
+        <td><span class="kpi-badge warn">30–40% of AOV</span></td>
+        <td>If AOV is $100, target CPA under $30. Adjust by margin if possible.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">CTR (Link)</td>
+        <td>Meta Feed</td>
+        <td class="kpi-val">1.5%+</td>
+        <td><span class="kpi-badge warn">0.8–1.5%</span></td>
+        <td>Below 0.8% = creative problem. Rotate assets before adjusting audience.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Hook Rate</td>
+        <td>Meta Video</td>
+        <td class="kpi-val">30%+</td>
+        <td><span class="kpi-badge warn">20–30%</span></td>
+        <td>% of impressions that watch past 3 seconds. Under 20% = weak opening hook.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Frequency</td>
+        <td>Meta (Cold)</td>
+        <td class="kpi-val">&lt; 2.5</td>
+        <td><span class="kpi-badge warn">2.5–3.5</span></td>
+        <td>Above 3.5 on cold audiences = rotate creative or expand audience.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Cart Abandonment Recovery</td>
+        <td>Email / SMS</td>
+        <td class="kpi-val">8–12%</td>
+        <td><span class="kpi-badge warn">5–8%</span></td>
+        <td>% of abandoned carts recovered via email/SMS flow within 72 hours.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Email Open Rate</td>
+        <td>Klaviyo</td>
+        <td class="kpi-val">35%+</td>
+        <td><span class="kpi-badge warn">22–35%</span></td>
+        <td>Below 22% = subject line problem or list hygiene issue. Suppress inactive 90-day.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">CVR (Landing Page)</td>
+        <td>All Paid</td>
+        <td class="kpi-val">2.5%+</td>
+        <td><span class="kpi-badge warn">1.5–2.5%</span></td>
+        <td>Conversion rate for paid traffic landing pages. Below 1.5% = CRO priority.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>B2B / Lead-Gen Benchmarks</h3>
+  <table class="kpi-table" style="margin-bottom:36px;">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Channel</th>
+        <th>Target</th>
+        <th>Warning Zone</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="kpi-channel">Cost Per Lead (CPL)</td>
+        <td>Google Search</td>
+        <td class="kpi-val">&lt; 10% of LTV</td>
+        <td><span class="kpi-badge warn">10–18% of LTV</span></td>
+        <td>If client LTV is $5,000, target CPL under $500. Adjust for close rate.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Cost Per Lead (CPL)</td>
+        <td>LinkedIn Ads</td>
+        <td class="kpi-val">&lt; 15% of LTV</td>
+        <td><span class="kpi-badge warn">15–25% of LTV</span></td>
+        <td>LinkedIn CPL is structurally higher — acceptable if lead quality is strong.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Lead-to-Opportunity Rate</td>
+        <td>All Paid</td>
+        <td class="kpi-val">20%+</td>
+        <td><span class="kpi-badge warn">10–20%</span></td>
+        <td>Below 10% = targeting too broad or offer not qualifying leads.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Opportunity-to-Close Rate</td>
+        <td>All Paid</td>
+        <td class="kpi-val">25%+</td>
+        <td><span class="kpi-badge warn">15–25%</span></td>
+        <td>This is a sales team metric — flag if below 15% as a shared problem to solve.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">CTR</td>
+        <td>Google Search</td>
+        <td class="kpi-val">5%+</td>
+        <td><span class="kpi-badge warn">3–5%</span></td>
+        <td>Low CTR on branded terms is a red flag. Non-brand: 3%+ is acceptable.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Quality Score</td>
+        <td>Google Search</td>
+        <td class="kpi-val">7+</td>
+        <td><span class="kpi-badge warn">5–7</span></td>
+        <td>Below 5 = keyword, ad copy, or landing page relevance problem.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">LinkedIn CTR</td>
+        <td>Sponsored Content</td>
+        <td class="kpi-val">0.5%+</td>
+        <td><span class="kpi-badge warn">0.3–0.5%</span></td>
+        <td>Industry average is 0.35%. Above 0.6% is strong. Below 0.3% = creative failure.</td>
+      </tr>
+      <tr>
+        <td class="kpi-channel">Email Reply Rate (Outbound)</td>
+        <td>Cold Email</td>
+        <td class="kpi-val">5%+</td>
+        <td><span class="kpi-badge warn">2–5%</span></td>
+        <td>Positive reply rate. Below 2% = personalization or ICP targeting issue.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Internal ZDM Operational KPIs</h3>
+  <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+    <div class="stat-card">
+      <div class="stat-value">90%</div>
+      <div class="stat-label">Client Retention at 6 Months</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">48hr</div>
+      <div class="stat-label">Max Response Time (Slack)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">100%</div>
+      <div class="stat-label">Monday Loom Delivery Rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">8+</div>
+      <div class="stat-label">New Creative Variants / Month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">5th</div>
+      <div class="stat-label">Monthly Report Delivery Date</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">30%</div>
+      <div class="stat-label">Referral Pipeline Target</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     10 — PRICING PACKAGES
+══════════════════════════════════════════ -->
+<section class="section" id="s10">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2 class="section-title">Pricing Packages</h2>
+  </div>
+
+  <p>Three tiers built around ad spend ranges, not hours. Clients pay a monthly management retainer on top of their ad budget. All packages are month-to-month after a 3-month minimum engagement.</p>
+
+  <div class="divider"></div>
+
+  <!-- Pricing cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:40px;">
+
+    <!-- Starter -->
+    <div class="card" style="border-color:rgba(136,136,136,0.25);">
+      <div class="card-tag">Starter</div>
+      <h3 style="font-size:28px;color:var(--light);margin-bottom:4px;">$1,500<span style="font-size:14px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--mid)">/mo retainer</span></h3>
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--mid);margin-bottom:20px;">+ $500–$2,000 ad spend (client direct)</p>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ 1 ad platform (Meta or Google)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Up to 3 active campaigns</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Monthly performance report</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Pixel &amp; tracking setup</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ 1 strategy call/month</li>
+        <li style="padding:8px 0;font-size:13px;color:rgba(245,245,240,0.8);">✓ Email support (48hr response)</li>
+      </ul>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Best for:</strong> Local businesses, new e-com stores, service businesses testing paid ads for the first time.</p>
+    </div>
+
+    <!-- Growth (highlight) -->
+    <div class="card" style="border-color:var(--lime);background:linear-gradient(160deg,#1a2200 0%,#1E1E1E 100%);position:relative;">
+      <div style="position:absolute;top:-1px;right:20px;background:var(--lime);color:var(--black);font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;letter-spacing:0.1em;border-radius:0 0 6px 6px;">MOST POPULAR</div>
+      <div class="card-tag" style="margin-top:16px;">Growth</div>
+      <h3 style="font-size:28px;color:var(--lime);margin-bottom:4px;">$3,500<span style="font-size:14px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--mid)">/mo retainer</span></h3>
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--mid);margin-bottom:20px;">+ $2,000–$10,000 ad spend (client direct)</p>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ 2 platforms (Meta + Google or TikTok)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Up to 8 active campaigns</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Weekly performance reports</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Full attribution setup (GA4 + server-side pixel)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Creative direction &amp; copy (up to 4 ads/mo)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Landing page CRO audit</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ 2 strategy calls/month</li>
+        <li style="padding:8px 0;font-size:13px;color:rgba(245,245,240,0.8);">✓ Slack channel (24hr response)</li>
+      </ul>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Best for:</strong> Growing e-com brands, B2B companies with an active sales team, businesses spending $2K+/mo on ads already.</p>
+    </div>
+
+    <!-- Scale -->
+    <div class="card" style="border-color:rgba(136,136,136,0.25);">
+      <div class="card-tag">Scale</div>
+      <h3 style="font-size:28px;color:var(--light);margin-bottom:4px;">$7,500+<span style="font-size:14px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--mid)">/mo retainer</span></h3>
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--mid);margin-bottom:20px;">+ $10,000+ ad spend (client direct)</p>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ All platforms (Meta, Google, TikTok, LinkedIn)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Unlimited campaigns</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Daily monitoring + budget pacing</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Full creative production (video + static)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Email/SMS nurture build-out (Klaviyo)</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Custom Looker Studio dashboard</li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--border-dim);font-size:13px;color:rgba(245,245,240,0.8);">✓ Weekly strategy calls</li>
+        <li style="padding:8px 0;font-size:13px;color:rgba(245,245,240,0.8);">✓ Dedicated account lead + Slack (same-day)</li>
+      </ul>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Best for:</strong> Established brands scaling aggressively, companies with in-house teams needing strategic oversight, multi-SKU e-com.</p>
+    </div>
+
+  </div>
+
+  <!-- Add-ons -->
+  <h3>Add-On Services</h3>
+  <div class="two-col" style="margin-bottom:28px;">
+    <div class="info-block">
+      <h4>One-Time Setup</h4>
+      <ul>
+        <li><strong>Full tracking audit &amp; rebuild</strong> — $800</li>
+        <li><strong>GA4 migration + setup</strong> — $600</li>
+        <li><strong>Landing page build (Webflow/Unbounce)</strong> — $1,200–$2,500</li>
+        <li><strong>Klaviyo account setup + 3 flows</strong> — $1,500</li>
+        <li><strong>Brand messaging workshop (2hrs)</strong> — $500</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Monthly Add-Ons</h4>
+      <ul>
+        <li><strong>Extra creative pack</strong> (4 ads) — $400/mo</li>
+        <li><strong>SEO content (2 posts/mo)</strong> — $600/mo</li>
+        <li><strong>LinkedIn organic management</strong> — $800/mo</li>
+        <li><strong>A/B test management</strong> — $300/mo</li>
+        <li><strong>Competitor intelligence report</strong> — $200/mo</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Pricing notes -->
+  <div class="info-block" style="border-color:rgba(200,255,0,0.15);">
+    <h4>Pricing Notes</h4>
+    <ul>
+      <li>Ad spend goes directly to platforms — ZDM never marks it up or handles it.</li>
+      <li>3-month minimum for all packages. Month-to-month thereafter with 30-day notice.</li>
+      <li>Onboarding fee of $500 applies to Starter, waived on Growth and Scale.</li>
+      <li>Annual contracts get 10% off retainer. Paid quarterly gets 5% off.</li>
+      <li>B2B clients on Growth/Scale can request a performance-based component (base + % of qualified pipeline generated).</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     11 — ONBOARDING EMAILS
+══════════════════════════════════════════ -->
+<section class="section" id="s11">
+  <div class="section-header">
+    <span class="section-num">11</span>
+    <h2 class="section-title">Onboarding Email Templates</h2>
+  </div>
+
+  <p>Send these in sequence after contract is signed. Each email has one job — keep it tight, keep it confident. Copy and edit in your email client. Personalise the <span style="background:rgba(200,255,0,0.15);color:var(--lime);font-family:'DM Mono',monospace;font-size:12px;padding:1px 6px;border-radius:3px;">[BRACKETS]</span> before sending.</p>
+
+  <div class="divider"></div>
+
+  <!-- Email 1 -->
+  <div style="margin-bottom:36px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--lime);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:4px;font-weight:600;">EMAIL 01</div>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);">Send immediately after contract signed</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+        <p style="margin:0;font-size:12px;font-family:'DM Mono',monospace;color:var(--mid);">Subject: <strong style="color:var(--light);">You're in. Here's what happens next — ZDM INC</strong></p>
+      </div>
+      <div style="padding:24px 28px;">
+        <p>Hi [First Name],</p>
+        <p>Welcome to ZDM INC. You've made a smart decision and we're not going to waste your time — here's exactly what happens over the next 7 days.</p>
+        <p><strong>This week:</strong></p>
+        <ul style="margin-bottom:16px;">
+          <li>Today: You'll receive a separate email with an onboarding form — takes 10 minutes, covers your accounts, logins, and goals.</li>
+          <li>Day 2–3: We'll complete a full audit of your current ad accounts, tracking, and funnel.</li>
+          <li>Day 5: Strategy session — we'll walk you through our findings and your 90-day growth plan.</li>
+          <li>Day 7: Campaigns live.</li>
+        </ul>
+        <p><strong>What we need from you today:</strong></p>
+        <ul style="margin-bottom:16px;">
+          <li>Admin access to your Meta Business Manager</li>
+          <li>Editor access to your Google Ads account</li>
+          <li>Access to your website analytics (GA4 or equivalent)</li>
+        </ul>
+        <p>If you have any questions before then, reply to this email directly — you'll always reach a real person.</p>
+        <p>Let's build something that compounds.<br><br>— [Your Name]<br>ZDM INC<br>Zero Distance to Market.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email 2 -->
+  <div style="margin-bottom:36px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--lime);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:4px;font-weight:600;">EMAIL 02</div>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);">Send Day 1 — Access request</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+        <p style="margin:0;font-size:12px;font-family:'DM Mono',monospace;color:var(--mid);">Subject: <strong style="color:var(--light);">[ACTION REQUIRED] Grant access — ZDM needs these to start</strong></p>
+      </div>
+      <div style="padding:24px 28px;">
+        <p>Hi [First Name],</p>
+        <p>To get your audit started today, we need access to the following accounts. Each one has a direct link to the instructions.</p>
+        <p><strong>Meta Business Manager</strong><br>Add <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--lime);">agency@zdminc.com</span> as an Admin under Business Settings → People.<br>Guide: business.facebook.com/settings → People → Add Person</p>
+        <p><strong>Google Ads</strong><br>Go to Tools &amp; Settings → Access &amp; Security → + Add User. Add <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--lime);">agency@zdminc.com</span> with Standard access.</p>
+        <p><strong>Google Analytics 4</strong><br>Admin → Property Access Management → + Add Users. Add <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--lime);">agency@zdminc.com</span> as Editor.</p>
+        <p><strong>Website CMS / Shopify (if applicable)</strong><br>Add us as a Staff member or Collaborator — we only need the sections relevant to tracking and conversion pages.</p>
+        <p>Once we have access we'll send you a calendar invite for your strategy session. The faster we get in, the faster we get you live.</p>
+        <p>Reply to this email if you hit any issues — we'll walk you through it.</p>
+        <p>— [Your Name], ZDM INC</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email 3 -->
+  <div style="margin-bottom:36px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--lime);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:4px;font-weight:600;">EMAIL 03</div>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);">Send Day 3–4 — Audit complete, strategy session invite</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+        <p style="margin:0;font-size:12px;font-family:'DM Mono',monospace;color:var(--mid);">Subject: <strong style="color:var(--light);">Your audit is done. Let's talk strategy — [calendar link inside]</strong></p>
+      </div>
+      <div style="padding:24px 28px;">
+        <p>Hi [First Name],</p>
+        <p>We've completed your full audit. The findings are significant — there are clear wins available and a couple of things we'll fix immediately.</p>
+        <p>We've blocked 45 minutes to walk you through:</p>
+        <ul style="margin-bottom:16px;">
+          <li>What your current accounts are doing well (and why)</li>
+          <li>The 3 highest-impact changes we'll make in week one</li>
+          <li>Your 90-day growth roadmap</li>
+          <li>Campaign architecture and launch timeline</li>
+        </ul>
+        <p><strong>Book your strategy session here:</strong><br><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--lime);">[CALENDLY LINK]</span></p>
+        <p>If none of the times work, reply and we'll find a slot that does.</p>
+        <p>See you soon.<br>— [Your Name], ZDM INC</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email 4 -->
+  <div style="margin-bottom:36px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--lime);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:4px;font-weight:600;">EMAIL 04</div>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);">Send Day 7 — Campaigns launched</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+        <p style="margin:0;font-size:12px;font-family:'DM Mono',monospace;color:var(--mid);">Subject: <strong style="color:var(--light);">We're live. Your campaigns launched today.</strong></p>
+      </div>
+      <div style="padding:24px 28px;">
+        <p>Hi [First Name],</p>
+        <p>Your campaigns are live as of today. Here's what's running:</p>
+        <ul style="margin-bottom:16px;">
+          <li>[Campaign 1 name] — [Platform] — [Objective] — $[daily budget]/day</li>
+          <li>[Campaign 2 name] — [Platform] — [Objective] — $[daily budget]/day</li>
+          <li>[Campaign 3 name] — [Platform] — [Retargeting] — $[daily budget]/day</li>
+        </ul>
+        <p><strong>What to expect in the first 7 days:</strong><br>
+        The learning phase means data will look inconsistent early on — this is normal. We don't make optimisation decisions until we have statistically meaningful data (typically day 7–14). Do not panic at day 3. Trust the system.</p>
+        <p><strong>Your dashboard is live here:</strong><br><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--lime);">[LOOKER STUDIO LINK]</span><br>
+        Metrics update daily. Your first formal report lands on [DATE].</p>
+        <p>Next check-in: [DATE]. Anything urgent before then — reply here or message on Slack.</p>
+        <p>— [Your Name], ZDM INC</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email 5 -->
+  <div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--lime);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:4px;font-weight:600;">EMAIL 05</div>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);">Send Day 30 — First month results summary</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+        <p style="margin:0;font-size:12px;font-family:'DM Mono',monospace;color:var(--mid);">Subject: <strong style="color:var(--light);">Month 1 results — [ROAS or key win here]</strong></p>
+      </div>
+      <div style="padding:24px 28px;">
+        <p>Hi [First Name],</p>
+        <p>Month one is done. Here's what happened:</p>
+        <div style="background:#141414;border-radius:6px;padding:16px 20px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
+          <div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--lime);">[X.Xx]</div><div style="font-size:11px;color:var(--mid);font-family:'DM Mono',monospace;">ROAS</div></div>
+          <div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--lime);">[$X]</div><div style="font-size:11px;color:var(--mid);font-family:'DM Mono',monospace;">COST PER LEAD</div></div>
+          <div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--lime);">[X%]</div><div style="font-size:11px;color:var(--mid);font-family:'DM Mono',monospace;">CVR</div></div>
+        </div>
+        <p>Full breakdown is in your report: <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--lime);">[LINK]</span></p>
+        <p><strong>What we're doing in month 2:</strong></p>
+        <ul style="margin-bottom:16px;">
+          <li>[Scaling what worked — Campaign X]</li>
+          <li>[Pausing / restructuring what didn't]</li>
+          <li>[New test: creative angle / audience / offer]</li>
+        </ul>
+        <p>Any questions on the numbers, reply here. Strategy call is booked for [DATE].</p>
+        <p>— [Your Name], ZDM INC</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     12 — OBJECTION SCRIPTS
+══════════════════════════════════════════ -->
+<section class="section" id="s12">
+  <div class="section-header">
+    <span class="section-num">12</span>
+    <h2 class="section-title">Client Objection Scripts</h2>
+  </div>
+
+  <p>These are the 12 most common objections you'll hear on a discovery or closing call. For each one: understand the real fear underneath, then respond to the fear — not the words. Don't memorise scripts — understand the logic, then speak naturally.</p>
+
+  <div class="divider"></div>
+
+  <!-- Objection items -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <!-- OBJ 01 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 01</span>
+          <strong style="font-size:14px;">"Your prices are too high."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They've been burned before and don't believe the ROI will materialise. Or they're comparing retainer cost to ad spend and confusing the two numbers.</p>
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;">Response:</span></p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "I hear you — and I'd push back on one thing. The question isn't whether $3,500 is a lot to spend. The question is: what does it cost you to keep running ads without a proper system behind them? If your current ROAS is 1.8 and we get you to 3.5, that's not a cost — that's leverage. What's your current cost per acquisition?"
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Anchor to their numbers, not yours. If they can't answer the question, that's your proof they need the service.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 02 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 02</span>
+          <strong style="font-size:14px;">"We tried ads before and it didn't work."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They wasted money and don't trust the channel — or the people running it.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "That tells me more about who ran them than whether ads work for your business. Can you walk me through what you ran — what platform, what the offer was, and what the tracking looked like? In 90% of cases, the issue is either the offer, the audience, or broken attribution — not the platform itself. Let me show you what an audit of your previous account would find."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Offer a free audit of their previous ad account. This turns the objection into a sales conversation — you'll find problems, and problems are your pitch.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 03 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 03</span>
+          <strong style="font-size:14px;">"I need to think about it."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> Either a specific concern they haven't voiced, or they need to check with someone else. "I need to think" almost always means "I have a question I haven't asked yet."</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "Of course — I'd expect nothing less. I want you to be sure. Can I ask: is it the investment, the timing, or is there something specific you're not yet certain about? Because if there's a real question underneath, I'd rather answer it now than leave you with it."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Surface the real objection. Then schedule a concrete next-step call — never leave it as "I'll follow up in a few days."</p>
+      </div>
+    </div>
+
+    <!-- OBJ 04 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 04</span>
+          <strong style="font-size:14px;">"We're already working with another agency."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> Switching cost and disruption anxiety. But if they're taking your call, something isn't working.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "That's good to know — and I'm curious: what made you take this call today? Most people don't explore options when everything's running perfectly. I'm not asking you to switch anything right now. But I'd like to run a complimentary audit of your current account — takes us 48 hours, costs you nothing, and either confirms your agency is doing a great job or shows you exactly where revenue is being left on the table."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> The free audit is your wedge. Don't pitch a switch — pitch a second opinion.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 05 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 05</span>
+          <strong style="font-size:14px;">"We don't have the budget right now."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> Cash flow concern, or the investment genuinely doesn't feel justified yet.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "Understood. Let me ask you this — if we could show you that our Starter package pays for itself within 60 days based on your current ad spend and conversion rate, would budget still be the issue? I'm not asking you to take that on faith. Let's look at the numbers together. What are you currently spending on ads per month?"
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> If genuine budget issue, offer Starter at $1,500. If no ad budget at all, they're not your client yet — refer them to the v2 $200 boost plan as a starting point.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 06 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 06</span>
+          <strong style="font-size:14px;">"Can you guarantee results?"</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They've been overpromised before. They want certainty — which is understandable. Honesty here builds more trust than a fake guarantee.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "No ethical marketing agency can guarantee specific revenue numbers — anyone who says otherwise is lying to you. What I can guarantee is the process: a data-driven system, full transparency on what's working, weekly optimisation, and we don't hide from bad months. We report everything. What we've found is that clients who commit to the 90-day system see measurable improvement in ROAS 100% of the time — not because of luck, but because the process removes the guesswork."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Offer a money-back guarantee on the first month if they don't see a meaningful improvement in tracking and baseline metrics.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 07 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 07</span>
+          <strong style="font-size:14px;">"We can do it in-house."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They want to retain control, or believe an in-house hire is cheaper.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "Totally valid approach. A mid-level performance marketer costs $60–85K salary plus tools, plus time to onboard and ramp. You get one person covering one channel, trained on your account. With ZDM you get a team across paid media, analytics, and CRO — active from day one, with benchmarks from dozens of accounts. If you're at the scale where an in-house team makes sense, we'd genuinely recommend it. But most businesses aren't there yet."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Ask about their timeline to hire and what the ramp-up period looks like. Usually 3–6 months — that's 3–6 months of ad spend without optimisation.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 08 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 08</span>
+          <strong style="font-size:14px;">"You don't have experience in our industry."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> Concern that there'll be a learning curve they'll pay for.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "That's actually often an advantage. An agency that's only ever worked in your sector tends to bring the same ideas. We bring cross-industry frameworks — what we've seen work in e-commerce, we apply to B2B. What works in SaaS acquisition, we test in retail. The platforms and the psychology don't change — only the creative and the offer do. And you know your industry better than anyone. We supply the system, you supply the domain knowledge."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Mention a transferable case study from an adjacent sector. Focus on the metrics, not the industry.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 09 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 09</span>
+          <strong style="font-size:14px;">"We're too small / not ready for this yet."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They don't believe their business can absorb or convert the traffic. Sometimes this is true — qualify carefully.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "What does 'ready' look like to you? Because in my experience, the businesses that wait until they're 'ready' usually wait until they're losing to someone who wasn't. If you have a product that sells, a website that converts at even 1%, and $500/month for ads — you have enough to start building a system. We start lean and scale what works."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> If they genuinely have no ad budget or no offer clarity, they're not a fit today. Nurture them for 60–90 days and check back in. Don't force a bad fit.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 10 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 10</span>
+          <strong style="font-size:14px;">"I need to speak to my business partner / board first."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> Legitimate stakeholder process. Don't fight it — equip them to sell it internally.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "Completely understand. Can I make that conversation easier for you? I'll send you a one-page summary of exactly what we're proposing, the projected outcomes based on your numbers, and what you're currently leaving on the table. That way you're not selling them cold — you have the data. When would you be speaking with them?"
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Send the one-pager within 2 hours. Set a hard follow-up call 48hrs after their internal meeting.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 11 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 11</span>
+          <strong style="font-size:14px;">"The last agency we used disappeared after onboarding."</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They paid for access and then got ignored. The agency relationship felt like a black box.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "That's unfortunately common — and it's a valid fear. Here's how we're different: you get a live Looker Studio dashboard that updates daily, weekly reports regardless of how the numbers look, and a named account lead who picks up the phone. If you ever feel like you don't know what's happening with your money, something has gone wrong on our end. We've built our process around that specifically."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> Offer to introduce them to a current client they can speak to directly. Social proof from a real person neutralises this fear better than any script.</p>
+      </div>
+    </div>
+
+    <!-- OBJ 12 -->
+    <div style="background:var(--surface);border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;">
+      <div style="padding:18px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.obj-toggle').textContent=this.querySelector('.obj-toggle').textContent==='+'?'−':'+'" >
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);opacity:0.6;">OBJ 12</span>
+          <strong style="font-size:14px;">"What makes you different from every other agency?"</strong>
+        </div>
+        <span class="obj-toggle" style="font-family:'DM Mono',monospace;font-size:18px;color:var(--lime);line-height:1;">+</span>
+      </div>
+      <div style="display:none;padding:0 24px 24px;">
+        <p style="margin-bottom:8px;"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:0.1em;">Real fear:</span> They've heard every pitch before. They want evidence, not positioning.</p>
+        <div style="background:#141414;border-left:3px solid var(--lime);padding:16px 20px;border-radius:0 6px 6px 0;font-size:13px;color:rgba(245,245,240,0.85);font-style:italic;margin-bottom:12px;">
+          "Honestly? I'm not going to tell you we're different — I'm going to show you. Give me your ad account access for 48 hours. We'll do a complimentary audit and come back with three specific things your current setup is getting wrong and what we'd change. If what we find isn't compelling, you owe us nothing and we part on good terms. If it is — we have something to talk about."
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Follow-up:</strong> The free audit is your answer to every version of this question. Action beats claims every time.</p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+</div><!-- /.wrapper -->
+
+<script>
+// ── PROGRESS BAR ──
+(function() {
+  var bar = document.getElementById('progress-bar');
+  function update() {
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docH > 0 ? (scrollTop / docH) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ── ACTIVE NAV LINK ──
+(function() {
+  var links = document.querySelectorAll('.nav-link');
+  var sections = Array.from(document.querySelectorAll('.section'));
+
+  function setActive() {
+    var scrollY = window.scrollY + 80;
+    var current = sections[0].id;
+    sections.forEach(function(s) {
+      if (s.offsetTop <= scrollY) current = s.id;
+    });
+    links.forEach(function(l) {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+})();
+
+// ── CHECKLIST (localStorage) ──
+(function() {
+  var items = document.querySelectorAll('.checklist li[data-id]');
+  var totalEl = document.getElementById('check-total');
+  var countEl = document.getElementById('check-count');
+
+  if (totalEl) totalEl.textContent = items.length;
+
+  function updateCount() {
+    var done = document.querySelectorAll('.checklist li.checked').length;
+    if (countEl) countEl.textContent = done;
+  }
+
+  items.forEach(function(li) {
+    var id = li.dataset.id;
+    if (localStorage.getItem('zdm-ob-' + id) === '1') {
+      li.classList.add('checked');
+    }
+    li.addEventListener('click', function() {
+      li.classList.toggle('checked');
+      if (li.classList.contains('checked')) {
+        localStorage.setItem('zdm-ob-' + id, '1');
+      } else {
+        localStorage.removeItem('zdm-ob-' + id);
+      }
+      updateCount();
+    });
+  });
+
+  updateCount();
+})();
+
+// ── CARD FILTER ──
+(function() {
+  var btns = document.querySelectorAll('.filter-btn');
+  var cards = document.querySelectorAll('#problems-grid .card');
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.dataset.filter;
+      cards.forEach(function(card) {
+        var match = filter === 'all' || card.dataset.cat === filter;
+        card.style.display = match ? '' : 'none';
+      });
+    });
+  });
+})();
+
+// ── TABS ──
+(function() {
+  var tabNavs = document.querySelectorAll('.tabs-nav');
+  tabNavs.forEach(function(nav) {
+    nav.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        nav.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var tabId = 'tab-' + btn.dataset.tab;
+        var parent = nav.parentElement;
+        parent.querySelectorAll('.tab-panel').forEach(function(p) {
+          p.classList.toggle('active', p.id === tabId);
+        });
+      });
+    });
+  });
+})();
+
+// ── ACCORDION ──
+(function() {
+  document.querySelectorAll('.expand-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var targetId = btn.dataset.target;
+      var row = document.getElementById(targetId);
+      if (!row) return;
+      var isOpen = row.classList.contains('open');
+      row.classList.toggle('open', !isOpen);
+      btn.textContent = isOpen ? '+' : '−';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

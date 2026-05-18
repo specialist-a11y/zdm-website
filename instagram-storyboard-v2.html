@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZDM INC — Instagram Storyboard V2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --off-black: #141414;
+      --dark-grey: #1E1E1E;
+      --mid-grey: #3A3A3A;
+      --grey: #888888;
+      --light-grey: #D4D4D4;
+      --off-white: #F5F5F0;
+      --white: #FFFFFF;
+      --lime: #C8FF00;
+      --lime-dark: #A8D800;
+      --font-display: 'Bebas Neue', 'Impact', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #111111;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .sb-header {
+      background: var(--black);
+      border-bottom: 3px solid var(--lime);
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sb-logo { display: flex; align-items: center; gap: 16px; }
+    .sb-logo-mark {
+      width: 44px; height: 44px;
+      background: var(--lime);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-size: 28px; color: var(--black);
+    }
+    .sb-logo-text { font-family: var(--font-display); font-size: 32px; letter-spacing: 0.04em; color: var(--white); }
+    .sb-meta { text-align: right; }
+    .sb-meta-title { font-family: var(--font-display); font-size: 24px; color: var(--lime); letter-spacing: 0.05em; }
+    .sb-meta-sub { font-family: var(--font-mono); font-size: 12px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 4px; }
+    .v2-badge {
+      display: inline-block;
+      background: var(--lime);
+      color: var(--black);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 10px;
+      margin-top: 8px;
+    }
+
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 60px; }
+
+    /* ─── CREATIVE DIRECTION BANNER ─── */
+    .direction-banner {
+      background: var(--lime);
+      color: var(--black);
+      padding: 40px 60px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 48px;
+      align-items: center;
+      border-bottom: 4px solid var(--black);
+    }
+    .direction-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.5;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    .direction-headline {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 72px);
+      line-height: 0.9;
+      text-transform: uppercase;
+    }
+    .direction-brief {
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .direction-brief-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.55;
+    }
+    .direction-brief-body {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    /* ─── SECTION HEADERS ─── */
+    .section-header { padding: 60px 0 32px; border-bottom: 1px solid var(--dark-grey); margin-bottom: 40px; }
+    .section-number { font-family: var(--font-mono); font-size: 12px; color: var(--lime); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+    .section-title { font-family: var(--font-display); font-size: 56px; line-height: 0.9; text-transform: uppercase; }
+
+    /* ─── INSTAGRAM PROFILE ─── */
+    .ig-profile {
+      background: var(--black);
+      border: 1px solid var(--dark-grey);
+      border-radius: 12px;
+      padding: 40px 48px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .ig-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-size: 56px;
+      color: var(--black);
+      box-shadow: 0 0 0 3px var(--black), 0 0 0 5px var(--lime);
+    }
+    .ig-profile-info h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .ig-handle { font-family: var(--font-mono); font-size: 14px; color: var(--grey); margin-bottom: 16px; }
+    .ig-stats { display: flex; gap: 40px; margin-bottom: 20px; }
+    .ig-stat-num { font-weight: 700; font-size: 18px; }
+    .ig-stat-label { font-size: 14px; color: var(--grey); }
+    .ig-bio { font-size: 14px; line-height: 1.5; color: var(--light-grey); max-width: 480px; }
+    .ig-bio strong { color: var(--lime); }
+    .ig-bio a { color: var(--lime); text-decoration: none; }
+
+    /* ─── HIGHLIGHTS ─── */
+    .ig-highlights { display: flex; gap: 20px; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--dark-grey); }
+    .highlight-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .highlight-ring {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: grid; place-items: center;
+      box-shadow: 0 0 0 3px #111111, 0 0 0 5px var(--lime);
+    }
+    .highlight-ring svg { display: block; }
+    .highlight-label { font-family: var(--font-mono); font-size: 11px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ─── FEED GRID ─── */
+    .feed-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 8px; }
+    .post-wrap { display: flex; flex-direction: column; }
+    .post { aspect-ratio: 1 / 1; position: relative; overflow: hidden; }
+    .post-label {
+      background: #191919;
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .post-num { font-family: var(--font-mono); font-size: 11px; color: var(--lime); letter-spacing: 0.1em; }
+    .post-type { font-family: var(--font-mono); font-size: 11px; color: var(--grey); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ─── POST 1: THE CHALLENGER (off-white editorial) ─── */
+    .p1 {
+      background: var(--off-white);
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 40px);
+      position: relative;
+      overflow: hidden;
+    }
+    .p1-label { font-family: var(--font-mono); font-size: clamp(7px, 1.3%, 10px); color: #999; text-transform: uppercase; letter-spacing: 0.12em; }
+    .p1-headline { font-family: var(--font-display); font-size: clamp(26px, 6.5vw, 54px); line-height: 0.87; text-transform: uppercase; color: var(--black); }
+    .p1-headline em { font-style: normal; -webkit-text-stroke: 1.5px var(--black); color: transparent; }
+    .p1-lockup {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .p1-z {
+      width: clamp(20px, 5%, 32px); height: clamp(20px, 5%, 32px);
+      background: var(--black);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-size: clamp(12px, 3%, 20px);
+      color: var(--lime);
+    }
+    .p1-wordmark { font-family: var(--font-display); font-size: clamp(14px, 3.5vw, 28px); color: var(--black); letter-spacing: 0.04em; }
+
+    /* ─── POST 2: CAC STAT (lime bg) ─── */
+    .p2 {
+      background: var(--lime);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 40px);
+      position: relative;
+      overflow: hidden;
+    }
+    .p2-eyebrow { font-family: var(--font-mono); font-size: clamp(7px, 1.3%, 10px); color: rgba(0,0,0,0.45); text-transform: uppercase; letter-spacing: 0.12em; }
+    .p2-stat-row { display: flex; align-items: flex-start; gap: 2px; }
+    .p2-minus { font-family: var(--font-display); font-size: clamp(40px, 10vw, 80px); color: var(--black); line-height: 0.85; }
+    .p2-num { font-family: var(--font-display); font-size: clamp(60px, 15vw, 120px); color: var(--black); line-height: 0.85; letter-spacing: -0.02em; }
+    .p2-label { font-family: var(--font-display); font-size: clamp(16px, 3.5vw, 28px); text-transform: uppercase; color: var(--black); line-height: 1; }
+    .p2-sub { font-family: var(--font-mono); font-size: clamp(7px, 1.2%, 9px); color: rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ─── POST 3: B2B PIPELINE (dark bg, case study) ─── */
+    .p3 {
+      background: var(--off-black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(16px, 5%, 40px);
+      border-top: 3px solid var(--lime);
+      position: relative;
+      overflow: hidden;
+    }
+    .p3-tag { font-family: var(--font-mono); font-size: clamp(7px, 1.2%, 9px); color: var(--lime); text-transform: uppercase; letter-spacing: 0.12em; }
+    .p3-num { font-family: var(--font-display); font-size: clamp(50px, 13vw, 100px); color: var(--lime); line-height: 0.85; letter-spacing: -0.02em; }
+    .p3-label { font-family: var(--font-display); font-size: clamp(16px, 3.5vw, 28px); text-transform: uppercase; color: var(--white); line-height: 1; }
+    .p3-detail { font-family: var(--font-mono); font-size: clamp(7px, 1.2%, 9px); color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ─── POST 4: ZERO GUESSWORK (black, centered) ─── */
+    .p4 {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 5%, 36px);
+      gap: clamp(8px, 2%, 16px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .p4-100 { font-family: var(--font-display); font-size: clamp(60px, 15vw, 112px); color: var(--lime); line-height: 0.85; }
+    .p4-div { width: 60%; height: 1px; background: var(--dark-grey); }
+    .p4-line1 { font-family: var(--font-display); font-size: clamp(18px, 4.5vw, 36px); text-transform: uppercase; color: var(--white); line-height: 1; }
+    .p4-line2 { font-family: var(--font-display); font-size: clamp(18px, 4.5vw, 36px); text-transform: uppercase; color: var(--lime); line-height: 1; }
+    .p4-sub { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ─── POST 5: SYSTEM VS CAMPAIGN (split) ─── */
+    .p5 { display: grid; grid-template-columns: 1fr 1fr; }
+    .p5-left {
+      background: #1c1c1c;
+      padding: clamp(12px, 4%, 28px);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .p5-right {
+      background: var(--lime);
+      padding: clamp(12px, 4%, 28px);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .p5-col-tag { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); text-transform: uppercase; letter-spacing: 0.1em; }
+    .p5-left .p5-col-tag { color: #444; }
+    .p5-right .p5-col-tag { color: rgba(0,0,0,0.45); }
+    .p5-word {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 7vw, 56px);
+      line-height: 0.85;
+      text-transform: uppercase;
+    }
+    .p5-left .p5-word { color: #444; text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: #3a3a3a; }
+    .p5-right .p5-word { color: var(--black); }
+    .p5-sub { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); text-transform: uppercase; letter-spacing: 0.08em; }
+    .p5-left .p5-sub { color: #3a3a3a; }
+    .p5-right .p5-sub { color: rgba(0,0,0,0.5); }
+
+    /* ─── POST 6: E-COMMERCE RESULT (dark, lime accent) ─── */
+    .p6 {
+      background: #0f0f0f;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: clamp(16px, 5%, 36px);
+      position: relative; overflow: hidden;
+    }
+    .p6-bg-mark {
+      position: absolute; bottom: -20px; right: -15px;
+      font-family: var(--font-display);
+      font-size: clamp(100px, 25vw, 200px);
+      color: rgba(200,255,0,0.04);
+      line-height: 1; pointer-events: none;
+    }
+    .p6-tag { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); color: var(--lime); text-transform: uppercase; letter-spacing: 0.12em; }
+    .p6-roas { font-family: var(--font-display); font-size: clamp(52px, 13vw, 100px); color: var(--lime); line-height: 0.85; letter-spacing: -0.02em; position: relative; }
+    .p6-roas-label { font-family: var(--font-display); font-size: clamp(14px, 3vw, 24px); text-transform: uppercase; color: var(--white); line-height: 1; position: relative; }
+    .p6-metrics {
+      display: flex; flex-direction: column; gap: clamp(3px, 1%, 6px); position: relative;
+    }
+    .p6-metric { font-family: var(--font-mono); font-size: clamp(7px, 1.3%, 10px); color: var(--light-grey); }
+    .p6-metric::before { content: '↑ '; color: var(--lime); }
+
+    /* ─── POST 7: 24/7 MONITORING (black, grid dot aesthetic) ─── */
+    .p7 {
+      background: var(--black);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: clamp(16px, 5%, 36px);
+      position: relative; overflow: hidden;
+    }
+    .p7-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(200,255,0,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+    .p7-live {
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: clamp(7px, 1.3%, 10px);
+      color: var(--lime); text-transform: uppercase; letter-spacing: 0.1em;
+      position: relative;
+    }
+    .p7-live-dot { width: 6px; height: 6px; background: var(--lime); border-radius: 50%; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+    .p7-big { font-family: var(--font-display); font-size: clamp(52px, 13vw, 100px); color: var(--white); line-height: 0.85; position: relative; }
+    .p7-big span { color: var(--lime); }
+    .p7-label { font-family: var(--font-display); font-size: clamp(18px, 4vw, 32px); text-transform: uppercase; color: var(--white); line-height: 1; position: relative; }
+    .p7-quote { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); color: var(--grey); line-height: 1.5; text-transform: uppercase; letter-spacing: 0.08em; position: relative; }
+
+    /* ─── POST 8: ROI COMPOUNDS (off-white, ascending bars) ─── */
+    .p8 {
+      background: var(--off-white);
+      color: var(--black);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: clamp(16px, 5%, 36px);
+    }
+    .p8-label { font-family: var(--font-mono); font-size: clamp(7px, 1.2%, 9px); color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+    .p8-chart {
+      display: flex; align-items: flex-end; gap: clamp(3px, 1%, 6px);
+      height: clamp(40px, 12%, 64px);
+    }
+    .p8-bar { background: var(--black); border-radius: 0; flex: 1; }
+    .p8-bar-labels { display: flex; gap: clamp(3px, 1%, 6px); }
+    .p8-bar-label { flex: 1; font-family: var(--font-mono); font-size: clamp(5px, 1%, 8px); color: #999; text-align: center; text-transform: uppercase; letter-spacing: 0.06em; }
+    .p8-headline { font-family: var(--font-display); font-size: clamp(22px, 5.5vw, 44px); text-transform: uppercase; line-height: 0.9; color: var(--black); }
+    .p8-headline em { font-style: normal; color: #8aaa00; }
+    .p8-sub { font-family: var(--font-mono); font-size: clamp(7px, 1.2%, 9px); color: #777; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ─── POST 9: INITIATE (black, lime frame) ─── */
+    .p9 {
+      background: var(--black);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(16px, 5%, 36px);
+      position: relative;
+      overflow: hidden;
+    }
+    .p9-frame {
+      border: clamp(1px, 0.5%, 2px) solid var(--lime);
+      padding: clamp(16px, 5%, 40px) clamp(20px, 6%, 48px);
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      gap: clamp(8px, 2%, 16px);
+      width: 80%;
+    }
+    .p9-pre { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); color: var(--grey); text-transform: uppercase; letter-spacing: 0.15em; }
+    .p9-word { font-family: var(--font-display); font-size: clamp(36px, 9vw, 72px); text-transform: uppercase; color: var(--white); line-height: 1; }
+    .p9-div { width: 100%; height: 1px; background: var(--lime); opacity: 0.3; }
+    .p9-url { font-family: var(--font-mono); font-size: clamp(6px, 1.2%, 9px); color: var(--lime); text-transform: lowercase; letter-spacing: 0.08em; }
+    .p9-note { font-family: var(--font-mono); font-size: clamp(5px, 1%, 8px); color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ─── CAPTIONS ─── */
+    .caption-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .caption-card {
+      background: var(--black); border: 1px solid var(--dark-grey);
+      border-top: 2px solid var(--lime); padding: 28px;
+    }
+    .caption-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .caption-post-num { font-family: var(--font-mono); font-size: 11px; color: var(--lime); letter-spacing: 0.1em; }
+    .caption-pillar-tag {
+      font-family: var(--font-mono); font-size: 10px; color: var(--grey);
+      border: 1px solid var(--mid-grey); padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .caption-title { font-family: var(--font-display); font-size: 22px; text-transform: uppercase; margin-bottom: 12px; line-height: 1; }
+    .caption-text { font-size: 13px; color: var(--light-grey); line-height: 1.6; margin-bottom: 16px; }
+    .caption-hashtags { font-family: var(--font-mono); font-size: 11px; color: var(--lime); line-height: 1.8; }
+    .caption-note { font-family: var(--font-mono); font-size: 11px; color: var(--grey); border-top: 1px solid var(--dark-grey); padding-top: 12px; margin-top: 12px; line-height: 1.5; }
+
+    /* ─── STORIES ─── */
+    .stories-row { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 20px; }
+    .story-wrap { flex-shrink: 0; display: flex; flex-direction: column; }
+    .story { width: 220px; height: 390px; position: relative; overflow: hidden; flex-shrink: 0; }
+    .story-label {
+      background: #191919; width: 220px; padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .story-num { font-family: var(--font-mono); font-size: 11px; color: var(--lime); letter-spacing: 0.1em; }
+    .story-type { font-family: var(--font-mono); font-size: 10px; color: var(--grey); text-transform: uppercase; }
+
+    /* Story 1 — Live Data */
+    .s1 {
+      background: var(--black);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 24px 20px;
+    }
+    .s1-header { display: flex; justify-content: space-between; align-items: center; }
+    .s1-live { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--lime); text-transform: uppercase; letter-spacing: 0.1em; }
+    .s1-live-dot { width: 6px; height: 6px; background: var(--lime); border-radius: 50%; animation: blink 1.5s infinite; }
+    .s1-date { font-family: var(--font-mono); font-size: 9px; color: var(--grey); }
+    .s1-metrics { display: flex; flex-direction: column; gap: 10px; }
+    .s1-metric-row {
+      border-bottom: 1px solid var(--dark-grey);
+      padding-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .s1-metric-label { font-family: var(--font-mono); font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+    .s1-metric-val { font-family: var(--font-display); font-size: 24px; color: var(--lime); line-height: 1; }
+    .s1-metric-delta { font-family: var(--font-mono); font-size: 9px; color: var(--lime); }
+    .s1-footer { font-family: var(--font-mono); font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* Story 2 — Before / After */
+    .s2 { display: grid; grid-template-rows: 1fr 1fr; }
+    .s2-before {
+      background: #1a1a1a;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 20px;
+    }
+    .s2-after {
+      background: var(--lime);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 20px;
+    }
+    .s2-half-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .s2-before .s2-half-label { color: #444; }
+    .s2-after .s2-half-label { color: rgba(0,0,0,0.45); }
+    .s2-cac-label { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .s2-before .s2-cac-label { color: #555; }
+    .s2-after .s2-cac-label { color: rgba(0,0,0,0.5); }
+    .s2-cac-val { font-family: var(--font-display); font-size: 48px; line-height: 0.9; }
+    .s2-before .s2-cac-val { color: #555; text-decoration: line-through; text-decoration-color: #3a3a3a; }
+    .s2-after .s2-cac-val { color: var(--black); }
+    .s2-divider {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--black); height: 36px;
+      font-family: var(--font-display); font-size: 20px; color: var(--lime);
+      letter-spacing: 0.1em;
+      position: relative; z-index: 1;
+    }
+
+    /* Story 3 — The Challenge */
+    .s3 {
+      background: var(--off-black);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 24px 20px;
+      position: relative; overflow: hidden;
+    }
+    .s3-bg-z {
+      position: absolute; bottom: -30px; right: -20px;
+      font-family: var(--font-display); font-size: 240px;
+      color: rgba(200,255,0,0.04); line-height: 1; pointer-events: none;
+    }
+    .s3-top { font-family: var(--font-mono); font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.12em; }
+    .s3-statement {
+      font-family: var(--font-display); font-size: 36px; text-transform: uppercase; line-height: 0.9;
+      position: relative;
+    }
+    .s3-statement .accent { color: var(--lime); }
+    .s3-bottom { display: flex; flex-direction: column; gap: 8px; position: relative; }
+    .s3-btn { background: var(--lime); color: var(--black); font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 14px; text-align: center; }
+    .s3-url { font-family: var(--font-mono); font-size: 9px; color: var(--grey); text-align: center; letter-spacing: 0.06em; }
+
+    /* Story 4 — Service: CRM (bonus) */
+    /* Story 5 — Bonus: Stat Spotlight */
+
+    /* ─── SCHEDULE TABLE ─── */
+    .schedule-section { margin-top: 80px; margin-bottom: 100px; }
+    .schedule-table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    .schedule-table th {
+      background: var(--black); color: var(--lime);
+      font-family: var(--font-mono); font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 16px 20px; text-align: left;
+      border-bottom: 2px solid var(--lime);
+    }
+    .schedule-table td { padding: 16px 20px; border-bottom: 1px solid var(--dark-grey); font-size: 14px; color: var(--light-grey); vertical-align: top; }
+    .schedule-table tr:nth-child(even) td { background: var(--black); }
+    .schedule-table tr:nth-child(odd) td { background: #0f0f0f; }
+    .schedule-table tr:hover td { background: var(--dark-grey); }
+    td .post-tag { font-family: var(--font-mono); font-size: 11px; color: var(--lime); font-weight: 600; }
+    td .pillar-badge { display: inline-block; font-family: var(--font-mono); font-size: 10px; color: var(--grey); border: 1px solid var(--mid-grey); padding: 2px 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ─── FOOTER ─── */
+    .sb-footer {
+      background: var(--black); border-top: 2px solid var(--lime);
+      padding: 32px 60px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .sb-footer-text { font-family: var(--font-mono); font-size: 12px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; }
+    .sb-footer-mark { font-family: var(--font-display); font-size: 24px; color: var(--lime); }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE HEADER -->
+  <header class="sb-header">
+    <div class="sb-logo">
+      <div class="sb-logo-mark">Z</div>
+      <div class="sb-logo-text">ZDM INC</div>
+    </div>
+    <div class="sb-meta">
+      <div class="sb-meta-title">INSTAGRAM STORYBOARD</div>
+      <div class="sb-meta-sub">Wave 02 — The Proof Issue &nbsp;·&nbsp; 9 Posts &nbsp;·&nbsp; 3 Stories</div>
+      <div><span class="v2-badge">VERSION 2</span></div>
+    </div>
+  </header>
+
+  <!-- CREATIVE DIRECTION BANNER -->
+  <div class="direction-banner">
+    <div class="direction-tag">Creative Direction</div>
+    <div class="direction-headline">The Proof<br>Issue.</div>
+    <div class="direction-brief">
+      <div class="direction-brief-title">V2 Concept</div>
+      <div class="direction-brief-body">
+        Lead with results. Let the numbers do the work. V2 shifts from launch energy to earned authority — every post is built around proof points, case study results, and challenger positioning. Editorial, confident, evidence-first.
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ─── 01. PROFILE ─── -->
+    <div class="section-header">
+      <div class="section-number">01 // Profile</div>
+      <div class="section-title">The Account</div>
+    </div>
+
+    <div class="ig-profile">
+      <div class="ig-avatar">Z</div>
+      <div class="ig-profile-info">
+        <h2>ZDM Inc.</h2>
+        <div class="ig-handle">@zdm.inc</div>
+        <div class="ig-stats">
+          <div><span class="ig-stat-num">9</span> <span class="ig-stat-label">posts</span></div>
+          <div><span class="ig-stat-num">—</span> <span class="ig-stat-label">followers</span></div>
+          <div><span class="ig-stat-num">0</span> <span class="ig-stat-label">following</span></div>
+        </div>
+        <div class="ig-bio">
+          Zee Digital Marketing Inc.<br>
+          Performance marketing engineered for scale.<br>
+          Data over opinions. Revenue over reach. Speed over perfection.<br>
+          100% Data-driven decisions. We replace guesswork with systems engineered for scale.<br>
+          <a href="https://zdminc.com/audit">🔗 zdminc.com/audit</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- HIGHLIGHTS with SVG icons -->
+    <div class="ig-highlights">
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="17" width="7" height="11" fill="#0A0A0A"/>
+            <rect x="12" y="10" width="7" height="18" fill="#0A0A0A"/>
+            <rect x="22" y="2" width="7" height="26" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Results</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="12" height="12" fill="#0A0A0A"/>
+            <rect x="17" y="2" width="12" height="12" fill="#0A0A0A"/>
+            <rect x="2" y="17" width="12" height="12" fill="#0A0A0A"/>
+            <rect x="17" y="17" width="12" height="12" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Services</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="5" y1="25" x2="25" y2="5" stroke="#0A0A0A" stroke-width="3" stroke-linecap="square"/>
+            <polyline points="13,5 25,5 25,17" fill="none" stroke="#0A0A0A" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Case Studies</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="11" width="5" height="8" fill="#0A0A0A"/>
+            <rect x="7" y="14" width="3" height="2" fill="#0A0A0A"/>
+            <rect x="11" y="11" width="5" height="8" fill="#0A0A0A"/>
+            <rect x="17" y="14" width="3" height="2" fill="#0A0A0A"/>
+            <rect x="21" y="11" width="5" height="8" fill="#0A0A0A"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Process</div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="5,5 25,5 5,25 25,25" stroke="#0A0A0A" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+          </svg>
+        </div>
+        <div class="highlight-label">Tips</div>
+      </div>
+    </div>
+
+    <!-- ─── 02. FEED GRID ─── -->
+    <div class="section-header">
+      <div class="section-number">02 // Wave 02 — Feed Posts</div>
+      <div class="section-title">The Proof Grid</div>
+    </div>
+
+    <div class="feed-grid">
+
+      <!-- POST 1: THE CHALLENGER DECLARATION -->
+      <div class="post-wrap">
+        <div class="post p1">
+          <div class="p1-label">01 // Identity</div>
+          <div class="p1-headline">
+            We Are<br>The<br><em>Challenger</em><br>Agency.
+          </div>
+          <div class="p1-lockup">
+            <div class="p1-z">Z</div>
+            <div class="p1-wordmark">ZDM INC</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 01</span>
+          <span class="post-type">Brand Identity</span>
+        </div>
+      </div>
+
+      <!-- POST 2: CAC REDUCTION STAT -->
+      <div class="post-wrap">
+        <div class="post p2">
+          <div class="p2-eyebrow">03 // The Proof · Client Average</div>
+          <div>
+            <div class="p2-stat-row">
+              <div class="p2-minus">−</div>
+              <div class="p2-num">45<span style="font-size:0.55em">%</span></div>
+            </div>
+            <div class="p2-label">Average<br>CAC Reduction</div>
+          </div>
+          <div class="p2-sub">Customer Acquisition Cost · ZDM clients · zdminc.com/audit</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 02</span>
+          <span class="post-type">Results / CAC</span>
+        </div>
+      </div>
+
+      <!-- POST 3: B2B PIPELINE CASE STUDY -->
+      <div class="post-wrap">
+        <div class="post p3">
+          <div class="p3-tag">Case Study // Enterprise SaaS · ABM</div>
+          <div class="p3-num">$12M</div>
+          <div>
+            <div class="p3-label">Pipeline<br>Generated</div>
+          </div>
+          <div class="p3-detail">Surgical ABM + LinkedIn outreach · 6 months · @zdm.inc</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 03</span>
+          <span class="post-type">Case Study</span>
+        </div>
+      </div>
+
+      <!-- POST 4: ZERO GUESSWORK -->
+      <div class="post-wrap">
+        <div class="post p4">
+          <div class="p4-100">100%</div>
+          <div class="p4-div"></div>
+          <div class="p4-line1">Data-Driven</div>
+          <div class="p4-line2">Decisions.</div>
+          <div class="p4-sub">Zero Guesswork. · ZDM INC</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 04</span>
+          <span class="post-type">Manifesto</span>
+        </div>
+      </div>
+
+      <!-- POST 5: SYSTEM VS CAMPAIGN -->
+      <div class="post-wrap">
+        <div class="post p5">
+          <div class="p5-left">
+            <div class="p5-col-tag">Their way</div>
+            <div class="p5-word">Campaign.</div>
+            <div class="p5-sub">Set &amp; forget.</div>
+          </div>
+          <div class="p5-right">
+            <div class="p5-col-tag">ZDM way</div>
+            <div class="p5-word">System.</div>
+            <div class="p5-sub">24/7 engineered.</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 05</span>
+          <span class="post-type">Contrast</span>
+        </div>
+      </div>
+
+      <!-- POST 6: E-COMMERCE RESULT -->
+      <div class="post-wrap">
+        <div class="post p6">
+          <div class="p6-bg-mark">Z</div>
+          <div class="p6-tag">Case Study // Global E-Commerce · Q4</div>
+          <div class="p6-roas">7.2<span style="font-size:0.6em">×</span></div>
+          <div class="p6-roas-label">Blended ROAS</div>
+          <div class="p6-metrics">
+            <div class="p6-metric">Meta &amp; Google account restructure</div>
+            <div class="p6-metric">Dynamic creative testing</div>
+            <div class="p6-metric">Q4 dominance strategy</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 06</span>
+          <span class="post-type">Case Study</span>
+        </div>
+      </div>
+
+      <!-- POST 7: 24/7 MONITORING -->
+      <div class="post-wrap">
+        <div class="post p7">
+          <div class="p7-dots"></div>
+          <div class="p7-live">
+            <div class="p7-live-dot"></div>
+            Campaign Monitoring · Live
+          </div>
+          <div>
+            <div class="p7-big"><span>24</span>/7</div>
+            <div class="p7-label">Always<br>On.</div>
+          </div>
+          <div class="p7-quote">We never sleep.<br>Your campaigns shouldn't either.</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 07</span>
+          <span class="post-type">Education</span>
+        </div>
+      </div>
+
+      <!-- POST 8: ROI COMPOUNDS -->
+      <div class="post-wrap">
+        <div class="post p8">
+          <div class="p8-label">05 // The ZDM System · Long Game</div>
+          <div>
+            <div class="p8-chart">
+              <div class="p8-bar" style="height:25%;"></div>
+              <div class="p8-bar" style="height:42%;"></div>
+              <div class="p8-bar" style="height:60%;"></div>
+              <div class="p8-bar" style="height:78%;"></div>
+              <div class="p8-bar" style="height:100%; background:#8aaa00;"></div>
+            </div>
+            <div class="p8-bar-labels">
+              <div class="p8-bar-label">M1</div>
+              <div class="p8-bar-label">M2</div>
+              <div class="p8-bar-label">M3</div>
+              <div class="p8-bar-label">M4</div>
+              <div class="p8-bar-label">M6</div>
+            </div>
+          </div>
+          <div class="p8-headline">Your ROI<br><em>Compounds.</em></div>
+          <div class="p8-sub">Each iteration makes the system smarter.</div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 08</span>
+          <span class="post-type">Education</span>
+        </div>
+      </div>
+
+      <!-- POST 9: INITIATE -->
+      <div class="post-wrap">
+        <div class="post p9">
+          <div class="p9-frame">
+            <div class="p9-pre">Free audit · No pitch · Just data</div>
+            <div class="p9-word">Initiate.</div>
+            <div class="p9-div"></div>
+            <div class="p9-url">zdminc.com/audit</div>
+            <div class="p9-note">Zero Distance to Market.</div>
+          </div>
+        </div>
+        <div class="post-label">
+          <span class="post-num">POST 09</span>
+          <span class="post-type">CTA</span>
+        </div>
+      </div>
+
+    </div><!-- end feed-grid -->
+
+    <!-- ─── 03. CAPTIONS ─── -->
+    <div style="margin-top:60px;">
+      <div class="section-header">
+        <div class="section-number">03 // Copy</div>
+        <div class="section-title">Caption Bank V2</div>
+      </div>
+      <div class="caption-grid">
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 01</span>
+            <span class="caption-pillar-tag">Brand</span>
+          </div>
+          <div class="caption-title">The Challenger</div>
+          <div class="caption-text">We didn't build ZDM to be another agency in a crowded room.<br><br>We built it to be the one that makes the room uncomfortable.<br><br>Challenger brands don't settle. Neither do their agencies. Welcome to ZDM Inc.</div>
+          <div class="caption-hashtags">#ZDMInc #ChallengerBrand #MarketingAgency #ZeeDigitalMarketing #DataDriven</div>
+          <div class="caption-note">📌 Strong brand statement opener. Pair with a Reel voiceover.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 02</span>
+            <span class="caption-pillar-tag">Results</span>
+          </div>
+          <div class="caption-title">−45% CAC</div>
+          <div class="caption-text">Lower customer acquisition cost. Higher profit margin. Better ROI.<br><br>Our clients don't just grow — they grow more efficiently. A 45% CAC reduction means the same budget goes further, faster.<br><br>When was the last time your agency moved that needle?</div>
+          <div class="caption-hashtags">#CAC #CustomerAcquisitionCost #PaidMedia #PerformanceMarketing #ZDMInc #ROI #GrowthMarketing</div>
+          <div class="caption-note">📌 End with a question to drive comments and saves.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 03</span>
+            <span class="caption-pillar-tag">Social Proof</span>
+          </div>
+          <div class="caption-title">$12M Pipeline</div>
+          <div class="caption-text">One client. One strategy. $12M in enterprise pipeline.<br><br>For a SaaS brand targeting C-suite decision makers, we deployed Account-Based Marketing and surgical LinkedIn outreach.<br><br>6 months. 12 million reasons why data beats guesswork.</div>
+          <div class="caption-hashtags">#B2BMarketing #ABM #AccountBasedMarketing #LinkedInAds #SaaS #EnterpriseMarketing #ZDMInc</div>
+          <div class="caption-note">📌 Great for LinkedIn cross-posting. Add logo watermark to the image.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 04</span>
+            <span class="caption-pillar-tag">Brand</span>
+          </div>
+          <div class="caption-title">Zero Guesswork</div>
+          <div class="caption-text">100% of ZDM decisions are rooted in data.<br><br>Not gut feelings. Not trend-chasing. Not what worked for someone else last year.<br><br>Your market, your numbers, your system. Built to compound.<br><br>Save this if you're done guessing. 💾</div>
+          <div class="caption-hashtags">#DataDriven #PerformanceMarketing #ZDMInc #ZeroGuesswork #MarketingStrategy #GrowthHacking</div>
+          <div class="caption-note">📌 "Save this" CTA drives high save rate → great for algorithm.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 05</span>
+            <span class="caption-pillar-tag">Contrast</span>
+          </div>
+          <div class="caption-title">System vs Campaign</div>
+          <div class="caption-text">A campaign ends.<br>A system compounds.<br><br>Most agencies sell you a campaign and call it a strategy. We build infrastructure — the kind that gets smarter with every dollar spent and every week that passes.<br><br>Which one are you paying for right now?</div>
+          <div class="caption-hashtags">#MarketingStrategy #ZDMInc #PaidMedia #GrowthMarketing #DigitalMarketing #MarketingAgency</div>
+          <div class="caption-note">📌 High-share content. Works as a carousel — one word each slide.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 06</span>
+            <span class="caption-pillar-tag">Social Proof</span>
+          </div>
+          <div class="caption-title">7.2× ROAS</div>
+          <div class="caption-text">Q4 is war. We came ready.<br><br>For a global e-commerce brand, we completely restructured their Meta and Google accounts, introduced dynamic creative testing, and dominated Q4 with a 7.2× blended ROAS.<br><br>DTC scaling isn't luck. It's engineering.</div>
+          <div class="caption-hashtags">#ROAS #EcommerceMarketing #DTC #MetaAds #GoogleAds #Q4Strategy #ZDMInc #EcommerceBusiness</div>
+          <div class="caption-note">📌 Pair with a Reel showing "before & after" account structure.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 07</span>
+            <span class="caption-pillar-tag">Education</span>
+          </div>
+          <div class="caption-title">24/7 On</div>
+          <div class="caption-text">Markets don't close at 5pm.<br><br>Neither do we.<br><br>24/7 campaign monitoring means we catch the opportunities your competitors miss and kill the spend that's bleeding your budget — before it compounds into a problem.<br><br>Real-time. Every channel. Always.</div>
+          <div class="caption-hashtags">#CampaignManagement #PaidMedia #24x7 #PerformanceMarketing #ZDMInc #MediaBuying #PaidAds</div>
+          <div class="caption-note">📌 Good for a Reel — real-time dashboard flythrough concept.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 08</span>
+            <span class="caption-pillar-tag">Education</span>
+          </div>
+          <div class="caption-title">ROI Compounds</div>
+          <div class="caption-text">Month 1 is never the best month. Month 6 is.<br><br>Every iteration of the ZDM system makes it smarter. Each test feeds the next. Each dollar spent teaches the algorithm something new about your best customer.<br><br>That's the compounding effect. Save this to show your board. 📊</div>
+          <div class="caption-hashtags">#CompoundGrowth #ROI #MarketingStrategy #ZDMSystem #PerformanceMarketing #ZDMInc #GrowthMarketing</div>
+          <div class="caption-note">📌 Carousel version: one bar per slide, showing growth month by month.</div>
+        </div>
+
+        <div class="caption-card">
+          <div class="caption-header">
+            <span class="caption-post-num">POST 09</span>
+            <span class="caption-pillar-tag">CTA</span>
+          </div>
+          <div class="caption-title">Initiate.</div>
+          <div class="caption-text">One word. One decision.<br><br>No pitch decks. No retainer commitments upfront. Just a free audit of your current funnel, spend, and conversion architecture — and a clear picture of what's possible.<br><br>Initiate yours. Link in bio ↑</div>
+          <div class="caption-hashtags">#ZDMInc #FreeAudit #DigitalMarketing #MarketingAgency #ScaleYourBusiness #StartScaling #ZeroDistanceToMarket</div>
+          <div class="caption-note">📌 Most minimal post = strongest CTA. Pin this when running a campaign.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── 04. STORIES ─── -->
+    <div style="margin-top:80px;">
+      <div class="section-header">
+        <div class="section-number">04 // Stories</div>
+        <div class="section-title">Story Concepts V2</div>
+      </div>
+
+      <div class="stories-row">
+
+        <!-- STORY 1: LIVE DATA -->
+        <div class="story-wrap">
+          <div class="story s1">
+            <div class="s1-header">
+              <div class="s1-live">
+                <div class="s1-live-dot"></div>
+                Live · Campaign Data
+              </div>
+              <div class="s1-date">May 2026</div>
+            </div>
+            <div class="s1-metrics">
+              <div class="s1-metric-row">
+                <div>
+                  <div class="s1-metric-label">Revenue Today</div>
+                  <div class="s1-metric-val">$43.2K</div>
+                </div>
+                <div class="s1-metric-delta">↑ +18%</div>
+              </div>
+              <div class="s1-metric-row">
+                <div>
+                  <div class="s1-metric-label">Blended ROAS</div>
+                  <div class="s1-metric-val">4.1×</div>
+                </div>
+                <div class="s1-metric-delta">↑ +0.4</div>
+              </div>
+              <div class="s1-metric-row">
+                <div>
+                  <div class="s1-metric-label">CAC</div>
+                  <div class="s1-metric-val">$38</div>
+                </div>
+                <div class="s1-metric-delta">↓ −12%</div>
+              </div>
+              <div class="s1-metric-row" style="border:none; padding-bottom:0;">
+                <div>
+                  <div class="s1-metric-label">Conv. Rate</div>
+                  <div class="s1-metric-val">6.8%</div>
+                </div>
+                <div class="s1-metric-delta">↑ +1.2%</div>
+              </div>
+            </div>
+            <div class="s1-footer">This is what 24/7 monitoring looks like · zdminc.com</div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 01</span>
+            <span class="story-type">Live Data</span>
+          </div>
+        </div>
+
+        <!-- STORY 2: BEFORE / AFTER -->
+        <div class="story-wrap">
+          <div class="story s2">
+            <div class="s2-before">
+              <div class="s2-half-label">Before ZDM</div>
+              <div>
+                <div class="s2-cac-label">Customer Acquisition Cost</div>
+                <div class="s2-cac-val">$143</div>
+              </div>
+            </div>
+            <div class="s2-divider">↓ −45%</div>
+            <div class="s2-after">
+              <div class="s2-half-label">After ZDM · Month 6</div>
+              <div>
+                <div class="s2-cac-label">Customer Acquisition Cost</div>
+                <div class="s2-cac-val">$79</div>
+              </div>
+            </div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 02</span>
+            <span class="story-type">Before / After</span>
+          </div>
+        </div>
+
+        <!-- STORY 3: THE CHALLENGE -->
+        <div class="story-wrap">
+          <div class="story s3">
+            <div class="s3-bg-z">Z</div>
+            <div class="s3-top">// ZDM Inc · zdm.inc</div>
+            <div class="s3-statement">
+              Most Brands<br>Settle for<br><span class="accent">Reach.</span><br>We Engineer<br><span class="accent">Revenue.</span>
+            </div>
+            <div class="s3-bottom">
+              <div class="s3-btn">Initiate Your Free Audit →</div>
+              <div class="s3-url">zdminc.com/audit</div>
+            </div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 03</span>
+            <span class="story-type">The Challenge</span>
+          </div>
+        </div>
+
+        <!-- STORY 4: B2B PIPELINE (bonus) -->
+        <div class="story-wrap">
+          <div class="story" style="background:var(--off-black); display:flex; flex-direction:column; justify-content:space-between; padding:24px 20px; border-top:3px solid var(--lime);">
+            <div style="font-family:var(--font-mono); font-size:9px; color:var(--lime); text-transform:uppercase; letter-spacing:0.12em;">Case Study // B2B SaaS</div>
+            <div>
+              <div style="font-family:var(--font-display); font-size:72px; color:var(--lime); line-height:0.85;">$12M</div>
+              <div style="font-family:var(--font-display); font-size:22px; text-transform:uppercase; color:var(--white); line-height:1; margin-top:4px;">Pipeline<br>Generated</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono); font-size:8px; color:var(--grey); text-transform:uppercase; letter-spacing:0.08em; line-height:1.6;">ABM + LinkedIn Outreach<br>6 month engagement<br>Enterprise SaaS client</div>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:9px; color:var(--lime); text-transform:uppercase; letter-spacing:0.08em;">↑ Tap · Request your audit</div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 04</span>
+            <span class="story-type">Case Study</span>
+          </div>
+        </div>
+
+        <!-- STORY 5: ROAS SPIKE (bonus) -->
+        <div class="story-wrap">
+          <div class="story" style="background:var(--lime); display:flex; flex-direction:column; justify-content:space-between; padding:24px 20px; position:relative; overflow:hidden;">
+            <div style="position:absolute; bottom:-20px; right:-10px; font-family:var(--font-display); font-size:220px; color:rgba(0,0,0,0.06); line-height:1;">Z</div>
+            <div style="font-family:var(--font-mono); font-size:9px; color:rgba(0,0,0,0.45); text-transform:uppercase; letter-spacing:0.12em;">E-Commerce · Q4 · Global Client</div>
+            <div style="position:relative;">
+              <div style="font-family:var(--font-display); font-size:96px; color:var(--black); line-height:0.85;">7.2×</div>
+              <div style="font-family:var(--font-display); font-size:22px; text-transform:uppercase; color:var(--black); line-height:1;">Blended ROAS</div>
+            </div>
+            <div style="position:relative;">
+              <div style="font-family:var(--font-display); font-size:18px; text-transform:uppercase; color:var(--black); margin-bottom:6px;">Your brand next?</div>
+              <div style="font-family:var(--font-mono); font-size:9px; color:rgba(0,0,0,0.5); text-transform:uppercase; letter-spacing:0.1em;">↑ Tap · @zdm.inc · zdminc.com</div>
+            </div>
+          </div>
+          <div class="story-label">
+            <span class="story-num">STORY 05</span>
+            <span class="story-type">ROAS Highlight</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── 05. SCHEDULE ─── -->
+    <div class="schedule-section">
+      <div class="section-header">
+        <div class="section-number">05 // Wave 02 Plan</div>
+        <div class="section-title">Posting Schedule</div>
+      </div>
+
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Day</th>
+            <th>Post</th>
+            <th>Format</th>
+            <th>Angle</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Week 4</td>
+            <td>Mon</td>
+            <td><span class="post-tag">Post 01</span> — The Challenger</td>
+            <td>Static / Reel</td>
+            <td><span class="pillar-badge">Brand</span></td>
+            <td>Opens Wave 02. Voiceover Reel version recommended.</td>
+          </tr>
+          <tr>
+            <td>Week 4</td>
+            <td>Wed</td>
+            <td><span class="post-tag">Post 02</span> — −45% CAC</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Results</span></td>
+            <td>End caption with a question. Drives comments.</td>
+          </tr>
+          <tr>
+            <td>Week 4</td>
+            <td>Fri</td>
+            <td><span class="post-tag">Post 03</span> — $12M Pipeline</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Social Proof</span></td>
+            <td>Cross-post to LinkedIn. High B2B reach.</td>
+          </tr>
+          <tr>
+            <td>Week 5</td>
+            <td>Mon</td>
+            <td><span class="post-tag">Post 04</span> — Zero Guesswork</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Brand</span></td>
+            <td>Add "Save this" in caption. Boosts save rate.</td>
+          </tr>
+          <tr>
+            <td>Week 5</td>
+            <td>Wed</td>
+            <td><span class="post-tag">Post 05</span> — System vs Campaign</td>
+            <td>Carousel</td>
+            <td><span class="pillar-badge">Contrast</span></td>
+            <td>One word per slide. High share potential.</td>
+          </tr>
+          <tr>
+            <td>Week 5</td>
+            <td>Fri</td>
+            <td><span class="post-tag">Post 06</span> — 7.2× ROAS</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">Social Proof</span></td>
+            <td>Pair with a Reel showing account restructure concept.</td>
+          </tr>
+          <tr>
+            <td>Week 6</td>
+            <td>Mon</td>
+            <td><span class="post-tag">Post 07</span> — 24/7 On</td>
+            <td>Reel / Static</td>
+            <td><span class="pillar-badge">Education</span></td>
+            <td>Reel: dashboard flythrough. Great for awareness.</td>
+          </tr>
+          <tr>
+            <td>Week 6</td>
+            <td>Wed</td>
+            <td><span class="post-tag">Post 08</span> — ROI Compounds</td>
+            <td>Carousel (5 slides)</td>
+            <td><span class="pillar-badge">Education</span></td>
+            <td>One bar per slide. Strong saves. Good for board-level sharing.</td>
+          </tr>
+          <tr>
+            <td>Week 6</td>
+            <td>Fri</td>
+            <td><span class="post-tag">Post 09</span> — Initiate.</td>
+            <td>Static</td>
+            <td><span class="pillar-badge">CTA</span></td>
+            <td>Boost as paid ad. Test against V1 CTA. Pin if converting.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- end container -->
+
+  <footer class="sb-footer">
+    <div class="sb-footer-text">© 2026 Zee Digital Marketing Inc. &nbsp;·&nbsp; Storyboard V2 — The Proof Issue &nbsp;·&nbsp; Internal Use Only</div>
+    <div class="sb-footer-mark">ZDM INC</div>
+  </footer>
+
+</body>
+</html>

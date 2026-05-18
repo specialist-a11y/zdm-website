@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZDM INC — $200/Month Boosting Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lime: #C8FF00;
+    --black: #0A0A0A;
+    --bg: #141414;
+    --surface: #1E1E1E;
+    --mid: #888888;
+    --light: #F5F5F0;
+    --border: rgba(200,255,0,0.12);
+    --border-dim: rgba(255,255,255,0.07);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--light); line-height: 1.6; overflow-x: hidden; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lime); z-index: 9999; transition: width 0.1s linear; }
+
+  .wrapper { display: flex; min-height: 100vh; }
+
+  #sidebar {
+    width: 240px; min-width: 240px;
+    background: var(--black);
+    border-right: 1px solid var(--border-dim);
+    position: sticky; top: 0;
+    height: 100vh; overflow-y: auto;
+    display: flex; flex-direction: column;
+    padding: 28px 0 40px; z-index: 100;
+  }
+  .sidebar-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.08em; color: var(--lime); padding: 0 24px 20px; border-bottom: 1px solid var(--border-dim); margin-bottom: 20px; }
+  .sidebar-logo span { color: var(--mid); font-size: 10px; display: block; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; margin-top: 2px; }
+  .sidebar-badge { margin: 0 24px 20px; background: rgba(200,255,0,0.08); border: 1px solid rgba(200,255,0,0.2); border-radius: 6px; padding: 10px 14px; }
+  .sidebar-badge p { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--mid); margin: 0; line-height: 1.6; }
+  .sidebar-badge strong { color: var(--lime); display: block; font-size: 16px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; margin-bottom: 2px; }
+  .sidebar-nav { list-style: none; flex: 1; }
+  .sidebar-nav li a { display: flex; align-items: center; gap: 10px; padding: 9px 24px; color: var(--mid); text-decoration: none; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s, background 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a .num { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(136,136,136,0.5); min-width: 18px; }
+  .sidebar-nav li a:hover { color: var(--light); background: rgba(255,255,255,0.03); }
+  .sidebar-nav li a.active { color: var(--lime); border-left-color: var(--lime); background: rgba(200,255,0,0.04); }
+  .sidebar-nav li a.active .num { color: rgba(200,255,0,0.5); }
+
+  main { flex: 1; min-width: 0; padding: 60px 64px; max-width: 1100px; }
+
+  .section { margin-bottom: 96px; scroll-margin-top: 40px; }
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 36px; padding-bottom: 16px; border-bottom: 1px solid var(--border-dim); }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--lime); opacity: 0.6; letter-spacing: 0.1em; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 0.04em; color: var(--light); line-height: 1; }
+
+  h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.05em; color: var(--light); margin-bottom: 12px; }
+  h4 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--lime); margin-bottom: 8px; }
+  p { color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+  ul, ol { padding-left: 20px; color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.9; }
+  li { margin-bottom: 2px; }
+  strong { color: var(--light); font-weight: 600; }
+
+  .card { background: var(--surface); border: 1px solid var(--border-dim); border-radius: 8px; padding: 24px; transition: border-color 0.2s, transform 0.2s; }
+  .card:hover { border-color: var(--border); transform: translateY(-2px); }
+  .card-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; display: inline-block; border: 1px solid rgba(200,255,0,0.25); padding: 2px 8px; border-radius: 3px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  .info-block { background: var(--surface); border: 1px solid var(--border-dim); border-radius: 8px; padding: 24px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  @media (max-width: 700px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+  .stat-card { background: var(--surface); border: 1px solid var(--border-dim); border-radius: 8px; padding: 20px; text-align: center; }
+  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--lime); line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; color: var(--mid); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+  .step-list li { counter-increment: step; display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+  .step-list li::before { content: counter(step, decimal-leading-zero); font-family: 'DM Mono', monospace; font-size: 11px; color: var(--lime); background: rgba(200,255,0,0.08); border: 1px solid rgba(200,255,0,0.2); border-radius: 4px; padding: 4px 8px; min-width: 36px; text-align: center; margin-top: 2px; flex-shrink: 0; }
+  .step-list li .step-body { flex: 1; }
+  .step-list li .step-body strong { display: block; font-size: 14px; margin-bottom: 4px; }
+  .step-list li .step-body p { margin-bottom: 0; }
+
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: rgba(200,255,0,0.2); }
+  .timeline-item { position: relative; margin-bottom: 28px; }
+  .timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 3px rgba(200,255,0,0.15); }
+  .timeline-week { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--lime); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; opacity: 0.7; }
+  .timeline-title { font-weight: 600; font-size: 14px; color: var(--light); margin-bottom: 6px; }
+  .timeline-body { font-size: 13px; color: rgba(245,245,240,0.7); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lime); padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(200,255,0,0.2); }
+  tbody tr:nth-child(odd) { background: #181818; }
+  tbody tr:nth-child(even) { background: #1c1c1c; }
+  tbody td { padding: 12px 16px; color: rgba(245,245,240,0.8); vertical-align: top; border-bottom: 1px solid var(--border-dim); }
+  tbody td strong { color: var(--light); }
+
+  .divider { height: 1px; background: var(--border-dim); margin: 28px 0; }
+
+  .warning-box { background: rgba(255,80,80,0.06); border: 1px solid rgba(255,80,80,0.2); border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
+  .warning-box h4 { color: #ff6b6b; }
+  .warning-box p, .warning-box li { color: rgba(245,245,240,0.7); }
+
+  .lime-box { background: rgba(200,255,0,0.05); border: 1px solid rgba(200,255,0,0.15); border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
+  .lime-box h4 { color: var(--lime); }
+
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 9px; border-radius: 4px; font-weight: 500; letter-spacing: 0.05em; vertical-align: middle; }
+  .badge-lime { background: rgba(200,255,0,0.12); color: var(--lime); border: 1px solid rgba(200,255,0,0.2); }
+  .badge-mid { background: rgba(136,136,136,0.12); color: var(--mid); border: 1px solid rgba(136,136,136,0.2); }
+
+  @media (max-width: 900px) { #sidebar { display: none; } main { padding: 40px 24px; } .stat-row { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div class="wrapper">
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">ZDM INC<span>$200/MO BOOST PLAN — V2</span></div>
+  <div class="sidebar-badge">
+    <strong>$200/mo</strong>
+    <p>Low-budget entry plan<br>designed to generate<br>your first paying clients</p>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="#s01" class="nav-link"><span class="num">01</span>What $200 Gets You</a></li>
+    <li><a href="#s02" class="nav-link"><span class="num">02</span>Projected Numbers</a></li>
+    <li><a href="#s03" class="nav-link"><span class="num">03</span>Platform Strategy</a></li>
+    <li><a href="#s04" class="nav-link"><span class="num">04</span>Exact Lead Process</a></li>
+    <li><a href="#s05" class="nav-link"><span class="num">05</span>Week-by-Week Plan</a></li>
+    <li><a href="#s06" class="nav-link"><span class="num">06</span>Ad Creative Guide</a></li>
+    <li><a href="#s07" class="nav-link"><span class="num">07</span>Free Channels to Stack</a></li>
+    <li><a href="#s08" class="nav-link"><span class="num">08</span>Scaling Beyond $200</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<!-- HERO BANNER -->
+<div style="background:linear-gradient(135deg,#0d1a00 0%,#141414 60%);border:1px solid rgba(200,255,0,0.2);border-radius:12px;padding:40px 48px;margin-bottom:64px;">
+  <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--lime);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;opacity:0.7;">Entry-Level Growth Plan</div>
+  <h1 style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:0.04em;color:var(--light);line-height:1;margin-bottom:16px;">The $200/Month<br><span style="color:var(--lime);">Client Acquisition</span> System</h1>
+  <p style="font-size:16px;color:rgba(245,245,240,0.7);max-width:580px;margin-bottom:24px;">A precise, repeatable system for generating your first paying clients on a lean budget. No fluff. Exact steps, real numbers, and what to do when the budget runs out.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <span class="badge badge-lime">$200 ad spend</span>
+    <span class="badge badge-mid">Month 1–3 focus</span>
+    <span class="badge badge-lime">2–4 projected clients</span>
+    <span class="badge badge-mid">Meta Boost primary</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     01 — WHAT $200 GETS YOU
+══════════════════════════════════════════ -->
+<section class="section" id="s01">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">What $200 Gets You</h2>
+  </div>
+
+  <p>$200/month is a real budget — not a test budget. Used correctly on the right platform with the right offer, it can generate 2–5 qualified leads per month. Here's the honest breakdown of what the money does and what it can't do.</p>
+
+  <div class="two-col" style="margin-bottom:28px;">
+    <div class="lime-box">
+      <h4>What it CAN do</h4>
+      <ul>
+        <li>Put your offer in front of 4,000–12,000 targeted people per month</li>
+        <li>Generate 15–40 clicks to a landing page or DM</li>
+        <li>Produce 2–6 inbound enquiries per month (at 10–15% lead rate)</li>
+        <li>Build a warm retargeting audience within 3–4 weeks</li>
+        <li>Test 2–3 ad creatives to find what resonates</li>
+        <li>Create social proof (comments, shares, saves) that compounds</li>
+      </ul>
+    </div>
+    <div class="warning-box">
+      <h4>What it CANNOT do</h4>
+      <ul>
+        <li>Replace organic/referral outreach — this is a supplement, not a solo strategy</li>
+        <li>Generate consistent volume without a strong offer and clear CTA</li>
+        <li>Work without a landing page or response process in place</li>
+        <li>Produce results in the first 7 days — allow 2–3 weeks for data</li>
+        <li>Scale profitably without reinvesting the revenue from first clients</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>How to Split the $200</h3>
+  <table style="margin-bottom:28px;">
+    <thead>
+      <tr><th>Allocation</th><th>Amount</th><th>Purpose</th><th>Daily Budget</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Awareness / reach boost</strong></td><td>$80</td><td>Boost your best organic post to cold audiences. Goal: reach and engagement.</td><td>$2.67/day</td></tr>
+      <tr><td><strong>Lead gen campaign</strong></td><td>$90</td><td>Direct response ad — "Free Audit" or "Book a Call" CTA. Goal: leads/messages.</td><td>$3/day</td></tr>
+      <tr><td><strong>Retargeting</strong></td><td>$30</td><td>Show a follow-up ad to everyone who engaged with or clicked in the last 30 days.</td><td>$1/day</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-block" style="border-color:rgba(200,255,0,0.15);">
+    <h4>The Non-Negotiable Before You Spend a Dollar</h4>
+    <p style="margin:0;">Your offer must be specific. "We do digital marketing" will not convert at $200/month. You need a specific, low-risk offer that removes friction. The best performing offers at this budget level:</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Free 30-minute ad account audit</strong> — low commitment, high perceived value</li>
+      <li><strong>"We'll write your first ad for free"</strong> — gets them in the door with a deliverable</li>
+      <li><strong>Fixed-scope starter package</strong> ($500 for one campaign setup) — easy yes</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     02 — PROJECTED NUMBERS
+══════════════════════════════════════════ -->
+<section class="section" id="s02">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Projected Numbers</h2>
+  </div>
+
+  <p>These projections are based on realistic Meta Ads performance for a B2B service offer (performance marketing agency) targeting small business owners in English-speaking markets. Figures are conservative — a strong creative or viral organic post can significantly outperform these.</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-value">8,000</div>
+      <div class="stat-label">Avg monthly reach</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">25</div>
+      <div class="stat-label">Estimated clicks/mo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">3–5</div>
+      <div class="stat-label">Qualified leads/mo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">1–2</div>
+      <div class="stat-label">Projected new clients/mo</div>
+    </div>
+  </div>
+
+  <h3>Month-by-Month Projection (First 3 Months)</h3>
+  <table style="margin-bottom:28px;">
+    <thead>
+      <tr><th>Month</th><th>Ad Spend</th><th>Est. Reach</th><th>Est. Leads</th><th>Projected Clients</th><th>Potential Revenue</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Month 1</strong></td>
+        <td>$200</td>
+        <td>5,000–8,000</td>
+        <td>2–4 <span class="badge badge-mid">learning phase</span></td>
+        <td>0–1</td>
+        <td>$0–$1,500</td>
+      </tr>
+      <tr>
+        <td><strong>Month 2</strong></td>
+        <td>$200</td>
+        <td>7,000–12,000</td>
+        <td>3–6 <span class="badge badge-lime">optimised</span></td>
+        <td>1–2</td>
+        <td>$1,500–$3,000</td>
+      </tr>
+      <tr>
+        <td><strong>Month 3</strong></td>
+        <td>$200 + reinvest</td>
+        <td>10,000–18,000</td>
+        <td>5–9</td>
+        <td>2–4</td>
+        <td>$3,000–$7,000</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <h4>Important Caveats on These Numbers</h4>
+    <ul>
+      <li>Month 1 results depend heavily on creative quality and offer clarity — not just spend.</li>
+      <li>These numbers assume you're also doing organic outreach alongside the ads (see Section 07). Ads alone at $200/month are a slow burn.</li>
+      <li>Lead-to-client conversion rate depends entirely on your discovery call performance. A 30–40% close rate is achievable with a strong script (see the main guide Section 03).</li>
+      <li>Numbers assume a local or English-speaking national market. Hyper-local targeting (your city) can dramatically improve CPL at this budget.</li>
+    </ul>
+  </div>
+
+  <h3>CPL Benchmark by Audience Type</h3>
+  <table>
+    <thead>
+      <tr><th>Audience</th><th>Est. CPL</th><th>Lead Quality</th><th>Recommended?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Small business owners, local radius (25km)</strong></td><td>$12–$30</td><td>High — relevant geography</td><td><span class="badge badge-lime">Best for $200 budget</span></td></tr>
+      <tr><td><strong>E-com store owners, interest-based</strong></td><td>$25–$60</td><td>Medium — broad audience</td><td><span class="badge badge-mid">Use Month 2+</span></td></tr>
+      <tr><td><strong>Lookalike of your email list</strong></td><td>$15–$35</td><td>High — requires existing list</td><td><span class="badge badge-lime">Use if list exists</span></td></tr>
+      <tr><td><strong>Retargeting — website visitors</strong></td><td>$5–$15</td><td>Very high</td><td><span class="badge badge-lime">Always run this</span></td></tr>
+      <tr><td><strong>National broad targeting</strong></td><td>$40–$120</td><td>Low at this budget</td><td><span class="badge badge-mid">Not at $200</span></td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     03 — PLATFORM STRATEGY
+══════════════════════════════════════════ -->
+<section class="section" id="s03">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Platform Strategy</h2>
+  </div>
+
+  <p>At $200/month you run one platform well — not three platforms poorly. Here's how each option performs for a B2B service business at this budget level.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px;">
+
+    <div class="card" style="border-color:rgba(200,255,0,0.3);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div class="card-tag">Primary</div>
+        <span class="badge badge-lime">Recommended</span>
+      </div>
+      <h3 style="font-size:22px;">Meta (Facebook + Instagram)</h3>
+      <p style="font-size:13px;">Best CPL at low budgets. Sophisticated audience targeting even with small spend. Lead gen forms native to the platform — no landing page required at entry level. Boost feature is built for exactly this use case.</p>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--lime);">$12–35</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">EST. CPL</div></div>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--lime);">✓</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">USE FIRST</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div class="card-tag">Secondary</div>
+        <span class="badge badge-mid">Month 3+</span>
+      </div>
+      <h3 style="font-size:22px;">LinkedIn</h3>
+      <p style="font-size:13px;">Best platform for B2B targeting by job title and company size. But CPL is significantly higher ($60–$200). At $200/month, you'll get 1–3 clicks. Not viable as a paid channel at this budget — use it organically instead.</p>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--mid);">$80–200</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">EST. CPL</div></div>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--mid);">Organic</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">USE FREE</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div class="card-tag">Optional</div>
+        <span class="badge badge-mid">If under 35 audience</span>
+      </div>
+      <h3 style="font-size:22px;">TikTok</h3>
+      <p style="font-size:13px;">Minimum campaign spend is $50/day — which blows the entire budget in 4 days. Not viable at $200/month for paid. However, organic TikTok is an exceptional free acquisition channel for educational content (see Section 07).</p>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--mid);">N/A</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">MIN $50/DAY</div></div>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--mid);">Organic</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">USE FREE</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div class="card-tag">Consider</div>
+        <span class="badge badge-mid">Local service focus</span>
+      </div>
+      <h3 style="font-size:22px;">Google Search</h3>
+      <p style="font-size:13px;">High intent but expensive keywords ($5–$20 per click for marketing-related terms). At $200 you get 10–40 clicks, which isn't enough data to optimise. Worth testing if your target client is actively searching "marketing agency near me."</p>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--mid);">$40–100</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">EST. CPL</div></div>
+        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--mid);">Local</div><div style="font-size:10px;color:var(--mid);font-family:'DM Mono',monospace;">ONLY IF LOCAL</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="lime-box">
+    <h4>Decision: Use Meta First, Always</h4>
+    <p style="margin:0;">For a new agency with $200/month, Meta is the only platform that gives you enough reach, targeting, and lead volume to test and optimise at this budget level. Once you sign your first 2–3 clients and have $500–$1,000/month to reinvest, reassess LinkedIn paid and Google Search.</p>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     04 — EXACT LEAD PROCESS
+══════════════════════════════════════════ -->
+<section class="section" id="s04">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Exact Lead Process</h2>
+  </div>
+
+  <p>This is the step-by-step system for turning $200 in ad spend into paying clients. Follow this in order. Don't skip steps.</p>
+
+  <div class="divider"></div>
+
+  <h3>Phase 1 — Setup (Days 1–3, $0 spend)</h3>
+  <ol class="step-list" style="margin-bottom:40px;">
+    <li>
+      <div class="step-body">
+        <strong>Create your Meta Business Manager account</strong>
+        <p>Go to business.facebook.com. Set up Business Manager, create an Ad Account, and install the Meta Pixel on your website. This takes 1–2 hours and must be done before you spend a dollar. Without the pixel, you're flying blind.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Build your offer page or lead form</strong>
+        <p>Decide your entry offer (free audit recommended). Create either: (a) a simple landing page with a Calendly link embedded, or (b) a Meta Instant Form directly inside Ads Manager — no website needed. Option B is faster to launch and typically converts better at low budgets because there's no page-load friction.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Set up your response system</strong>
+        <p>Every lead that comes in gets a response within 15 minutes. Set up a Zapier automation: New Meta Lead Form submission → Send SMS + Email to yourself → Auto-reply email to the lead confirming their booking. This costs ~$20/month and turns a cold lead warm before they forget they enquired.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Define your targeting audience</strong>
+        <p>In Meta Ads Manager, create a Saved Audience: Location = your city or region (25–50km radius). Age = 28–55. Interests = "Business owner", "Entrepreneurship", "Small business". Behaviours = "Facebook Page Admins" (this targets people who run a business page — high signal). Estimated audience size: 15,000–80,000. This is your primary cold audience.</p>
+      </div>
+    </li>
+  </ol>
+
+  <h3>Phase 2 — Launch (Days 4–7, spend begins)</h3>
+  <ol class="step-list" style="margin-bottom:40px;">
+    <li>
+      <div class="step-body">
+        <strong>Create Campaign 1: Lead Generation ($3/day)</strong>
+        <p>Objective: Leads. Use your Meta Instant Form. Ad format: Single image or short video (15s max). Headline: "Is Your Ad Spend Actually Working?" or "Free 30-Minute Ad Account Audit — Limited Spots." Body copy: 2–3 sentences maximum. One clear CTA: "Claim Free Audit." Target your Saved Audience from Step 4.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Create Campaign 2: Page Boost ($2.67/day)</strong>
+        <p>Take your best-performing organic post (highest engagement). Boost it. Objective: Engagement. This is not a lead gen campaign — it's social proof building and audience warming. People who engage here become your retargeting pool. Target same Saved Audience.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Create Campaign 3: Retargeting ($1/day — starts Week 2)</strong>
+        <p>Custom Audience: Everyone who visited your website, engaged with your Instagram/Facebook, or opened your lead form but didn't submit — last 30 days. Ad: Different creative from Campaign 1. Use social proof angle: "47 business owners have booked their free audit this month." or a testimonial if you have one. This small budget works because the audience is tiny but highly qualified.</p>
+      </div>
+    </li>
+  </ol>
+
+  <h3>Phase 3 — Nurture & Close (Ongoing)</h3>
+  <ol class="step-list" style="margin-bottom:40px;">
+    <li>
+      <div class="step-body">
+        <strong>Lead responds → Auto-reply fires within 2 minutes</strong>
+        <p>Zapier sends them a personalised confirmation email with the Calendly link. Subject line: "Your free ZDM audit is confirmed — here's what to expect." This email briefly explains what happens in the audit call (what you'll review, what they'll walk away with). Sets expectations, builds anticipation.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>24 hours before call → reminder SMS</strong>
+        <p>Use Zapier + Twilio or a Calendly reminder. Simple text: "Hey [Name] — quick reminder your ZDM audit is tomorrow at [TIME]. Reply RESCHEDULE if you need to move it. See you then." This reduces no-shows from ~40% to ~15%.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Discovery/audit call → use the 10-question framework</strong>
+        <p>This is your sales call disguised as a service call. You're auditing their situation, identifying their real problem, and positioning ZDM as the solution. Run the BANT+ framework from Section 03 of the main guide. Aim to close or get a clear next step in the same call.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Same-day proposal email</strong>
+        <p>Within 2 hours of the call, send a one-page proposal email. Not a PDF — a clean plain-text or HTML email with: the problem you heard, the solution you'd implement, the investment (Starter $1,500 or a fixed starter package), and one clear CTA: "Reply YES to move forward and I'll send the agreement today." Speed is the differentiator here.</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <strong>Follow-up sequence if no reply (3 touches)</strong>
+        <p>Day 2: "Just checking you got this — any questions?" Day 5: "Still have one spot available for [month]. Let me know." Day 10: "Closing out this enquiry — is now not the right time, or did something change?" After Day 10, move them to a monthly newsletter nurture and don't chase further.</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="lime-box">
+    <h4>The Funnel in Numbers (Month 2, Optimised)</h4>
+    <table>
+      <thead><tr><th>Stage</th><th>Number</th><th>Rate</th></tr></thead>
+      <tbody>
+        <tr><td>Ad impressions</td><td>10,000</td><td>—</td></tr>
+        <tr><td>Ad clicks / form opens</td><td>40</td><td>0.4% CTR</td></tr>
+        <tr><td>Form submissions (leads)</td><td>6</td><td>15% form CVR</td></tr>
+        <tr><td>Booked discovery calls</td><td>4</td><td>65% booking rate</td></tr>
+        <tr><td>Calls that show up</td><td>3</td><td>80% show rate</td></tr>
+        <tr><td><strong>New clients signed</strong></td><td><strong>1–2</strong></td><td><strong>35% close rate</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     05 — WEEK-BY-WEEK PLAN
+══════════════════════════════════════════ -->
+<section class="section" id="s05">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Week-by-Week Plan</h2>
+  </div>
+
+  <p>Your first 12 weeks broken into specific tasks. Each week has a primary focus and measurable output. Do not skip weeks — the system compounds.</p>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-week">Week 1</div>
+      <div class="timeline-title">Infrastructure Setup</div>
+      <div class="timeline-body">
+        <ul>
+          <li>Set up Meta Business Manager and Ad Account</li>
+          <li>Install pixel on website, test with Pixel Helper browser extension</li>
+          <li>Create your lead form (offer: free audit)</li>
+          <li>Set up Calendly with discovery call template (45 mins)</li>
+          <li>Connect Zapier: lead form → email notification → auto-reply</li>
+          <li>Write 3 ad creative variations (see Section 06)</li>
+          <li><strong>Spend: $0 | Output: System ready to launch</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-week">Week 2</div>
+      <div class="timeline-title">Launch Campaigns + First Organic Push</div>
+      <div class="timeline-body">
+        <ul>
+          <li>Launch Campaign 1 (Lead gen, $3/day) and Campaign 2 (Boost, $2.67/day)</li>
+          <li>Post 3× organic content on Instagram + LinkedIn (use existing SVG posts from brand assets)</li>
+          <li>Send 20 personalised LinkedIn connection requests to your ICP (local business owners, e-com brands)</li>
+          <li>Do not optimise ads yet — let them run</li>
+          <li><strong>Spend: ~$40 | Output: First leads potentially arriving</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-week">Week 3</div>
+      <div class="timeline-title">First Optimisation + Retargeting Launch</div>
+      <div class="timeline-body">
+        <ul>
+          <li>Review ad performance: if CTR &lt; 0.5%, swap creative. If CPL &gt; $60, tighten audience targeting.</li>
+          <li>Launch Campaign 3 (Retargeting, $1/day) — your warm audience is big enough now</li>
+          <li>Run discovery calls on any leads that booked</li>
+          <li>Post 3× organic content — focus on educational tips (use Higgsfield clips or static posts)</li>
+          <li>Follow up on any proposals sent in Week 2</li>
+          <li><strong>Spend: ~$45 | Output: First closed client possible</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-week">Week 4</div>
+      <div class="timeline-title">Close + Review Month 1</div>
+      <div class="timeline-body">
+        <ul>
+          <li>Close any open proposals — Day 10 final follow-up goes out</li>
+          <li>Pull month 1 data: impressions, CPL, leads, calls booked, close rate</li>
+          <li>Identify which ad creative got the lowest CPL — pause the others</li>
+          <li>Send month 1 email report to any signed clients</li>
+          <li><strong>Spend: ~$45 | Output: Month 1 complete, data in hand</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-week">Weeks 5–8 (Month 2)</div>
+      <div class="timeline-title">Optimise + Scale Outreach</div>
+      <div class="timeline-body">
+        <ul>
+          <li>Run the winning ad creative from Month 1 — double down on it</li>
+          <li>Add a second ad variation testing a different angle (proof/results vs. offer/CTA)</li>
+          <li>Scale LinkedIn organic: daily posting + 30 connection requests/day</li>
+          <li>Ask your first client for a testimonial — use it in Month 3 retargeting ads</li>
+          <li>Set up a basic email newsletter (Mailchimp free tier) — send one valuable tip/week to your growing list</li>
+          <li><strong>Spend: $200 | Output: 3–6 leads, 1–2 clients projected</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-week">Weeks 9–12 (Month 3)</div>
+      <div class="timeline-title">Reinvest + Build Pipeline</div>
+      <div class="timeline-body">
+        <ul>
+          <li>Take 20% of first client retainer revenue and add it to ad spend ($200 + $300 = $500)</li>
+          <li>Add a testimonial-based retargeting ad using your client result</li>
+          <li>Test a second audience (e-commerce store owners, Shopify interest)</li>
+          <li>Set up a referral offer for your existing clients ($200 credit for every successful referral)</li>
+          <li>By end of Month 3, you should have 2–4 clients and a self-funding lead machine</li>
+          <li><strong>Spend: $200 base + reinvestment | Output: Profitable, scalable system</strong></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     06 — AD CREATIVE GUIDE
+══════════════════════════════════════════ -->
+<section class="section" id="s06">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Ad Creative Guide</h2>
+  </div>
+
+  <p>At $200/month, creative is more important than targeting. A bad creative will lose money regardless of audience precision. Here are the three ad formulas that consistently outperform at low budgets for B2B service businesses.</p>
+
+  <div class="divider"></div>
+
+  <h3 style="margin-bottom:20px;">Formula 1 — The Direct Offer</h3>
+  <div style="background:var(--surface);border:1px solid rgba(200,255,0,0.2);border-radius:8px;overflow:hidden;margin-bottom:32px;">
+    <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);">BEST FOR: COLD AUDIENCE — AWARENESS TO LEAD</span>
+    </div>
+    <div style="padding:24px 28px;">
+      <div class="two-col">
+        <div>
+          <h4>Headline (125 chars max)</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);background:#141414;padding:12px 16px;border-radius:6px;">"Is your ad spend working? Find out free."</p>
+          <div class="divider"></div>
+          <h4>Body Copy (3 sentences)</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:12px;color:rgba(245,245,240,0.8);background:#141414;padding:12px 16px;border-radius:6px;line-height:1.8;">Most businesses waste 30–60% of their ad budget on audiences that never buy.<br><br>We'll audit your account in 30 minutes and show you exactly where your money is going — and what to fix.<br><br>Free, no obligation, limited spots.</p>
+          <div class="divider"></div>
+          <h4>CTA Button</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);background:#141414;padding:12px 16px;border-radius:6px;">Book Free Audit →</p>
+        </div>
+        <div>
+          <h4>Visual Direction</h4>
+          <ul>
+            <li>Use one of your existing SVG posts as the creative (post-04 or post-06 from v1 assets)</li>
+            <li>Or: Clean text-on-dark-background graphic with the stat "3.8× avg ROAS" prominent</li>
+            <li>Avoid stock photos — they underperform for agency ads</li>
+            <li>Video: 10–15 second clip showing a dashboard or results screenshot with text overlay</li>
+          </ul>
+          <div class="divider"></div>
+          <h4>Expected Performance</h4>
+          <ul>
+            <li>CTR: 0.6–1.2%</li>
+            <li>CPL: $15–$35</li>
+            <li>Form completion rate: 12–20%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:20px;">Formula 2 — The Problem Call-Out</h3>
+  <div style="background:var(--surface);border:1px solid rgba(200,255,0,0.2);border-radius:8px;overflow:hidden;margin-bottom:32px;">
+    <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);">BEST FOR: WARM RETARGETING AUDIENCE</span>
+    </div>
+    <div style="padding:24px 28px;">
+      <div class="two-col">
+        <div>
+          <h4>Headline</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);background:#141414;padding:12px 16px;border-radius:6px;">"Still running ads without knowing your ROAS?"</p>
+          <div class="divider"></div>
+          <h4>Body Copy</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:12px;color:rgba(245,245,240,0.8);background:#141414;padding:12px 16px;border-radius:6px;line-height:1.8;">If you can't answer these 3 questions — your ads are guesswork:<br>↳ What's your cost per acquisition?<br>↳ Which campaign drives the most revenue?<br>↳ Where are leads dropping off?<br><br>We can answer all three in one free call.</p>
+          <div class="divider"></div>
+          <h4>CTA Button</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);background:#141414;padding:12px 16px;border-radius:6px;">Get the Answers →</p>
+        </div>
+        <div>
+          <h4>Visual Direction</h4>
+          <ul>
+            <li>Text-heavy graphic works well here — the questions are the hook</li>
+            <li>Use a dark background with the 3 bullet questions as the visual</li>
+            <li>ZDM logo watermark bottom right</li>
+          </ul>
+          <div class="divider"></div>
+          <h4>Expected Performance</h4>
+          <ul>
+            <li>CTR: 1.0–2.5% (warmer audience)</li>
+            <li>CPL: $8–$20</li>
+            <li>Highest quality leads of all formats</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:20px;">Formula 3 — The Result Proof</h3>
+  <div style="background:var(--surface);border:1px solid rgba(200,255,0,0.2);border-radius:8px;overflow:hidden;margin-bottom:28px;">
+    <div style="background:#141414;padding:14px 20px;border-bottom:1px solid var(--border-dim);">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--lime);">BEST FOR: MONTH 3+ ONCE YOU HAVE A CLIENT RESULT</span>
+    </div>
+    <div style="padding:24px 28px;">
+      <div class="two-col">
+        <div>
+          <h4>Headline</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);background:#141414;padding:12px 16px;border-radius:6px;">"We reduced their CAC by 45% in 60 days."</p>
+          <div class="divider"></div>
+          <h4>Body Copy</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:12px;color:rgba(245,245,240,0.8);background:#141414;padding:12px 16px;border-radius:6px;line-height:1.8;">[Client type] was spending $143 to acquire a customer.<br><br>After restructuring their Meta campaigns and fixing attribution — $79.<br><br>Same budget. Better system. If your numbers aren't moving, the system is wrong.</p>
+          <div class="divider"></div>
+          <h4>CTA Button</h4>
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);background:#141414;padding:12px 16px;border-radius:6px;">See How We Did It →</p>
+        </div>
+        <div>
+          <h4>Visual Direction</h4>
+          <ul>
+            <li>Use your before/after story SVG (story-02-before-after.svg from v2 assets)</li>
+            <li>Or a real screenshot of client results (with permission)</li>
+            <li>Numbers do the visual work — keep text minimal</li>
+          </ul>
+          <div class="divider"></div>
+          <h4>Expected Performance</h4>
+          <ul>
+            <li>CTR: 0.8–1.8%</li>
+            <li>CPL: $12–$28</li>
+            <li>Highest trust signal of all formats once you have real proof</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     07 — FREE CHANNELS TO STACK
+══════════════════════════════════════════ -->
+<section class="section" id="s07">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Free Channels to Stack</h2>
+  </div>
+
+  <p>The $200 boost plan works fastest when paid is layered on top of free organic activity. These channels cost only time and compound over months. Pick 2–3 that fit your natural style and be consistent.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:32px;">
+
+    <div class="card">
+      <div class="card-tag">Highest ROI</div>
+      <h3>LinkedIn Organic</h3>
+      <p style="font-size:13px;">Post 5 days/week. Format: short text posts (no links in post — put them in comments). Content: what you learned from running ads, a client problem you solved, an industry myth you're debunking. The LinkedIn algorithm heavily rewards consistency. Expected reach per post at 500 connections: 500–3,000 organically.</p>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Time:</strong> 30 min/day &nbsp;|&nbsp; <strong style="color:var(--light);">Payoff:</strong> 4–8 weeks</p>
+    </div>
+
+    <div class="card">
+      <div class="card-tag">Visual brand</div>
+      <h3>Instagram Organic</h3>
+      <p style="font-size:13px;">Post 4–5 times/week using your existing SVG post designs. Stories daily (use Higgsfield clips). The goal at this stage is social proof — when a lead looks you up, they see an active, credible brand. Hashtags: mix broad (#digitalmarketing) with niche (#metaads #performancemarketing) and local (#[yourcity]marketing).</p>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Time:</strong> 1 hr/day &nbsp;|&nbsp; <strong style="color:var(--light);">Payoff:</strong> 6–10 weeks</p>
+    </div>
+
+    <div class="card">
+      <div class="card-tag">Direct pipeline</div>
+      <h3>LinkedIn DM Outreach</h3>
+      <p style="font-size:13px;">Send 20 personalised connection requests per day to your ICP. Filter: Business owner / Founder / Director + industry + location. Connection message (300 chars): "Hey [Name] — I noticed you're running [business type] in [city]. I work with businesses like yours on paid media. No pitch, just thought it was worth connecting." When they accept, wait 48hrs, then offer value — not a sales pitch.</p>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Time:</strong> 30 min/day &nbsp;|&nbsp; <strong style="color:var(--light);">Payoff:</strong> 1–3 weeks</p>
+    </div>
+
+    <div class="card">
+      <div class="card-tag">Local network</div>
+      <h3>Facebook Groups</h3>
+      <p style="font-size:13px;">Join 5 local business owner groups and 3 industry-specific groups. Don't pitch. Answer questions about ads, tracking, and marketing when they come up — naturally. Add genuine value 3–4 times/week. After 2–3 weeks of value, you can mention your free audit when directly relevant. This builds trust that ads can't buy.</p>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Time:</strong> 20 min/day &nbsp;|&nbsp; <strong style="color:var(--light);">Payoff:</strong> 3–6 weeks</p>
+    </div>
+
+    <div class="card">
+      <div class="card-tag">Long-term compounding</div>
+      <h3>Cold Email</h3>
+      <p style="font-size:13px;">Use Apollo.io free tier (50 emails/month) to find e-commerce brand owners and send personalised outreach. Best subject line at this budget: "Quick question about your [brand] ads." Body: one specific observation about their business, a question, and your offer. Keep to 5 sentences max. Expected reply rate: 3–8% with strong personalisation.</p>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Time:</strong> 1 hr/day &nbsp;|&nbsp; <strong style="color:var(--light);">Payoff:</strong> 2–4 weeks</p>
+    </div>
+
+    <div class="card">
+      <div class="card-tag">Trust multiplier</div>
+      <h3>Google Business Profile</h3>
+      <p style="font-size:13px;">Set up a free Google Business Profile for ZDM INC. Anyone who Googles you after seeing an ad will see a credible listing. Ask your first 2–3 clients for a Google review immediately after onboarding. Even 3–5 real reviews dramatically increase trust and can surface you in "marketing agency near me" searches for free.</p>
+      <div class="divider"></div>
+      <p style="font-size:12px;color:var(--mid);margin:0;"><strong style="color:var(--light);">Time:</strong> 1hr setup &nbsp;|&nbsp; <strong style="color:var(--light);">Payoff:</strong> Ongoing passive</p>
+    </div>
+
+  </div>
+
+  <h3>Recommended Free Channel Combination</h3>
+  <table>
+    <thead><tr><th>Channel</th><th>Daily Time</th><th>Weekly Output</th><th>Primary Goal</th></tr></thead>
+    <tbody>
+      <tr><td><strong>LinkedIn Organic</strong></td><td>30 min</td><td>5 posts + 20 connection requests</td><td>Direct pipeline</td></tr>
+      <tr><td><strong>Instagram Organic</strong></td><td>30 min</td><td>4–5 posts + daily stories</td><td>Social proof + brand credibility</td></tr>
+      <tr><td><strong>Facebook Groups</strong></td><td>20 min</td><td>3–4 value comments</td><td>Local trust building</td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     08 — SCALING BEYOND $200
+══════════════════════════════════════════ -->
+<section class="section" id="s08">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title">Scaling Beyond $200</h2>
+  </div>
+
+  <p>The $200 plan is designed to generate your first 2–4 clients. Once you have those clients and a repeatable system, scale ad spend using a reinvestment formula — not by guessing.</p>
+
+  <div class="divider"></div>
+
+  <h3>The Reinvestment Rule</h3>
+  <div class="lime-box" style="margin-bottom:32px;">
+    <h4>Reinvest 20% of new client retainer revenue into ads</h4>
+    <p>Your first client at $1,500/month → add $300 to ad budget ($500 total).<br>
+    Two clients at $1,500/month → add $600 to ad budget ($800 total).<br>
+    Three clients at $1,500/month → $200 + $900 = $1,100/month ad spend.</p>
+    <p style="margin:0;">At $1,100/month you can run proper campaigns on Meta AND LinkedIn. You now have proof, testimonials, and case studies to use in your ads. This is when growth compounds.</p>
+  </div>
+
+  <h3>Budget Milestones</h3>
+  <table style="margin-bottom:32px;">
+    <thead><tr><th>Monthly Ad Budget</th><th>What to Add</th><th>Expected Leads/Mo</th><th>Projected Clients</th></tr></thead>
+    <tbody>
+      <tr><td><strong>$200</strong> <span class="badge badge-lime">Start here</span></td><td>Meta only — 3 campaigns</td><td>3–6</td><td>1–2</td></tr>
+      <tr><td><strong>$500</strong></td><td>Meta (all 3 campaigns expanded) + test Google Search (branded)</td><td>8–14</td><td>2–4</td></tr>
+      <tr><td><strong>$1,000</strong></td><td>Meta + LinkedIn Sponsored Content (1 campaign) + Google</td><td>15–25</td><td>4–7</td></tr>
+      <tr><td><strong>$2,500</strong></td><td>Full multi-platform. Add creative testing budget. A/B 4–6 ads simultaneously.</td><td>30–50</td><td>7–14</td></tr>
+      <tr><td><strong>$5,000+</strong></td><td>Graduate to Growth package pricing. Hire dedicated media buyer.</td><td>60–100</td><td>14–25</td></tr>
+    </tbody>
+  </table>
+
+  <h3>When to Hire vs. Keep Solo</h3>
+  <div class="two-col">
+    <div class="info-block">
+      <h4>Stay solo until...</h4>
+      <ul>
+        <li>You have 5+ active clients</li>
+        <li>Delivery is taking more than 30 hours/week</li>
+        <li>You're turning down qualified leads</li>
+        <li>Revenue is consistently $8,000+/month</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>First hire should be...</h4>
+      <ul>
+        <li><strong>A junior media buyer / VA</strong> — handles daily optimisation and reporting (not strategy). $800–$1,500/month part-time.</li>
+        <li>This frees you to focus on sales and strategy — the highest-value activities.</li>
+        <li>Use Upwork, Contra, or your own LinkedIn network to find them.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-value">$200</div>
+      <div class="stat-label">Month 1 budget</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">90</div>
+      <div class="stat-label">Days to first 2 clients</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$3K</div>
+      <div class="stat-label">Est. Month 3 revenue</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$1,100</div>
+      <div class="stat-label">Reinvested ad budget at 3 clients</div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+</div><!-- /.wrapper -->
+
+<script>
+// PROGRESS BAR
+(function() {
+  var bar = document.getElementById('progress-bar');
+  function update() {
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docH > 0 ? (scrollTop / docH) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ACTIVE NAV
+(function() {
+  var links = document.querySelectorAll('.nav-link');
+  var sections = Array.from(document.querySelectorAll('.section'));
+  function setActive() {
+    var scrollY = window.scrollY + 80;
+    var current = sections[0].id;
+    sections.forEach(function(s) { if (s.offsetTop <= scrollY) current = s.id; });
+    links.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+})();
+</script>
+
+</body>
+</html>

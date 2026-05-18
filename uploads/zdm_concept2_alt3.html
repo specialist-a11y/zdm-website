@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZDM INC | Data-Driven Performance Marketing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --off-black: #141414;
+      --dark-grey: #1E1E1E;
+      --mid-grey: #3A3A3A;
+      --grey: #888888;
+      --light-grey: #D4D4D4;
+      --off-white: #F5F5F0;
+      --white: #FFFFFF;
+      --lime: #C8FF00;
+      --lime-dim: #A8D800;
+      --lime-glow: rgba(200, 255, 0, 0.15);
+
+      --font-display: 'Bebas Neue', 'Impact', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+
+      --radius: 0px;
+      /* Fully brutalist, no border radius */
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--black);
+      border-bottom: 2px solid var(--lime);
+      padding: 0 40px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 32px;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+    }
+
+    .nav-logo-mark {
+      width: 40px;
+      height: 40px;
+      background: var(--lime);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      color: var(--black);
+      font-family: var(--font-display);
+      letter-spacing: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--lime);
+    }
+
+    .nav-cta {
+      padding: 12px 24px;
+      background: var(--lime);
+      color: var(--black);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 2px solid var(--lime);
+    }
+
+    .nav-cta:hover {
+      background: transparent;
+      color: var(--lime);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding-top: 80px;
+      /* Offset nav */
+      overflow: hidden;
+    }
+
+    .hero-bg-z {
+      position: absolute;
+      top: 50%;
+      right: -5%;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: clamp(300px, 80vw, 1200px);
+      line-height: 0.8;
+      color: var(--off-black);
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.05em;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--lime);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 32px;
+    }
+
+    .hero-headline {
+      position: relative;
+      font-family: var(--font-display);
+      font-size: clamp(60px, 11vw, 160px);
+      line-height: 0.85;
+      letter-spacing: -0.01em;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      max-width: 1200px;
+      cursor: crosshair;
+    }
+
+    .headline-layer {
+      color: var(--white);
+    }
+
+    .headline-layer .lime {
+      color: var(--lime);
+    }
+
+    .hover-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: var(--lime);
+      pointer-events: none;
+      clip-path: circle(var(--radius, 0px) at var(--x, 50%) var(--y, 50%));
+      -webkit-clip-path: circle(var(--radius, 0px) at var(--x, 50%) var(--y, 50%));
+      transition: clip-path 0.1s ease-out, -webkit-clip-path 0.1s ease-out;
+    }
+
+    .hover-layer .lime {
+      color: var(--white);
+    }
+
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 60px;
+      border-top: 1px solid var(--dark-grey);
+      padding-top: 40px;
+    }
+
+    .hero-tagline {
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--light-grey);
+      line-height: 1.5;
+    }
+
+    .hero-tagline strong {
+      color: var(--lime);
+      font-weight: 700;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 60px;
+    }
+
+    .hero-stat-num {
+      font-family: var(--font-display);
+      font-size: 64px;
+      color: var(--lime);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 8px;
+    }
+
+    /* MARQUEE */
+    .marquee-container {
+      background: var(--lime);
+      padding: 20px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      border-top: 2px solid var(--lime);
+      border-bottom: 2px solid var(--lime);
+    }
+
+    .marquee {
+      display: inline-block;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee span {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--black);
+      margin-right: 40px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ABOUT / CHALLENGER */
+    .about {
+      padding: 160px 0;
+      background: var(--white);
+      color: var(--black);
+      border-bottom: 4px solid var(--black);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 80px;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--grey);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .about h2 {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 8vw, 120px);
+      line-height: 0.9;
+      color: var(--black);
+      text-transform: uppercase;
+    }
+
+    .about-text {
+      font-size: 24px;
+      line-height: 1.6;
+      color: var(--mid-grey);
+    }
+
+    .about-text p {
+      margin-bottom: 32px;
+    }
+
+    .about-text strong {
+      color: var(--black);
+    }
+
+    .manifesto-box {
+      background: var(--black);
+      color: var(--white);
+      padding: 40px;
+      border-left: 8px solid var(--lime);
+      margin-top: 40px;
+    }
+
+    .manifesto-box h3 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      color: var(--lime);
+      margin-bottom: 16px;
+    }
+
+    /* SERVICES GRID */
+    .services {
+      padding: 160px 0;
+      background: var(--off-black);
+    }
+
+    .services-header {
+      margin-bottom: 80px;
+    }
+
+    .services-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 8vw, 120px);
+      color: var(--white);
+      line-height: 0.9;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      /* For 1px borders via background color */
+      background: var(--dark-grey);
+      border: 2px solid var(--dark-grey);
+    }
+
+    .service-card {
+      background: var(--black);
+      padding: 60px 40px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-num {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      color: var(--lime);
+      margin-bottom: 40px;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 48px;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .service-card p {
+      font-size: 16px;
+      color: var(--grey);
+      margin-bottom: 40px;
+      flex-grow: 1;
+    }
+
+    .service-features {
+      list-style: none;
+      border-top: 1px solid var(--dark-grey);
+      padding-top: 24px;
+    }
+
+    .service-features li {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--light-grey);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .service-features li::before {
+      content: '>';
+      color: var(--lime);
+      font-weight: bold;
+    }
+
+    .service-card:hover {
+      background: var(--lime);
+    }
+
+    .service-card:hover .service-num,
+    .service-card:hover h3,
+    .service-card:hover p,
+    .service-card:hover .service-features li {
+      color: var(--black);
+    }
+
+    .service-card:hover .service-features {
+      border-top-color: var(--black);
+    }
+
+    .service-card:hover .service-features li::before {
+      color: var(--black);
+    }
+
+    /* STATS / ROI */
+    .roi {
+      padding: 160px 0;
+      background: var(--black);
+      border-top: 2px solid var(--dark-grey);
+    }
+
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 60px;
+    }
+
+    .roi-box {
+      border: 2px solid var(--lime);
+      padding: 80px 60px;
+    }
+
+    .roi-box h3 {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 10vw, 160px);
+      color: var(--lime);
+      line-height: 0.8;
+      margin-bottom: 24px;
+    }
+
+    .roi-box p {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* CASE STUDIES */
+    .work {
+      padding: 160px 0;
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .work-header {
+      margin-bottom: 80px;
+    }
+
+    .work-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 8vw, 120px);
+      color: var(--black);
+      line-height: 0.9;
+      text-transform: uppercase;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+      gap: 40px;
+    }
+
+    .work-card {
+      background: var(--black);
+      color: var(--white);
+      border: 2px solid var(--black);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .work-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .work-image {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      filter: grayscale(100%) contrast(120%);
+      transition: filter 0.3s ease;
+    }
+
+    .work-card:hover .work-image {
+      filter: grayscale(0%) contrast(100%);
+    }
+
+    .work-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .work-result-strip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--lime);
+      color: var(--black);
+      padding: 16px 24px;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .work-result-strip span {
+      font-family: var(--font-display);
+      font-size: 40px;
+      line-height: 1;
+    }
+
+    .work-content {
+      padding: 40px 32px;
+    }
+
+    .work-client {
+      font-family: var(--font-mono);
+      color: var(--lime);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .work-content h3 {
+      font-family: var(--font-display);
+      font-size: 40px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .work-content p {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--lime);
+      color: var(--black);
+      padding: 120px 0 40px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 120px;
+    }
+
+    .footer-cta {
+      font-family: var(--font-display);
+      font-size: clamp(60px, 12vw, 180px);
+      line-height: 0.8;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    .footer-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--black);
+      color: var(--lime);
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 24px 48px;
+      text-decoration: none;
+      border: 2px solid var(--black);
+      transition: all 0.3s;
+    }
+
+    .footer-btn:hover {
+      background: transparent;
+      color: var(--black);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      border-top: 2px solid var(--black);
+      padding-top: 40px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      color: var(--black);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+
+      .hero-bottom,
+      .about-grid,
+      .services-grid,
+      .roi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .services-grid {
+        gap: 2px;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .manifesto-box {
+        padding: 24px;
+      }
+
+      .roi-box {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PROGRESS BAR -->
+  <div style="position: fixed; top: 0; left: 0; height: 4px; background: var(--lime); z-index: 9999; width: 0%;"
+    id="progressBar"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">Z</div>
+      ZDM INC
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">The Challenger</a></li>
+      <li><a href="#services">Capabilities</a></li>
+      <li><a href="#roi">Results</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Start Scaling</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="hero-bg-z">Z</div>
+    <div class="hero-content">
+      <div class="hero-badge">Data-Driven Growth</div>
+      <h1 class="hero-headline" id="heroHeadline">
+        <div class="headline-layer default-layer">
+          MOST AGENCIES<br>
+          RUN CAMPAIGNS.<br>
+          <span class="lime">WE BUILD SYSTEMS.</span>
+        </div>
+        <div class="headline-layer hover-layer" aria-hidden="true">
+          MOST AGENCIES<br>
+          RUN CAMPAIGNS.<br>
+          <span class="lime">BE DIFFERENT.</span>
+        </div>
+      </h1>
+
+      <div class="hero-bottom">
+        <p class="hero-tagline">
+          We replace guesswork with data. <strong>ZDM INC</strong> scales revenue, lowers acquisition costs, and
+          dominates markets.
+        </p>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">$100M+</div>
+            <div class="hero-stat-label">Revenue Generated</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">150+</div>
+            <div class="hero-stat-label">Brands Scaled</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-container">
+    <div class="marquee">
+      <span>Performance Marketing</span> <span>//</span>
+      <span>CRM & Automation</span> <span>//</span>
+      <span>Conversion Rate Optimization</span> <span>//</span>
+      <span>B2B Lead Generation</span> <span>//</span>
+      <span>E-Commerce Scaling</span> <span>//</span>
+      <span>Advanced Analytics</span> <span>//</span>
+      <span>Performance Marketing</span> <span>//</span>
+      <span>CRM & Automation</span> <span>//</span>
+      <span>Conversion Rate Optimization</span> <span>//</span>
+      <span>B2B Lead Generation</span> <span>//</span>
+      <span>E-Commerce Scaling</span> <span>//</span>
+      <span>Advanced Analytics</span> <span>//</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="container about-grid">
+      <div>
+        <span class="section-label">01 // Identity</span>
+        <h2>We Are<br>The Challenger</h2>
+      </div>
+      <div class="about-text">
+        <p>Most agencies focus on vanity metrics—likes, impressions, and fluff that doesn't pay the bills. We don't. We
+          are a collective of data scientists, media buyers, and growth engineers obsessed with one thing:
+          <strong>Return on Investment.</strong></p>
+        <p>Our methodology is brutal but effective. If an ad doesn't perform, we kill it. If a landing page doesn't
+          convert, we rebuild it. We exist to challenge the status quo and aggressively capture market share for our
+          clients.</p>
+
+        <div class="manifesto-box">
+          <h3>The ZDM Manifesto</h3>
+          <p style="font-size: 18px; margin-bottom:0; font-weight: 400;">Data over opinions. Revenue over reach. Speed
+            over perfection. We are the unfair advantage your competitors wish they had.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="services">
+    <div class="container">
+      <div class="services-header">
+        <span class="section-label" style="color:var(--lime);">02 // Capabilities</span>
+        <h2>Data-Driven Execution</h2>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card">
+          <div class="service-num">001</div>
+          <h3>Performance Marketing</h3>
+          <p>Multi-channel campaigns engineered for scale. We leverage machine learning and aggressive testing to find
+            your most profitable audience.</p>
+          <ul class="service-features">
+            <li>Meta & Google Ads Management</li>
+            <li>Omnichannel Retargeting</li>
+            <li>Predictive Budget Allocation</li>
+          </ul>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card">
+          <div class="service-num">002</div>
+          <h3>CRM & Automation</h3>
+          <p>Turn leaky funnels into revenue engines. We build automated workflows that nurture leads and maximize
+            customer lifetime value.</p>
+          <ul class="service-features">
+            <li>HubSpot & Salesforce Integration</li>
+            <li>Lead Scoring & Routing</li>
+            <li>Behavioral Email Sequences</li>
+          </ul>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card">
+          <div class="service-num">003</div>
+          <h3>Conversion Optimization</h3>
+          <p>We treat your website like a math problem. Through intense A/B testing, we eliminate friction and multiply
+            your conversion rates.</p>
+          <ul class="service-features">
+            <li>A/B and Multivariate Testing</li>
+            <li>Heatmapping & User Flow Analysis</li>
+            <li>Landing Page Architecture</li>
+          </ul>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-card">
+          <div class="service-num">004</div>
+          <h3>B2B Lead Generation</h3>
+          <p>Fill your pipeline with high-intent decision makers. We execute surgical outbound and inbound strategies
+            that close enterprise deals.</p>
+          <ul class="service-features">
+            <li>Account-Based Marketing (ABM)</li>
+            <li>LinkedIn Cold Outreach</li>
+            <li>High-Value Content Funnels</li>
+          </ul>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-card">
+          <div class="service-num">005</div>
+          <h3>E-Commerce Scaling</h3>
+          <p>Aggressive growth frameworks for DTC brands. We lower your CAC and increase your AOV to drive compounding
+            profitability.</p>
+          <ul class="service-features">
+            <li>Catalog Optimization</li>
+            <li>Dynamic Product Ads</li>
+            <li>Cart Abandonment Recovery</li>
+          </ul>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="service-card">
+          <div class="service-num">006</div>
+          <h3>Advanced Analytics</h3>
+          <p>Deep visibility into your entire revenue operation. We build custom dashboards so you can make confident,
+            data-backed decisions.</p>
+          <ul class="service-features">
+            <li>Multi-Touch Attribution</li>
+            <li>Real-Time KPI Dashboards</li>
+            <li>Server-Side Tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI / STATS -->
+  <section id="roi" class="roi">
+    <div class="container">
+      <span class="section-label" style="color:var(--grey);">03 // The Proof</span>
+      <div class="roi-grid">
+        <div class="roi-box">
+          <h3>24/7</h3>
+          <p>Campaign Monitoring</p>
+        </div>
+        <div class="roi-box">
+          <h3>3.8x</h3>
+          <p>Average ROAS Increase</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section id="work" class="work">
+    <div class="container">
+      <div class="work-header">
+        <span class="section-label" style="color:var(--black);">04 // Case Studies</span>
+        <h2>The Proof Is In The Profit</h2>
+      </div>
+
+      <div class="work-grid">
+        <!-- Case Study 1 -->
+        <div class="work-card">
+          <div class="work-image">
+            <img
+              src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="Tech Startup Data">
+            <div class="work-result-strip">
+              <span>+340%</span> Revenue YoY
+            </div>
+          </div>
+          <div class="work-content">
+            <div class="work-client">FinTech Innovators</div>
+            <h3>Scaling User Acquisition</h3>
+            <p>We engineered a predictive paid social framework that dropped CAC by 45% while scaling spend to
+              $1M/month.</p>
+          </div>
+        </div>
+
+        <!-- Case Study 2 -->
+        <div class="work-card">
+          <div class="work-image">
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="E-Commerce Analytics">
+            <div class="work-result-strip">
+              <span>7.2x</span> Blended ROAS
+            </div>
+          </div>
+          <div class="work-content">
+            <div class="work-client">Global E-Commerce</div>
+            <h3>Aggressive DTC Expansion</h3>
+            <p>Completely restructured the Meta and Google Ads accounts, introducing dynamic creative testing to
+              dominate Q4.</p>
+          </div>
+        </div>
+
+        <!-- Case Study 3 -->
+        <div class="work-card">
+          <div class="work-image">
+            <img
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              alt="B2B Growth Dashboard">
+            <div class="work-result-strip">
+              <span>$12M</span> Pipeline Gen
+            </div>
+          </div>
+          <div class="work-content">
+            <div class="work-client">Enterprise SaaS</div>
+            <h3>Surgical B2B Lead Gen</h3>
+            <p>Implemented an intense Account-Based Marketing (ABM) strategy combined with LinkedIn outreach to close
+              Fortune 500 deals.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-top">
+        <h2 class="footer-cta">Ready<br>To Scale?</h2>
+        <a href="mailto:scale@zdminc.com" class="footer-btn">Initiate Audit</a>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Zee Digital Marketing Inc. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple scroll progress bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+
+    // Hero Headline Mask Reveal
+    const headline = document.getElementById('heroHeadline');
+    if (headline) {
+      headline.addEventListener('mousemove', (e) => {
+        const rect = headline.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        headline.style.setProperty('--x', `${x}px`);
+        headline.style.setProperty('--y', `${y}px`);
+        headline.style.setProperty('--radius', '180px');
+      });
+      headline.addEventListener('mouseleave', () => {
+        headline.style.setProperty('--radius', '0px');
+      });
+    }
+  </script>
+</body>
+
+</html>

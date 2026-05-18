@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZDM INC × Island Tote | Growth Proposal 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:      #0A0A0A;
+      --off-black:  #141414;
+      --dark-grey:  #1E1E1E;
+      --mid-grey:   #3A3A3A;
+      --grey:       #888888;
+      --light-grey: #D4D4D4;
+      --off-white:  #F5F5F0;
+      --white:      #FFFFFF;
+      --lime:       #C8FF00;
+      --lime-dim:   #A8D800;
+      --lime-glow:  rgba(200,255,0,0.12);
+      --indigo:     #5B5FE8;
+      --violet:     #8B5CF6;
+      --mint:       #00E5B4;
+      --coral:      #FF6B4A;
+      --aurora:     linear-gradient(135deg, #5B5FE8 0%, #8B5CF6 50%, #00E5B4 100%);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    #cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--lime); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s;
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      position: fixed; width: 40px; height: 40px;
+      border: 1.5px solid var(--lime); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: width .3s, height .3s, border-radius .3s, opacity .3s;
+      mix-blend-mode: difference;
+    }
+    body.cursor-hover #cursor-dot { width: 14px; height: 14px; }
+    body.cursor-hover #cursor-ring { width: 64px; height: 64px; opacity: .5; }
+    @media (max-width: 768px) { body { cursor: auto; } #cursor-dot, #cursor-ring { display: none; } }
+
+    /* ── PROGRESS ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--lime); z-index: 10000; width: 0%;
+      box-shadow: 0 0 10px var(--lime);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 72px; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .4s;
+    }
+    nav.scrolled { border-bottom-color: rgba(200,255,0,.25); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      font-family: var(--font-display); font-size: 26px;
+      color: var(--white); text-decoration: none; letter-spacing: .04em;
+    }
+    .nav-logo-mark {
+      width: 36px; height: 36px;
+      background: var(--lime); display: grid; place-items: center;
+      font-size: 22px; color: var(--black); font-family: var(--font-display);
+    }
+    .nav-x { color: var(--grey); font-size: 20px; margin: 0 4px; }
+    .nav-client { color: var(--lime); }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--grey); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--lime); }
+
+    .nav-badge {
+      font-family: var(--font-mono); font-size: 11px;
+      padding: 8px 16px; border: 1px solid var(--lime);
+      color: var(--lime); letter-spacing: .08em; text-transform: uppercase;
+    }
+    @media (max-width: 900px) { .nav-links { display: none; } }
+    @media (max-width: 600px) { nav { padding: 0 20px; } }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; padding: 120px 40px 80px;
+      overflow: hidden;
+    }
+    .hero-bg-aurora {
+      position: absolute; top: -20%; right: -20%;
+      width: 80vw; height: 80vw;
+      background: var(--aurora);
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: .08;
+      pointer-events: none;
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--lime);
+      margin-bottom: 32px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp .8s .2s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    .hero-label-dot {
+      width: 6px; height: 6px; background: var(--lime); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.3; transform:scale(.5); } }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 10vw, 140px);
+      line-height: .88; text-transform: uppercase;
+      letter-spacing: -.01em;
+      max-width: 900px; position: relative;
+    }
+    .hl { display: block; overflow: hidden; }
+    .hl-inner {
+      display: block;
+      transform: translateY(110%);
+      animation: slideUp .9s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hl:nth-child(1) .hl-inner { animation-delay: .35s; }
+    .hl:nth-child(2) .hl-inner { animation-delay: .5s; }
+    .hl:nth-child(3) .hl-inner { animation-delay: .65s; color: var(--lime); }
+    @keyframes slideUp { to { transform: translateY(0); } }
+    @keyframes fadeUp  { to { opacity: 1; transform: translateY(0); } }
+
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 60px; margin-top: 60px;
+      padding-top: 40px; border-top: 1px solid var(--dark-grey);
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp .9s .95s cubic-bezier(.23,1,.32,1) forwards;
+    }
+    @media (max-width: 600px) {
+      .hero-meta { gap: 30px; }
+      .hero-meta-item { min-width: 40%; }
+    }
+    .hero-meta-item {}
+    .hero-meta-label {
+      font-family: var(--font-mono); font-size: 11px;
+      text-transform: uppercase; letter-spacing: .12em; color: var(--grey);
+      margin-bottom: 6px;
+    }
+    .hero-meta-value { font-size: 18px; font-weight: 500; color: var(--white); }
+    .hero-meta-value span { color: var(--lime); }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 1s 1.4s forwards;
+    }
+    .hero-scroll span { font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; color: var(--grey); text-transform: uppercase; }
+    .hero-scroll-line {
+      width: 1px; height: 44px;
+      background: linear-gradient(var(--grey), transparent);
+      animation: scrollDrop 2s 1.5s infinite;
+    }
+    @keyframes scrollDrop {
+      0%   { transform:scaleY(0); transform-origin:top; opacity:1; }
+      50%  { transform:scaleY(1); transform-origin:top; opacity:1; }
+      51%  { transform:scaleY(1); transform-origin:bottom; opacity:1; }
+      100% { transform:scaleY(0); transform-origin:bottom; opacity:0; }
+    }
+
+    /* ── SECTIONS ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+    .section { padding: 120px 0; }
+    .section-label {
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--grey); margin-bottom: 24px; display: block;
+    }
+    .section-label.lime { color: var(--lime); }
+    .section-h2 {
+      font-family: var(--font-display); font-size: clamp(48px, 7vw, 100px);
+      line-height: .9; text-transform: uppercase; margin-bottom: 40px;
+    }
+    .accent { color: var(--lime); }
+    .accent-indigo { color: var(--indigo); }
+    .accent-mint  { color: var(--mint); }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .1s !important; }
+    .d2 { transition-delay: .2s !important; }
+    .d3 { transition-delay: .3s !important; }
+    .d4 { transition-delay: .4s !important; }
+
+    /* ── OPPORTUNITY ── */
+    .opportunity { background: var(--off-black); border-top: 1px solid var(--dark-grey); }
+    .opp-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+    .opp-text p { font-size: 18px; color: var(--light-grey); line-height: 1.7; margin-bottom: 20px; }
+    .opp-text p strong { color: var(--white); font-weight: 600; }
+
+    .opp-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      background: var(--dark-grey);
+    }
+    .opp-stat {
+      background: var(--black); padding: 40px 32px;
+      transition: background .3s;
+    }
+    .opp-stat:hover { background: var(--off-black); }
+    .opp-stat-num {
+      font-family: var(--font-display); font-size: 56px;
+      color: var(--lime); line-height: 1; margin-bottom: 8px;
+    }
+    .opp-stat-label {
+      font-family: var(--font-mono); font-size: 12px;
+      text-transform: uppercase; letter-spacing: .1em; color: var(--grey);
+    }
+    @media (max-width: 900px) { .opp-grid { grid-template-columns: 1fr; } }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--lime); padding: 18px 0; overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-track span {
+      font-family: var(--font-display); font-size: 28px;
+      color: var(--black); margin-right: 36px; text-transform: uppercase;
+    }
+    .marquee-track span.sep { color: rgba(0,0,0,.4); }
+    @keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+    /* ── SOCIAL PACKAGES ── */
+    .social-pkg { background: var(--black); }
+    .pkg-intro { max-width: 640px; margin-bottom: 72px; }
+    .pkg-intro p { font-size: 18px; color: var(--grey); line-height: 1.7; }
+    .pkg-intro p strong { color: var(--white); }
+
+    .pkg-toggle {
+      display: inline-flex; gap: 0;
+      border: 1px solid var(--dark-grey); margin-bottom: 48px;
+    }
+    .pkg-toggle-btn {
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em;
+      text-transform: uppercase; padding: 12px 24px;
+      background: transparent; color: var(--grey); border: none; cursor: none;
+      transition: background .2s, color .2s;
+    }
+    .pkg-toggle-btn.active { background: var(--lime); color: var(--black); }
+
+    .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--dark-grey); }
+
+    .pkg-card {
+      background: var(--off-black); padding: 48px 36px;
+      display: flex; flex-direction: column;
+      position: relative; cursor: none; overflow: hidden;
+      transition: background .4s;
+    }
+    .pkg-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: transparent;
+      transition: background .3s;
+    }
+    .pkg-card.selected { background: var(--dark-grey); }
+    .pkg-card.selected::before { background: var(--lime); }
+    .pkg-card:hover { background: var(--dark-grey); }
+
+    .pkg-badge {
+      display: inline-block; font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      padding: 5px 12px; border: 1px solid var(--dark-grey);
+      color: var(--grey); margin-bottom: 32px; align-self: flex-start;
+    }
+    .pkg-card.selected .pkg-badge { border-color: var(--lime); color: var(--lime); }
+    .pkg-badge.popular { border-color: var(--indigo); color: var(--indigo); }
+    .pkg-card.selected .pkg-badge.popular { border-color: var(--lime); color: var(--lime); }
+
+    .pkg-name {
+      font-family: var(--font-display); font-size: 42px;
+      text-transform: uppercase; color: var(--white);
+      line-height: 1; margin-bottom: 16px;
+    }
+    .pkg-price {
+      font-family: var(--font-display); font-size: 64px;
+      color: var(--lime); line-height: 1; margin-bottom: 4px;
+    }
+    .pkg-price-sub {
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 36px;
+    }
+    .pkg-divider {
+      width: 100%; height: 1px; background: var(--dark-grey); margin-bottom: 28px;
+    }
+    .pkg-card.selected .pkg-divider { background: var(--mid-grey); }
+    .pkg-features { list-style: none; flex-grow: 1; margin-bottom: 36px; }
+    .pkg-features li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-family: var(--font-mono); font-size: 13px;
+      color: var(--grey); margin-bottom: 14px; line-height: 1.4;
+    }
+    .pkg-features li::before { content: '>'; color: var(--lime); font-weight: 700; flex-shrink: 0; }
+    .pkg-features li.dim::before { color: var(--mid-grey); }
+    .pkg-features li.dim { color: var(--mid-grey); }
+    .pkg-card.selected .pkg-features li { color: var(--light-grey); }
+
+    .pkg-select-btn {
+      width: 100%; padding: 16px; border: 1.5px solid var(--mid-grey);
+      background: transparent; color: var(--grey);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em; cursor: none;
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .pkg-card.selected .pkg-select-btn {
+      border-color: var(--lime); background: var(--lime); color: var(--black);
+    }
+    .pkg-card:not(.selected):hover .pkg-select-btn { border-color: var(--grey); color: var(--white); }
+
+    @media (max-width: 900px) { .pkg-grid { grid-template-columns: 1fr; } }
+
+    /* ── ADD-ONS ── */
+    .addons { background: var(--off-black); border-top: 1px solid var(--dark-grey); }
+    .addon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--dark-grey); }
+    .addon-card {
+      background: var(--black); padding: 40px 36px;
+      display: flex; align-items: center; gap: 28px; cursor: none;
+      transition: background .3s;
+    }
+    .addon-card:hover { background: var(--off-black); }
+    .addon-card.selected { background: var(--dark-grey); }
+
+    .addon-check {
+      width: 28px; height: 28px; flex-shrink: 0;
+      border: 2px solid var(--mid-grey); border-radius: 4px;
+      display: grid; place-items: center;
+      transition: border-color .2s, background .2s;
+    }
+    .addon-card.selected .addon-check { border-color: var(--lime); background: var(--lime); }
+    .addon-check-mark {
+      width: 8px; height: 8px; background: var(--black); border-radius: 2px;
+      transform: scale(0); transition: transform .2s;
+    }
+    .addon-card.selected .addon-check-mark { transform: scale(1); }
+
+    .addon-info { flex-grow: 1; }
+    .addon-name {
+      font-family: var(--font-display); font-size: 28px;
+      text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 6px;
+    }
+    .addon-desc { font-family: var(--font-mono); font-size: 13px; color: var(--grey); }
+    .addon-price {
+      font-family: var(--font-display); font-size: 36px;
+      color: var(--lime); flex-shrink: 0;
+    }
+    .addon-price-sub { font-family: var(--font-mono); font-size: 11px; color: var(--grey); text-align: right; }
+    @media (max-width: 700px) { .addon-grid { grid-template-columns: 1fr; } }
+
+    /* ── WEBSITE PACKAGES ── */
+    .web-pkg { background: var(--black); border-top: 1px solid var(--dark-grey); }
+    .web-pkg-note {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey);
+      padding: 10px 20px; border: 1px solid var(--dark-grey); margin-bottom: 48px;
+    }
+    .web-pkg-note span { color: var(--mint); }
+
+    .web-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--dark-grey); }
+
+    .web-card {
+      background: var(--off-black); padding: 48px 36px;
+      display: flex; flex-direction: column;
+      position: relative; cursor: none; overflow: hidden;
+      transition: background .4s;
+    }
+    .web-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: transparent; transition: background .3s;
+    }
+    .web-card.selected { background: var(--dark-grey); }
+    .web-card.selected::before { background: var(--mint); }
+    .web-card:hover { background: var(--dark-grey); }
+
+    .web-tier {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--grey); margin-bottom: 32px;
+    }
+    .web-card.selected .web-tier { color: var(--mint); }
+    .web-name {
+      font-family: var(--font-display); font-size: 42px;
+      text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 16px;
+    }
+    .web-price {
+      font-family: var(--font-display); font-size: 64px;
+      color: var(--mint); line-height: 1; margin-bottom: 4px;
+    }
+    .web-card.selected .web-price { color: var(--lime); }
+    .web-price-sub {
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 36px;
+    }
+    .web-divider { width: 100%; height: 1px; background: var(--dark-grey); margin-bottom: 28px; }
+    .web-card.selected .web-divider { background: var(--mid-grey); }
+
+    .web-features { list-style: none; flex-grow: 1; margin-bottom: 36px; }
+    .web-features li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-family: var(--font-mono); font-size: 13px;
+      color: var(--grey); margin-bottom: 14px; line-height: 1.4;
+    }
+    .web-features li::before { content: '>'; color: var(--mint); font-weight: 700; flex-shrink: 0; }
+    .web-card.selected .web-features li { color: var(--light-grey); }
+    .web-features li::before { color: var(--mint); }
+
+    .web-select-btn {
+      width: 100%; padding: 16px; border: 1.5px solid var(--mid-grey);
+      background: transparent; color: var(--grey);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em; cursor: none;
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .web-card.selected .web-select-btn { border-color: var(--mint); background: var(--mint); color: var(--black); }
+    .web-card:not(.selected):hover .web-select-btn { border-color: var(--grey); color: var(--white); }
+    @media (max-width: 900px) { .web-grid { grid-template-columns: 1fr; } }
+
+    /* ── INVESTMENT SUMMARY ── */
+    .summary { background: var(--off-black); border-top: 1px solid var(--dark-grey); }
+
+    .summary-box {
+      border: 1px solid var(--dark-grey); background: var(--black);
+      max-width: 860px; margin: 0 auto;
+    }
+    .summary-header {
+      padding: 32px 48px; border-bottom: 1px solid var(--dark-grey);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .summary-header-label {
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--grey);
+    }
+    .summary-header-date { font-family: var(--font-mono); font-size: 12px; color: var(--mid-grey); }
+
+    .summary-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 48px; border-bottom: 1px solid var(--dark-grey);
+    }
+    .summary-line-label {
+      font-family: var(--font-mono); font-size: 14px; color: var(--light-grey);
+    }
+    .summary-line-label small { display: block; font-size: 11px; color: var(--grey); margin-top: 2px; }
+    .summary-line-price {
+      font-family: var(--font-display); font-size: 28px; color: var(--white);
+    }
+    .summary-line.empty { opacity: .3; }
+    .summary-line.empty .summary-line-price { color: var(--grey); font-size: 18px; }
+    .summary-line.total { background: var(--off-black); }
+    .summary-line.total .summary-line-label {
+      font-family: var(--font-display); font-size: 28px; text-transform: uppercase; color: var(--white);
+    }
+    .summary-line.total .summary-line-price {
+      font-family: var(--font-display); font-size: 52px; color: var(--lime);
+    }
+    .summary-line.onetime { background: rgba(0,229,180,.04); }
+    .summary-line.onetime .summary-line-price { color: var(--mint); }
+    .summary-note {
+      padding: 24px 48px;
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey);
+      line-height: 1.6;
+    }
+
+    /* ── PROCESS ── */
+    .process { background: var(--black); border-top: 1px solid var(--dark-grey); }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; background: var(--dark-grey); margin-top: 60px;
+    }
+    .process-step {
+      background: var(--off-black); padding: 48px 36px;
+      position: relative; overflow: hidden;
+      transition: background .4s;
+    }
+    .process-step:hover { background: var(--dark-grey); }
+    .process-step::after {
+      content: attr(data-n);
+      position: absolute; bottom: -24px; right: -8px;
+      font-family: var(--font-display); font-size: 120px;
+      color: var(--dark-grey); line-height: 1;
+      pointer-events: none; transition: color .4s;
+    }
+    .process-step:hover::after { color: var(--off-black); }
+    .step-label {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--lime); margin-bottom: 20px;
+    }
+    .step-h { font-family: var(--font-display); font-size: 34px; text-transform: uppercase; margin-bottom: 12px; position: relative; }
+    .step-p { font-size: 14px; color: var(--grey); line-height: 1.6; position: relative; }
+    @media (max-width: 900px) { .process-steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .process-steps { grid-template-columns: 1fr; } }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--lime); color: var(--black);
+      padding: 120px 40px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: 'ZDM';
+      position: absolute; bottom: -60px; right: -20px;
+      font-family: var(--font-display); font-size: 400px;
+      color: rgba(0,0,0,.06); line-height: 1; pointer-events: none;
+    }
+    .cta-h {
+      font-family: var(--font-display); font-size: clamp(64px, 12vw, 160px);
+      line-height: .85; text-transform: uppercase; margin-bottom: 48px;
+      position: relative;
+    }
+    .cta-sub {
+      font-family: var(--font-mono); font-size: 16px; color: rgba(0,0,0,.6);
+      max-width: 540px; margin: 0 auto 48px; line-height: 1.6;
+    }
+    .cta-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .cta-btn-primary {
+      padding: 20px 48px; background: var(--black); color: var(--lime);
+      font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      text-decoration: none; border: 2px solid var(--black);
+      transition: background .3s, color .3s;
+      cursor: none;
+    }
+    .cta-btn-primary:hover { background: transparent; color: var(--black); }
+    .cta-btn-secondary {
+      padding: 20px 48px; background: transparent; color: var(--black);
+      font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      text-decoration: none; border: 2px solid var(--black);
+      transition: background .3s, color .3s;
+      cursor: none;
+    }
+    .cta-btn-secondary:hover { background: var(--black); color: var(--lime); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--off-black); padding: 48px 40px;
+      border-top: 1px solid var(--dark-grey);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+    }
+    footer .foot-logo { font-family: var(--font-display); font-size: 22px; color: var(--grey); }
+    footer .foot-logo span { color: var(--lime); }
+    footer .foot-info { font-family: var(--font-mono); font-size: 12px; color: var(--grey); text-align: right; line-height: 1.8; }
+    @media (max-width: 600px) { footer { text-align: center; flex-direction: column; align-items: center; } footer .foot-info { text-align: center; } }
+
+    /* ── NO SELECTION ── */
+    .pkg-none-msg {
+      font-family: var(--font-mono); font-size: 13px; color: var(--mid-grey);
+      padding: 40px; text-align: center; grid-column: 1/-1; display: none;
+    }
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,.85);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      background: var(--off-black); border: 1px solid var(--dark-grey);
+      width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto;
+      transform: translateY(24px);
+      transition: transform .35s cubic-bezier(.16,1,.3,1);
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+
+    .modal-head {
+      padding: 32px 40px; border-bottom: 1px solid var(--dark-grey);
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .modal-label {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--lime); margin-bottom: 8px;
+    }
+    .modal-title {
+      font-family: var(--font-display); font-size: 36px;
+      text-transform: uppercase; color: var(--white); line-height: 1;
+    }
+    .modal-close {
+      background: none; border: 1px solid var(--dark-grey); color: var(--grey);
+      font-family: var(--font-mono); font-size: 18px; line-height: 1;
+      width: 40px; height: 40px; cursor: none; flex-shrink: 0;
+      display: grid; place-items: center;
+      transition: border-color .2s, color .2s;
+    }
+    .modal-close:hover { border-color: var(--lime); color: var(--lime); }
+
+    .modal-body { padding: 36px 40px; }
+
+    .form-group { margin-bottom: 24px; }
+    .form-label {
+      display: block; font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--grey);
+      margin-bottom: 10px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%; background: var(--black); border: 1px solid var(--dark-grey);
+      color: var(--white); font-family: var(--font-body); font-size: 15px;
+      padding: 14px 16px; outline: none; appearance: none;
+      transition: border-color .2s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--lime); }
+    .form-textarea { min-height: 120px; resize: vertical; }
+    .form-select { cursor: none; }
+    .form-select option { background: var(--off-black); }
+
+    .form-summary-box {
+      background: var(--black); border: 1px solid var(--dark-grey);
+      padding: 16px 20px; margin-bottom: 24px;
+    }
+    .form-summary-box-label {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--grey); margin-bottom: 10px;
+    }
+    .form-summary-line {
+      font-family: var(--font-mono); font-size: 13px; color: var(--light-grey);
+      margin-bottom: 6px; display: flex; justify-content: space-between;
+    }
+    .form-summary-line span { color: var(--lime); }
+    .form-summary-none { font-family: var(--font-mono); font-size: 13px; color: var(--mid-grey); }
+
+    .form-submit {
+      width: 100%; padding: 18px; background: var(--lime); color: var(--black);
+      font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em; border: none; cursor: none;
+      transition: opacity .2s;
+    }
+    .form-submit:disabled { opacity: .5; }
+    .form-submit:not(:disabled):hover { opacity: .85; }
+
+    .form-msg {
+      display: none; padding: 14px 16px; margin-top: 16px;
+      font-family: var(--font-mono); font-size: 13px; text-align: center;
+    }
+    .form-msg.success { background: rgba(0,229,180,.1); border: 1px solid var(--mint); color: var(--mint); }
+    .form-msg.error   { background: rgba(255,107,74,.1); border: 1px solid var(--coral); color: var(--coral); }
+  </style>
+</head>
+<body>
+
+<!-- CURSORS -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- PROGRESS -->
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">Z</div>
+    ZDM INC <span class="nav-x">×</span><span class="nav-client">Island Tote</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#social">Social Media</a></li>
+    <li><a href="#website">Website</a></li>
+    <li><a href="#summary">Investment</a></li>
+    <li><a href="#next">Next Steps</a></li>
+  </ul>
+  <div class="nav-badge">Confidential Proposal</div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ HERO -->
+<section class="hero">
+  <div class="hero-bg-aurora"></div>
+  <div class="hero-bg-grid"></div>
+
+  <div class="hero-label">
+    <div class="hero-label-dot"></div>
+    Growth Proposal — Prepared Exclusively for Island Tote
+  </div>
+
+  <h1 class="hero-headline">
+    <span class="hl"><span class="hl-inner">YOUR BRAND</span></span>
+    <span class="hl"><span class="hl-inner">DESERVES</span></span>
+    <span class="hl"><span class="hl-inner">MORE REACH.</span></span>
+  </h1>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Prepared For</div>
+      <div class="hero-meta-value">Island Tote</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Prepared By</div>
+      <div class="hero-meta-value">ZDM INC</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Date</div>
+      <div class="hero-meta-value">May 2026</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Currency</div>
+      <div class="hero-meta-value">Barbados <span>Dollars (BDS$)</span></div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ OPPORTUNITY -->
+<section id="opp" class="section opportunity">
+  <div class="container">
+    <div class="opp-grid">
+      <div class="opp-text reveal">
+        <span class="section-label lime">01 // The Opportunity</span>
+        <h2 class="section-h2">Island Tote<br>Has <span class="accent">All</span> the<br>Ingredients.</h2>
+        <p>Island Tote is a standout brand — distinctive products, a clear identity, and a loyal audience beginning to grow. What's missing is the <strong>digital engine</strong> to push visibility further and convert browsers into buyers at scale.</p>
+        <p>ZDM INC exists to close that gap. We combine consistent social content, strategic ad management, and a high-converting Shopify presence to take Island Tote from a well-kept secret to a recognized Caribbean brand.</p>
+        <p>Every package below is designed around a single goal: <strong>more visibility, more sales, Zero Distance to Market.</strong></p>
+      </div>
+      <div class="opp-stats reveal d2">
+        <div class="opp-stat">
+          <div class="opp-stat-num">80%</div>
+          <div class="opp-stat-label">of purchasing decisions start on social media</div>
+        </div>
+        <div class="opp-stat">
+          <div class="opp-stat-num">3×</div>
+          <div class="opp-stat-label">average revenue uplift with consistent content</div>
+        </div>
+        <div class="opp-stat">
+          <div class="opp-stat-num">67%</div>
+          <div class="opp-stat-label">of shoppers visit Instagram before buying</div>
+        </div>
+        <div class="opp-stat">
+          <div class="opp-stat-num">2.4×</div>
+          <div class="opp-stat-label">higher conversion on optimised Shopify stores</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" aria-hidden="true">
+    <span>Social Media Management</span><span class="sep">//</span>
+    <span>Instagram & Facebook</span><span class="sep">//</span>
+    <span>Ad Management</span><span class="sep">//</span>
+    <span>Shopify Redesign</span><span class="sep">//</span>
+    <span>Product Photography</span><span class="sep">//</span>
+    <span>Visibility & Sales</span><span class="sep">//</span>
+    <span>Social Media Management</span><span class="sep">//</span>
+    <span>Instagram & Facebook</span><span class="sep">//</span>
+    <span>Ad Management</span><span class="sep">//</span>
+    <span>Shopify Redesign</span><span class="sep">//</span>
+    <span>Product Photography</span><span class="sep">//</span>
+    <span>Visibility & Sales</span><span class="sep">//</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ SOCIAL PACKAGES -->
+<section id="social" class="section social-pkg">
+  <div class="container">
+    <div class="pkg-intro reveal">
+      <span class="section-label lime">02 // Social Media Management</span>
+      <h2 class="section-h2">Monthly<br><span class="accent">Packages</span></h2>
+      <p>All packages include Instagram <strong>and</strong> Facebook management, professional caption copywriting, hashtag research, scheduling, and ad account management. <strong>Ad spend is not included</strong> — you control your budget and we maximise every dollar of it.</p>
+    </div>
+
+    <div class="pkg-grid reveal d1">
+
+      <!-- STARTER -->
+      <div class="pkg-card" id="pkg-starter" data-pkg="starter" data-price="600" data-recurring="true">
+        <span class="pkg-badge">Starter</span>
+        <div class="pkg-name">Starter</div>
+        <div class="pkg-price">BDS$600</div>
+        <div class="pkg-price-sub">per month + ad spend</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li>Instagram & Facebook management</li>
+          <li>6 professionally crafted posts per month</li>
+          <li>Caption copywriting & hashtag research</li>
+          <li>Content scheduling & publishing</li>
+          <li>Ad account setup & management</li>
+          <li>Basic audience targeting</li>
+          <li>Monthly performance snapshot</li>
+          <li class="dim">Stories content</li>
+          <li class="dim">Strategy sessions</li>
+          <li class="dim">Competitor analysis</li>
+        </ul>
+        <button class="pkg-select-btn" onclick="selectPkg('starter')">Select Starter</button>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="pkg-card" id="pkg-growth" data-pkg="growth" data-price="900" data-recurring="true">
+        <span class="pkg-badge popular">Most Popular</span>
+        <div class="pkg-name">Growth</div>
+        <div class="pkg-price">BDS$900</div>
+        <div class="pkg-price-sub">per month + ad spend</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li>Instagram & Facebook management</li>
+          <li>9 professionally crafted posts per month</li>
+          <li>Caption copywriting & hashtag research</li>
+          <li>Content scheduling & publishing</li>
+          <li>Ad account management & optimisation</li>
+          <li>Advanced audience targeting & retargeting</li>
+          <li>3 Stories per week</li>
+          <li>Monthly strategy call (30 min)</li>
+          <li>Monthly analytics report</li>
+          <li class="dim">Competitor analysis</li>
+        </ul>
+        <button class="pkg-select-btn" onclick="selectPkg('growth')">Select Growth</button>
+      </div>
+
+      <!-- PRO -->
+      <div class="pkg-card" id="pkg-pro" data-pkg="pro" data-price="1500" data-recurring="true">
+        <span class="pkg-badge">Pro</span>
+        <div class="pkg-name">Pro</div>
+        <div class="pkg-price">BDS$1,500</div>
+        <div class="pkg-price-sub">per month + ad spend</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li>Instagram & Facebook management</li>
+          <li>12 professionally crafted posts per month</li>
+          <li>Caption copywriting & hashtag research</li>
+          <li>Content scheduling & publishing</li>
+          <li>Full ad account management & A/B testing</li>
+          <li>Advanced targeting, retargeting & lookalike</li>
+          <li>Daily Stories + Reels content</li>
+          <li>Monthly strategy call (60 min)</li>
+          <li>In-depth monthly analytics report</li>
+          <li>Competitor analysis & market insights</li>
+        </ul>
+        <button class="pkg-select-btn" onclick="selectPkg('pro')">Select Pro</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ ADD-ONS -->
+<section class="section addons">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label lime">03 // Add-Ons</span>
+      <h2 class="section-h2">One-Time<br><span class="accent">Extras</span></h2>
+    </div>
+
+    <div class="addon-grid reveal d1">
+
+      <div class="addon-card" id="addon-photo" onclick="toggleAddon('photo')">
+        <div class="addon-check"><div class="addon-check-mark"></div></div>
+        <div class="addon-info">
+          <div class="addon-name">Product Photography</div>
+          <div class="addon-desc">Professional lifestyle & flat-lay photography session for Island Tote products — ready-to-post content that elevates your feed instantly.</div>
+        </div>
+        <div>
+          <div class="addon-price">BDS$300</div>
+          <div class="addon-price-sub">one-time fee</div>
+        </div>
+      </div>
+
+      <div class="addon-card" id="addon-content" onclick="toggleAddon('content')">
+        <div class="addon-check"><div class="addon-check-mark"></div></div>
+        <div class="addon-info">
+          <div class="addon-name">Content Starter Kit</div>
+          <div class="addon-desc">Brand templates, Canva graphics kit, and 30 custom caption frameworks tailored to Island Tote's voice — so your content stays consistent forever.</div>
+        </div>
+        <div>
+          <div class="addon-price">BDS$450</div>
+          <div class="addon-price-sub">one-time fee</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ WEBSITE PACKAGES -->
+<section id="website" class="section web-pkg">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" style="color:var(--mint)">04 // Shopify Website Redesign</span>
+      <h2 class="section-h2">Your Store,<br><span class="accent-mint">Rebuilt</span> to<br>Convert.</h2>
+      <div class="web-pkg-note">
+        <span>✦</span> One-time project fee — Island Tote keeps full ownership of the site
+      </div>
+    </div>
+
+    <div class="web-grid reveal d1">
+
+      <!-- STARTER WEB -->
+      <div class="web-card" id="web-starter" data-web="starter" data-price="2900">
+        <div class="web-tier">Tier 01 — Shopify Starter</div>
+        <div class="web-name">Launch</div>
+        <div class="web-price">BDS$2,900</div>
+        <div class="web-price-sub">one-time project</div>
+        <div class="web-divider"></div>
+        <ul class="web-features">
+          <li>Premium Shopify theme selection & setup</li>
+          <li>Brand-aligned colour, font & visual customisation</li>
+          <li>Mobile-first responsive design</li>
+          <li>Up to 3 collection pages</li>
+          <li>Product page optimisation</li>
+          <li>Homepage, About & Contact pages</li>
+          <li>Basic on-page SEO</li>
+          <li>Checkout & payment configuration</li>
+          <li>14-day post-launch support</li>
+        </ul>
+        <button class="web-select-btn" onclick="selectWeb('starter')">Select Launch</button>
+      </div>
+
+      <!-- GROWTH WEB -->
+      <div class="web-card" id="web-growth" data-web="growth" data-price="5300">
+        <div class="web-tier">Tier 02 — Shopify Growth</div>
+        <div class="web-name">Scale</div>
+        <div class="web-price">BDS$5,300</div>
+        <div class="web-price-sub">one-time project</div>
+        <div class="web-divider"></div>
+        <ul class="web-features">
+          <li>Everything in Launch, plus:</li>
+          <li>Custom-coded design elements & animations</li>
+          <li>Conversion-focused product page layout</li>
+          <li>Email capture pop-up & Klaviyo integration</li>
+          <li>Product reviews app setup</li>
+          <li>Upsell & cross-sell app configuration</li>
+          <li>Google Analytics 4 + Meta Pixel setup</li>
+          <li>Full on-page SEO + sitemap</li>
+          <li>30-day post-launch support</li>
+        </ul>
+        <button class="web-select-btn" onclick="selectWeb('growth')">Select Scale</button>
+      </div>
+
+      <!-- PREMIUM WEB -->
+      <div class="web-card" id="web-premium" data-web="premium" data-price="6900">
+        <div class="web-tier">Tier 03 — Shopify Premium</div>
+        <div class="web-name">Dominate</div>
+        <div class="web-price">BDS$6,900</div>
+        <div class="web-price-sub">one-time project</div>
+        <div class="web-divider"></div>
+        <ul class="web-features">
+          <li>Everything in Scale, plus:</li>
+          <li>Fully custom Shopify 2.0 theme development</li>
+          <li>Advanced product filtering & search</li>
+          <li>Loyalty programme integration</li>
+          <li>CRO audit & heatmap analysis</li>
+          <li>Speed optimisation</li>
+          <li>Custom landing pages for ad campaigns</li>
+          <li>Advanced analytics dashboard</li>
+          <li>60-day post-launch support & training</li>
+        </ul>
+        <button class="web-select-btn" onclick="selectWeb('premium')">Select Dominate</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ INVESTMENT SUMMARY -->
+<section id="summary" class="section summary">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:64px;">
+      <span class="section-label lime" style="display:block; margin-bottom:16px;">05 // Investment Summary</span>
+      <h2 class="section-h2">Your <span class="accent">Selected</span><br>Investment</h2>
+      <p style="color:var(--grey); font-family:var(--font-mono); font-size:14px; margin-top:16px;">Select packages above to build your custom proposal.</p>
+    </div>
+
+    <div class="summary-box reveal d1">
+      <div class="summary-header">
+        <div class="summary-header-label">Proposal Summary — Island Tote × ZDM INC</div>
+        <div class="summary-header-date">May 2026</div>
+      </div>
+
+      <!-- SOCIAL LINE -->
+      <div class="summary-line" id="sum-social-line">
+        <div class="summary-line-label">
+          Social Media Management
+          <small id="sum-social-detail">— No package selected</small>
+        </div>
+        <div class="summary-line-price" id="sum-social-price">—</div>
+      </div>
+
+      <!-- PHOTO ADD-ON -->
+      <div class="summary-line" id="sum-photo-line" style="display:none;">
+        <div class="summary-line-label">
+          Product Photography
+          <small>One-time starter fee</small>
+        </div>
+        <div class="summary-line-price" style="color:var(--mint);">BDS$300</div>
+      </div>
+
+      <!-- CONTENT KIT ADD-ON -->
+      <div class="summary-line" id="sum-content-line" style="display:none;">
+        <div class="summary-line-label">
+          Content Starter Kit
+          <small>One-time fee</small>
+        </div>
+        <div class="summary-line-price" style="color:var(--mint);">BDS$450</div>
+      </div>
+
+      <!-- WEBSITE LINE -->
+      <div class="summary-line" id="sum-web-line">
+        <div class="summary-line-label">
+          Shopify Website Redesign
+          <small id="sum-web-detail">— No package selected</small>
+        </div>
+        <div class="summary-line-price" id="sum-web-price">—</div>
+      </div>
+
+      <!-- MONTHLY TOTAL -->
+      <div class="summary-line total" id="sum-monthly">
+        <div class="summary-line-label">Monthly Retainer</div>
+        <div class="summary-line-price" id="sum-monthly-val">BDS$0 / mo</div>
+      </div>
+
+      <!-- ONE-TIME TOTAL -->
+      <div class="summary-line onetime" id="sum-onetime" style="display:none;">
+        <div class="summary-line-label">One-Time Investment</div>
+        <div class="summary-line-price" id="sum-onetime-val" style="color:var(--mint);">BDS$0</div>
+      </div>
+
+      <div class="summary-note">
+        All prices are in Barbados Dollars (BDS$). Ad spend is billed separately at cost — you set the budget, we maximise results. A deposit of 50% is required to commence website projects. Social media retainers are billed monthly with a 3-month minimum commitment.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ PROCESS -->
+<section id="next" class="section process">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label lime">06 // How We Start</span>
+      <h2 class="section-h2">Zero Distance<br>to <span class="accent">Market.</span></h2>
+    </div>
+
+    <div class="process-steps">
+      <div class="process-step reveal d1" data-n="1">
+        <div class="step-label">Step 01</div>
+        <h3 class="step-h">Accept</h3>
+        <p class="step-p">Select your packages, confirm the proposal, and return a signed copy. We'll invoice for your first month (or 50% deposit for website).</p>
+      </div>
+      <div class="process-step reveal d2" data-n="2">
+        <div class="step-label">Step 02</div>
+        <h3 class="step-h">Onboard</h3>
+        <p class="step-p">We schedule a 60-minute kickoff call to understand your brand voice, audience, competitors, and goals in depth.</p>
+      </div>
+      <div class="process-step reveal d3" data-n="3">
+        <div class="step-label">Step 03</div>
+        <h3 class="step-h">Build</h3>
+        <p class="step-p">Content calendars are drafted, ad accounts configured, and — for website projects — design wireframes are delivered for your approval.</p>
+      </div>
+      <div class="process-step reveal d4" data-n="4">
+        <div class="step-label">Step 04</div>
+        <h3 class="step-h">Launch</h3>
+        <p class="step-p">We go live. You stay focused on your product. We handle visibility, traffic, and reporting so you can watch the numbers move.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ CTA -->
+<section class="cta-section reveal">
+  <h2 class="cta-h">Let's Build<br>Island Tote.</h2>
+  <p class="cta-sub">Ready to take your brand further? Accept this proposal or reach out to discuss any adjustments — we're here to make it work for you.</p>
+  <div class="cta-btns">
+    <button class="cta-btn-primary" onclick="openModal('accept')">Accept Proposal</button>
+    <button class="cta-btn-secondary" onclick="openModal('question')">Ask a Question</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MODAL: ACCEPT -->
+<div class="modal-overlay" id="modal-accept" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <div class="modal-label">Island Tote × ZDM INC</div>
+        <div class="modal-title">Accept Proposal</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('accept')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Selected package summary (populated by JS) -->
+      <div class="form-summary-box">
+        <div class="form-summary-box-label">Your Selection</div>
+        <div id="accept-summary-content"></div>
+      </div>
+
+      <!-- REPLACE YOUR_FORM_ID below with your Formspree form ID -->
+      <form id="form-accept" onsubmit="submitForm(event, 'accept')">
+        <input type="hidden" name="_subject"       value="Island Tote — Proposal Acceptance">
+        <input type="hidden" name="proposal_for"   value="Island Tote">
+        <input type="hidden" name="social_package" id="hidden-social">
+        <input type="hidden" name="website_package" id="hidden-web">
+        <input type="hidden" name="addons"         id="hidden-addons">
+        <input type="hidden" name="monthly_total"  id="hidden-monthly">
+        <input type="hidden" name="onetime_total"  id="hidden-onetime">
+
+        <div class="form-group">
+          <label class="form-label" for="accept-name">Your Name *</label>
+          <input class="form-input" id="accept-name" name="name" type="text" required placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="accept-email">Email Address *</label>
+          <input class="form-input" id="accept-email" name="email" type="email" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="accept-phone">Phone Number</label>
+          <input class="form-input" id="accept-phone" name="phone" type="tel" placeholder="+1 246 000 0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="accept-notes">Any Notes or Questions</label>
+          <textarea class="form-textarea" id="accept-notes" name="notes" placeholder="Anything you'd like us to know before we get started..."></textarea>
+        </div>
+
+        <button class="form-submit" type="submit" id="accept-submit">Send Acceptance →</button>
+        <div class="form-msg success" id="accept-success">We've received your acceptance! We'll be in touch within 24 hours to get things moving.</div>
+        <div class="form-msg error"   id="accept-error">Something went wrong. Please email us directly at support@zee1agency.com.</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MODAL: QUESTION -->
+<div class="modal-overlay" id="modal-question" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <div class="modal-label">Island Tote × ZDM INC</div>
+        <div class="modal-title">Ask a Question</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('question')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- REPLACE YOUR_FORM_ID below with your Formspree form ID -->
+      <form id="form-question" onsubmit="submitForm(event, 'question')">
+        <input type="hidden" name="_subject"     value="Island Tote — Proposal Question">
+        <input type="hidden" name="proposal_for" value="Island Tote">
+
+        <div class="form-group">
+          <label class="form-label" for="q-name">Your Name *</label>
+          <input class="form-input" id="q-name" name="name" type="text" required placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="q-email">Email Address *</label>
+          <input class="form-input" id="q-email" name="email" type="email" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="q-message">Your Question *</label>
+          <textarea class="form-textarea" id="q-message" name="message" required placeholder="What would you like to know about this proposal?"></textarea>
+        </div>
+
+        <button class="form-submit" type="submit" id="question-submit">Send Question →</button>
+        <div class="form-msg success" id="question-success">Your question has been sent! We'll reply within 24 hours.</div>
+        <div class="form-msg error"   id="question-error">Something went wrong. Please email us directly at support@zee1agency.com.</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">ZDM<span> INC</span></div>
+  <div class="foot-info">
+    Zee Digital Marketing Inc. &nbsp;·&nbsp; Zero Distance to Market.<br>
+    specialist@katrinapayne.com &nbsp;·&nbsp; Prepared for Island Tote — May 2026
+  </div>
+</footer>
+
+<script>
+  // ── STATE ────────────────────────────────────────────────────────────────
+  const state = {
+    social:  null,   // 'starter' | 'growth' | 'pro'
+    addons:  new Set(), // 'photo' | 'content'
+    web:     null,   // 'starter' | 'growth' | 'premium'
+  };
+
+  const socialPrices = { starter: 600, growth: 900, pro: 1500 };
+  const socialLabels = { starter: 'Starter — 6 posts/mo', growth: 'Growth — 9 posts/mo', pro: 'Pro — 12 posts/mo' };
+  const addonPrices  = { photo: 300, content: 450 };
+  const webPrices    = { starter: 3500, growth: 6500, premium: 12000 };
+  const webLabels    = { starter: 'Launch Package', growth: 'Scale Package', premium: 'Dominate Package' };
+
+  // ── PACKAGE SELECTION ────────────────────────────────────────────────────
+  function selectPkg(id) {
+    ['starter','growth','pro'].forEach(p => {
+      document.getElementById('pkg-' + p).classList.remove('selected');
+    });
+    if (state.social === id) {
+      state.social = null;
+    } else {
+      state.social = id;
+      document.getElementById('pkg-' + id).classList.add('selected');
+    }
+    updateSummary();
+  }
+
+  function toggleAddon(id) {
+    const card = document.getElementById('addon-' + id);
+    if (state.addons.has(id)) {
+      state.addons.delete(id);
+      card.classList.remove('selected');
+    } else {
+      state.addons.add(id);
+      card.classList.add('selected');
+    }
+    updateSummary();
+  }
+
+  function selectWeb(id) {
+    ['starter','growth','premium'].forEach(w => {
+      document.getElementById('web-' + w).classList.remove('selected');
+    });
+    if (state.web === id) {
+      state.web = null;
+    } else {
+      state.web = id;
+      document.getElementById('web-' + id).classList.add('selected');
+    }
+    updateSummary();
+  }
+
+  // ── SUMMARY UPDATE ───────────────────────────────────────────────────────
+  function fmt(n) {
+    return 'BDS$' + n.toLocaleString();
+  }
+
+  function updateSummary() {
+    let monthlyTotal = 0;
+    let onetimeTotal = 0;
+
+    // Social
+    const sl = document.getElementById('sum-social-line');
+    const sp = document.getElementById('sum-social-price');
+    const sd = document.getElementById('sum-social-detail');
+    if (state.social) {
+      const price = socialPrices[state.social];
+      monthlyTotal += price;
+      sp.textContent = fmt(price) + '/mo';
+      sd.textContent = '— ' + socialLabels[state.social];
+      sl.classList.remove('empty');
+    } else {
+      sp.textContent = '—';
+      sd.textContent = '— No package selected';
+      sl.classList.add('empty');
+    }
+
+    // Photo add-on
+    const photoLine = document.getElementById('sum-photo-line');
+    if (state.addons.has('photo')) {
+      onetimeTotal += 300;
+      photoLine.style.display = 'flex';
+    } else {
+      photoLine.style.display = 'none';
+    }
+
+    // Content kit add-on
+    const contentLine = document.getElementById('sum-content-line');
+    if (state.addons.has('content')) {
+      onetimeTotal += 450;
+      contentLine.style.display = 'flex';
+    } else {
+      contentLine.style.display = 'none';
+    }
+
+    // Web
+    const wl = document.getElementById('sum-web-line');
+    const wp = document.getElementById('sum-web-price');
+    const wd = document.getElementById('sum-web-detail');
+    if (state.web) {
+      const price = webPrices[state.web];
+      onetimeTotal += price;
+      wp.textContent = fmt(price);
+      wd.textContent = '— ' + webLabels[state.web];
+      wl.classList.remove('empty');
+    } else {
+      wp.textContent = '—';
+      wd.textContent = '— No package selected';
+      wl.classList.add('empty');
+    }
+
+    // Totals
+    const monthEl = document.getElementById('sum-monthly-val');
+    monthEl.textContent = monthlyTotal > 0 ? fmt(monthlyTotal) + ' / mo' : 'BDS$0 / mo';
+
+    const onetimeSection = document.getElementById('sum-onetime');
+    const onetimeEl = document.getElementById('sum-onetime-val');
+    if (onetimeTotal > 0) {
+      onetimeSection.style.display = 'flex';
+      onetimeEl.textContent = fmt(onetimeTotal);
+    } else {
+      onetimeSection.style.display = 'none';
+    }
+  }
+
+  // Mark empty lines initially
+  document.getElementById('sum-social-line').classList.add('empty');
+  document.getElementById('sum-web-line').classList.add('empty');
+
+  // ── FORMSPREE ENDPOINT ───────────────────────────────────────────────────
+  // Sign up at formspree.io, create one form (pointing to support@zee1agency.com),
+  // then replace YOUR_FORM_ID with the ID from your dashboard (e.g. "xrgjakly").
+  const FORMSPREE_ID = 'mqenrrgz';
+  const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
+  // ── MODAL OPEN / CLOSE ───────────────────────────────────────────────────
+  function openModal(id) {
+    if (id === 'accept') populateAcceptSummary();
+    document.getElementById('modal-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) closeModal(overlay.id.replace('modal-', ''));
+    });
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => {
+        closeModal(m.id.replace('modal-', ''));
+      });
+    }
+  });
+
+  // ── PRE-FILL HIDDEN FIELDS & SUMMARY ─────────────────────────────────────
+  function populateAcceptSummary() {
+    // Hidden fields
+    document.getElementById('hidden-social').value   = state.social ? socialLabels[state.social] + ' — ' + fmt(socialPrices[state.social]) + '/mo' : 'None selected';
+    document.getElementById('hidden-web').value      = state.web    ? webLabels[state.web]        + ' — ' + fmt(webPrices[state.web])            : 'None selected';
+    document.getElementById('hidden-addons').value   = [...state.addons].join(', ') || 'None';
+
+    let monthly = 0, onetime = 0;
+    if (state.social) monthly += socialPrices[state.social];
+    if (state.addons.has('photo'))   onetime += 300;
+    if (state.addons.has('content')) onetime += 450;
+    if (state.web) onetime += webPrices[state.web];
+
+    document.getElementById('hidden-monthly').value  = monthly  > 0 ? fmt(monthly)  + '/mo' : 'BDS$0';
+    document.getElementById('hidden-onetime').value  = onetime  > 0 ? fmt(onetime)           : 'BDS$0';
+
+    // Visible summary inside modal
+    const el = document.getElementById('accept-summary-content');
+    const lines = [];
+    if (state.social)               lines.push([socialLabels[state.social], fmt(socialPrices[state.social]) + '/mo']);
+    if (state.addons.has('photo'))  lines.push(['Product Photography', fmt(300) + ' one-time']);
+    if (state.addons.has('content'))lines.push(['Content Starter Kit', fmt(450) + ' one-time']);
+    if (state.web)                  lines.push([webLabels[state.web], fmt(webPrices[state.web]) + ' one-time']);
+
+    if (lines.length === 0) {
+      el.innerHTML = '<div class="form-summary-none">No packages selected yet — you can still send this and we\'ll follow up.</div>';
+    } else {
+      el.innerHTML = lines.map(([label, price]) =>
+        `<div class="form-summary-line">${label}<span>${price}</span></div>`
+      ).join('');
+    }
+  }
+
+  // ── FORMSPREE AJAX SUBMIT ─────────────────────────────────────────────────
+  async function submitForm(e, id) {
+    e.preventDefault();
+    const form    = document.getElementById('form-' + id);
+    const btn     = document.getElementById(id === 'accept' ? 'accept-submit' : 'question-submit');
+    const success = document.getElementById(id + '-success');
+    const error   = document.getElementById(id + '-error');
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    success.style.display = 'none';
+    error.style.display   = 'none';
+
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json' },
+        body:    new FormData(form),
+      });
+
+      if (res.ok) {
+        form.reset();
+        success.style.display = 'block';
+        btn.textContent = 'Sent ✓';
+      } else {
+        throw new Error('non-ok');
+      }
+    } catch {
+      error.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = id === 'accept' ? 'Send Acceptance →' : 'Send Question →';
+    }
+  }
+
+  // ── CURSOR ───────────────────────────────────────────────────────────────
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  document.querySelectorAll('a,button,.pkg-card,.addon-card,.web-card,.opp-stat,.process-step').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  // ── PROGRESS BAR ─────────────────────────────────────────────────────────
+  const bar = document.getElementById('progress-bar');
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    const s = document.documentElement.scrollTop;
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    bar.style.width = (s / h * 100) + '%';
+    nav.classList.toggle('scrolled', s > 40);
+  });
+
+  // ── INTERSECTION OBSERVER ─────────────────────────────────────────────────
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
