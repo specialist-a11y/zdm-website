@@ -111,9 +111,47 @@
   .badge-mid { background: rgba(136,136,136,0.12); color: var(--mid); border: 1px solid rgba(136,136,136,0.2); }
 
   @media (max-width: 900px) { #sidebar { display: none; } main { padding: 40px 24px; } .stat-row { grid-template-columns: 1fr 1fr; } }
+  #pw-gate { position: fixed; inset: 0; background: #0A0A0A; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  #pw-gate.hidden { display: none; }
+  #pw-box { width: 100%; max-width: 380px; background: #141414; border: 1px solid rgba(255,255,255,0.07); padding: 48px 40px; }
+  #pw-mark { width: 44px; height: 44px; background: #C8FF00; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #0A0A0A; margin-bottom: 24px; }
+  #pw-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.06em; color: #fff; margin-bottom: 6px; }
+  #pw-sub { font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.5; }
+  #pw-input { width: 100%; background: #1E1E1E; border: 1px solid #3A3A3A; color: #F5F5F0; font-size: 14px; padding: 12px 14px; outline: none; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; display: block; }
+  #pw-input:focus { border-color: #C8FF00; }
+  #pw-btn { width: 100%; margin-top: 16px; background: #C8FF00; color: #0A0A0A; border: none; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.08em; padding: 14px; cursor: pointer; }
+  #pw-btn:hover { opacity: 0.88; }
+  #pw-err { margin-top: 10px; font-size: 11px; color: #FF5A5A; font-family: 'DM Mono', monospace; min-height: 16px; }
 </style>
 </head>
 <body>
+
+<div id="pw-gate">
+  <div id="pw-box">
+    <div id="pw-mark">Z</div>
+    <div id="pw-title">ZDM INC</div>
+    <div id="pw-sub">This page is password protected.</div>
+    <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off">
+    <div id="pw-err"></div>
+    <button id="pw-btn" onclick="checkPw()">Enter</button>
+  </div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('zdm_access') === '1') document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+  })();
+  function checkPw() {
+    if (document.getElementById('pw-input').value === '123###$$$') {
+      sessionStorage.setItem('zdm_access', '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+    } else {
+      document.getElementById('pw-err').textContent = 'Incorrect password.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
 
 <div id="progress-bar"></div>
 

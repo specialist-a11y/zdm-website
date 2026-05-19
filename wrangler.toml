@@ -1,0 +1,15 @@
+name            = "zdm-audit-proxy"
+main            = "cloudflare-worker.js"
+compatibility_date = "2024-11-01"
+
+# Secrets — set via CLI, never commit these values:
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put SUPABASE_JWT_SECRET
+#
+# To find SUPABASE_JWT_SECRET:
+#   Supabase dashboard → Settings → API → JWT Secret
+
+# Optional: restrict which routes trigger the worker
+# [[routes]]
+# pattern = "zdminc.com/audit-api/*"
+# zone_name = "zdminc.com"
