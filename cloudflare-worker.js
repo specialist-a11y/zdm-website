@@ -5,13 +5,8 @@
  * Your Claude API key never touches the browser.
  *
  * DEPLOY:
- *   1. Install Wrangler:  npm install -g wrangler
- *   2. Login:             wrangler login
- *   3. Set secrets:
- *        wrangler secret put ANTHROPIC_API_KEY
- *        wrangler secret put SUPABASE_JWT_SECRET
- *      (JWT secret is in Supabase → Settings → API → JWT Secret)
- *   4. Deploy:            wrangler deploy
+ *   1. wrangler secret put ANTHROPIC_API_KEY
+ *   2. wrangler deploy
  *
  * ALLOWED_ORIGINS: add your production domain here.
  */
@@ -22,6 +17,9 @@ const ALLOWED_ORIGINS = [
   'http://localhost:8000',
   'http://127.0.0.1:8000',
 ];
+
+const SUPABASE_URL  = 'https://yzyndghubzyktkubqpqf.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_jVtYc6imLNSz0yvHNfnw5g_Pa20U5yF';
 
 export default {
   async fetch(request, env) {
@@ -44,15 +42,22 @@ export default {
       return json({ error: 'Method not allowed' }, 405, cors);
     }
 
-    // ── 1. Verify Supabase JWT ──
+    // ── 1. Verify token via Supabase ──
     const auth = request.headers.get('Authorization') || '';
     if (!auth.startsWith('Bearer ')) {
       return json({ error: 'Missing authorization token' }, 401, cors);
     }
 
+    const token = auth.slice(7);
+
     try {
-      const valid = await verifyJWT(auth.slice(7), env.SUPABASE_JWT_SECRET);
-      if (!valid) throw new Error('invalid');
+      const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'apikey': SUPABASE_ANON,
+        },
+      });
+      if (!userRes.ok) throw new Error('invalid');
     } catch {
       return json({ error: 'Unauthorized' }, 401, cors);
     }
@@ -104,42 +109,4 @@ function json(body, status, cors) {
     status,
     headers: { ...cors, 'Content-Type': 'application/json' },
   });
-}
-
-async function verifyJWT(token, secret) {
-  const parts = token.split('.');
-  if (parts.length !== 3) return false;
-
-  let payload;
-  try { payload = JSON.parse(b64Decode(parts[1])); } catch { return false; }
-
-  // Check expiry
-  if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return false;
-
-  // Verify HMAC-SHA256 signature
-  const enc     = new TextEncoder();
-  const keyData = await crypto.subtle.importKey(
-    'raw', enc.encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false, ['verify']
-  );
-
-  return crypto.subtle.verify(
-    'HMAC',
-    keyData,
-    b64ToBuffer(parts[2]),
-    enc.encode(parts[0] + '.' + parts[1])
-  );
-}
-
-function b64Decode(str) {
-  const b64 = str.replace(/-/g, '+').replace(/_/g, '/');
-  return atob(b64.padEnd(b64.length + (4 - b64.length % 4) % 4, '='));
-}
-
-function b64ToBuffer(str) {
-  const bin   = b64Decode(str);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return bytes.buffer;
 }
