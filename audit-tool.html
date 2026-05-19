@@ -1927,8 +1927,11 @@ async function runAudit() {
     });
 
     if (!response.ok) {
-      var err = await response.json().catch(function() { return { error: { message: 'HTTP ' + response.status } }; });
-      throw new Error(err.error ? err.error.message : 'API error ' + response.status);
+      var err = await response.json().catch(function() { return {}; });
+      var errMsg = (err.error && typeof err.error === 'object') ? err.error.message
+                 : (typeof err.error === 'string')              ? err.error
+                 : 'HTTP ' + response.status;
+      throw new Error(errMsg);
     }
 
     var reader  = response.body.getReader();
