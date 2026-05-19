@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZDM INC — Ad Account Audit Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lime:    #C8FF00;
+    --black:   #0A0A0A;
+    --bg:      #141414;
+    --surface: #1E1E1E;
+    --surface2:#242424;
+    --mid:     #888888;
+    --light:   #F5F5F0;
+    --white:   #FFFFFF;
+    --border:  rgba(255,255,255,0.07);
+    --lime-dim:rgba(200,255,0,0.1);
+    --red:     #FF5A5A;
+    --orange:  #FF9B35;
+    --font-d:  'Bebas Neue', sans-serif;
+    --font-b:  'DM Sans', sans-serif;
+    --font-m:  'DM Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-b); background: var(--bg); color: var(--light); line-height: 1.6; overflow-x: hidden; }
+
+  /* ── LAYOUT ── */
+  .wrapper { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 240px; min-width: 240px;
+    background: var(--black);
+    border-right: 1px solid var(--border);
+    position: sticky; top: 0;
+    height: 100vh; overflow-y: auto;
+    display: flex; flex-direction: column;
+    padding: 28px 0 40px; z-index: 100;
+  }
+  .sidebar-logo { font-family: var(--font-d); font-size: 22px; letter-spacing: 0.08em; color: var(--lime); padding: 0 24px 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .sidebar-logo span { color: var(--mid); font-size: 10px; display: block; font-family: var(--font-m); letter-spacing: 0.1em; margin-top: 2px; }
+  .sidebar-score { margin: 0 24px 20px; background: var(--lime-dim); border: 1px solid rgba(200,255,0,0.2); padding: 14px 16px; }
+  .sidebar-score-val { font-family: var(--font-d); font-size: 40px; color: var(--lime); line-height: 1; }
+  .sidebar-score-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); margin-top: 2px; }
+  .sidebar-nav { list-style: none; flex: 1; }
+  .sidebar-nav li a { display: flex; align-items: center; gap: 10px; padding: 9px 24px; color: var(--mid); text-decoration: none; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s, background 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a .num { font-family: var(--font-m); font-size: 10px; color: rgba(136,136,136,0.5); min-width: 18px; }
+  .sidebar-nav li a:hover { color: var(--light); background: rgba(255,255,255,0.03); }
+  .sidebar-nav li a.active { color: var(--lime); border-left-color: var(--lime); background: var(--lime-dim); }
+  .sidebar-footer { padding: 20px 24px 0; border-top: 1px solid var(--border); margin-top: auto; }
+  .sidebar-footer a { font-family: var(--font-m); font-size: 10px; color: var(--lime); text-decoration: none; letter-spacing: 0.06em; }
+
+  /* ── MAIN ── */
+  main { flex: 1; min-width: 0; padding: 0; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #141414 70%);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--lime); }
+  .hero-eyebrow { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--lime); opacity: 0.7; margin-bottom: 16px; }
+  .hero-title { font-family: var(--font-d); font-size: 64px; letter-spacing: 0.03em; color: var(--white); line-height: 1; margin-bottom: 8px; }
+  .hero-biz { font-family: var(--font-d); font-size: 36px; letter-spacing: 0.04em; color: var(--lime); line-height: 1; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hero-meta-item { }
+  .hero-meta-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mid); margin-bottom: 3px; }
+  .hero-meta-val { font-size: 14px; font-weight: 500; color: var(--light); }
+  .hero-score-badge {
+    position: absolute; top: 56px; right: 72px;
+    text-align: center;
+    width: 110px;
+  }
+  .hero-score-num { font-family: var(--font-d); font-size: 72px; line-height: 1; }
+  .hero-score-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mid); margin-top: 2px; }
+  .hero-score-status { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.06em; margin-top: 6px; padding: 3px 10px; border: 1px solid; display: inline-block; }
+
+  /* ── SECTIONS ── */
+  .content { padding: 64px 72px; }
+  .guide-section { margin-bottom: 80px; scroll-margin-top: 32px; }
+  .section-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 32px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: var(--font-m); font-size: 11px; color: var(--lime); opacity: 0.5; letter-spacing: 0.1em; }
+  .section-title { font-family: var(--font-d); font-size: 34px; letter-spacing: 0.04em; color: var(--light); line-height: 1; }
+
+  /* ── PROSE ── */
+  .prose p { color: rgba(245,245,240,0.78); font-size: 14px; line-height: 1.75; margin-bottom: 12px; }
+  .prose h3 { font-family: var(--font-d); font-size: 20px; letter-spacing: 0.05em; color: var(--light); margin: 24px 0 10px; }
+  .prose ul { padding-left: 20px; color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.9; margin-bottom: 12px; }
+  .prose li { margin-bottom: 4px; }
+  .prose strong { color: var(--light); }
+  .prose em { color: var(--lime); font-style: normal; font-family: var(--font-m); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin: 20px 0 8px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+  /* ── STAT CALLOUTS ── */
+  .stat-strip { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 20px 24px; flex: 1; min-width: 140px; }
+  .stat-val { font-family: var(--font-d); font-size: 36px; color: var(--lime); line-height: 1; margin-bottom: 4px; }
+  .stat-lbl { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); }
+
+  /* ── FINDING CARDS ── */
+  .finding-card { background: var(--surface); border-left: 3px solid var(--mid); padding: 20px 24px; margin-bottom: 12px; }
+  .finding-card.sev-critical { border-left-color: var(--red); }
+  .finding-card.sev-high { border-left-color: var(--orange); }
+  .finding-card.sev-medium { border-left-color: #FFD700; }
+  .finding-card.sev-low { border-left-color: var(--lime); }
+  .badge { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 8px; margin-bottom: 10px; display: inline-block; }
+  .badge-critical { background: rgba(255,90,90,0.15); color: var(--red); border: 1px solid rgba(255,90,90,0.3); }
+  .badge-high { background: rgba(255,155,53,0.15); color: var(--orange); border: 1px solid rgba(255,155,53,0.3); }
+  .badge-medium { background: rgba(255,215,0,0.12); color: #FFD700; border: 1px solid rgba(255,215,0,0.25); }
+  .badge-low { background: rgba(200,255,0,0.1); color: var(--lime); border: 1px solid rgba(200,255,0,0.25); }
+
+  /* ── ACTION CARDS ── */
+  .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 800px) { .action-grid { grid-template-columns: 1fr; } }
+  .action-card { background: var(--surface); border: 1px solid var(--border); padding: 24px; position: relative; overflow: hidden; }
+  .action-ghost { position: absolute; right: -10px; bottom: -20px; font-family: var(--font-d); font-size: 100px; color: rgba(200,255,0,0.04); line-height: 1; user-select: none; }
+  .action-num { font-family: var(--font-m); font-size: 10px; color: var(--lime); letter-spacing: 0.1em; margin-bottom: 10px; }
+  .action-title { font-family: var(--font-d); font-size: 20px; letter-spacing: 0.04em; color: var(--white); margin-bottom: 14px; line-height: 1.1; }
+  .action-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .action-row-item { }
+  .action-row-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); margin-bottom: 2px; }
+  .action-row-val { font-size: 12px; color: var(--light); line-height: 1.4; }
+
+  /* ── ROADMAP ── */
+  .roadmap-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 800px) { .roadmap-grid { grid-template-columns: 1fr; } }
+  .roadmap-col { background: var(--surface); border: 1px solid var(--border); padding: 28px 24px; }
+  .roadmap-month { font-family: var(--font-d); font-size: 28px; letter-spacing: 0.06em; color: var(--lime); margin-bottom: 4px; }
+  .roadmap-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); margin-bottom: 20px; }
+  .roadmap-items { list-style: none; }
+  .roadmap-items li { font-size: 13px; color: rgba(245,245,240,0.8); padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+  .roadmap-items li:last-child { border-bottom: none; }
+  .roadmap-items li::before { content: '→ '; color: var(--lime); font-family: var(--font-m); font-size: 10px; }
+
+  /* ── CTA ── */
+  .cta-block { background: var(--black); border: 1px solid rgba(200,255,0,0.2); padding: 56px 72px; text-align: center; margin-top: 80px; }
+  .cta-eyebrow { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--lime); opacity: 0.7; margin-bottom: 16px; }
+  .cta-title { font-family: var(--font-d); font-size: 52px; letter-spacing: 0.03em; color: var(--white); margin-bottom: 16px; line-height: 1; }
+  .cta-sub { font-size: 15px; color: rgba(245,245,240,0.6); max-width: 480px; margin: 0 auto 36px; line-height: 1.7; }
+  .cta-btn { display: inline-block; background: var(--lime); color: var(--black); font-family: var(--font-d); font-size: 20px; letter-spacing: 0.08em; padding: 16px 48px; text-decoration: none; transition: opacity 0.2s; }
+  .cta-btn:hover { opacity: 0.88; }
+  .cta-domain { font-family: var(--font-m); font-size: 11px; color: var(--mid); margin-top: 20px; letter-spacing: 0.1em; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state { padding: 120px 72px; text-align: center; }
+  .empty-state h2 { font-family: var(--font-d); font-size: 36px; color: var(--light); margin-bottom: 12px; }
+  .empty-state p { color: var(--mid); font-size: 14px; }
+  .empty-state a { color: var(--lime); text-decoration: none; }
+
+  /* ── PRINT ── */
+  @media print {
+    #sidebar { display: none; }
+    .hero { padding: 40px; }
+    .content { padding: 40px; }
+    .hero-score-badge { position: static; margin-top: 24px; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    .hero { padding: 40px 28px; }
+    .hero-title { font-size: 44px; }
+    .hero-score-badge { position: static; margin-top: 24px; }
+    .content { padding: 40px 28px; }
+    .cta-block { padding: 40px 28px; }
+  }
+
+  /* ── PASSWORD GATE ── */
+  #pw-gate { position: fixed; inset: 0; background: #0A0A0A; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  #pw-gate.hidden { display: none; }
+  #pw-box { width: 100%; max-width: 380px; background: #141414; border: 1px solid rgba(255,255,255,0.07); padding: 48px 40px; }
+  #pw-mark { width: 44px; height: 44px; background: #C8FF00; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #0A0A0A; margin-bottom: 24px; }
+  #pw-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.06em; color: #fff; margin-bottom: 6px; }
+  #pw-sub { font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.5; }
+  #pw-input { width: 100%; background: #1E1E1E; border: 1px solid #3A3A3A; color: #F5F5F0; font-size: 14px; padding: 12px 14px; outline: none; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; display: block; }
+  #pw-input:focus { border-color: #C8FF00; }
+  #pw-btn { width: 100%; margin-top: 16px; background: #C8FF00; color: #0A0A0A; border: none; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.08em; padding: 14px; cursor: pointer; }
+  #pw-btn:hover { opacity: 0.88; }
+  #pw-err { margin-top: 10px; font-size: 11px; color: #FF5A5A; font-family: 'DM Mono', monospace; min-height: 16px; }
+</style>
+</head>
+<body>
+
+<div id="pw-gate">
+  <div id="pw-box">
+    <div id="pw-mark">Z</div>
+    <div id="pw-title">ZDM INC</div>
+    <div id="pw-sub">This page is password protected.</div>
+    <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off">
+    <div id="pw-err"></div>
+    <button id="pw-btn" onclick="checkPw()">Enter</button>
+  </div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('zdm_access') === '1') document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+  })();
+  function checkPw() {
+    if (document.getElementById('pw-input').value === '123###$$$') {
+      sessionStorage.setItem('zdm_access', '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+    } else {
+      document.getElementById('pw-err').textContent = 'Incorrect password.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
+
+<div class="wrapper">
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">ZDM INC<span>AD ACCOUNT AUDIT</span></div>
+  <div class="sidebar-score" id="sb-score-block" style="display:none;">
+    <div class="sidebar-score-val" id="sb-score-val">—</div>
+    <div class="sidebar-score-label">Health Score</div>
+  </div>
+  <ul class="sidebar-nav" id="sidebar-nav"></ul>
+  <div class="sidebar-footer">
+    <a href="https://zdminc.com">zdminc.com</a>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main id="main-content">
+</main>
+
+</div><!-- /.wrapper -->
+
+<script>
+// ── Load data ──────────────────────────────────────────────────────────────
+var raw = localStorage.getItem('zdm_guide');
+var data = raw ? JSON.parse(raw) : null;
+
+if (!data || !data.fullReport) {
+  document.getElementById('main-content').innerHTML =
+    '<div class="empty-state">' +
+    '<h2>No Report Found</h2>' +
+    '<p>Run an audit in the <a href="/audit-tool">AI Audit Engine</a> and click <strong>Client Guide</strong> to generate this document.</p>' +
+    '</div>';
+} else {
+  buildGuide(data);
+}
+
+// ── Build guide ────────────────────────────────────────────────────────────
+function buildGuide(d) {
+  var sections = d.sections || [];
+  var score    = d.score;
+  var scoreCol = score === null ? '#888' : score >= 70 ? '#C8FF00' : score >= 45 ? '#FF9B35' : '#FF5A5A';
+  var scoreStatus = score === null ? '' : score >= 70 ? 'Healthy Account' : score >= 45 ? 'Needs Attention' : 'Critical Issues';
+
+  // ── Sidebar score ──
+  if (score !== null) {
+    var sb = document.getElementById('sb-score-block');
+    sb.style.display = 'block';
+    document.getElementById('sb-score-val').textContent = score;
+    document.getElementById('sb-score-val').style.color = scoreCol;
+  }
+
+  // ── Hero ──
+  var heroHTML =
+    '<div class="hero">' +
+    '<div class="hero-eyebrow">Prepared by ZDM INC &nbsp;·&nbsp; Confidential</div>' +
+    '<div class="hero-title">Ad Account<br>Audit Report</div>' +
+    '<div class="hero-biz">' + escHtml(d.bizName) + '</div>' +
+    '<div class="hero-meta">' +
+    '  <div class="hero-meta-item"><div class="hero-meta-label">Date</div><div class="hero-meta-val">' + escHtml(d.date) + '</div></div>' +
+    '  <div class="hero-meta-item"><div class="hero-meta-label">Prepared by</div><div class="hero-meta-val">ZDM INC</div></div>' +
+    '</div>' +
+    (score !== null ?
+    '<div class="hero-score-badge">' +
+    '  <div class="hero-score-num" style="color:' + scoreCol + '">' + score + '</div>' +
+    '  <div class="hero-score-label">Health Score</div>' +
+    '  <div class="hero-score-status" style="color:' + scoreCol + ';border-color:' + scoreCol + '">' + scoreStatus + '</div>' +
+    '</div>' : '') +
+    '</div>';
+
+  // ── Build sidebar nav and sections ──
+  var navHTML  = '';
+  var bodyHTML = '';
+  var secIdx   = 0;
+
+  sections.forEach(function(sec, i) {
+    var id     = 'sec-' + i;
+    var title  = sec.title.replace(/ACCOUNT HEALTH SCORE.*/i,'').trim();
+    var num    = String(i + 1).padStart(2, '0');
+    navHTML += '<li><a href="#' + id + '" class="nav-link"><span class="num">' + num + '</span>' + escHtml(title) + '</a></li>';
+    bodyHTML += buildSection(sec, i, id);
+  });
+
+  navHTML += '<li><a href="#cta" class="nav-link"><span class="num">—</span>Book a Call</a></li>';
+
+  document.getElementById('sidebar-nav').innerHTML = navHTML;
+
+  var ctaHTML =
+    '<div class="cta-block" id="cta">' +
+    '<div class="cta-eyebrow">Next Step</div>' +
+    '<div class="cta-title">Ready to Act<br>on These Findings?</div>' +
+    '<div class="cta-sub">Book a strategy session with the ZDM team. We\'ll walk through the audit, prioritise the fixes, and build your 90-day growth plan.</div>' +
+    '<a class="cta-btn" href="https://calendar.app.google/4sGinRnUNctXa9ep6" target="_blank">Book a Strategy Call</a>' +
+    '<div class="cta-domain">zdminc.com</div>' +
+    '</div>';
+
+  document.getElementById('main-content').innerHTML =
+    heroHTML +
+    '<div class="content">' + bodyHTML + ctaHTML + '</div>';
+
+  initNav();
+}
+
+// ── Build a single section ─────────────────────────────────────────────────
+function buildSection(sec, idx, id) {
+  var title  = sec.title.replace(/ACCOUNT HEALTH SCORE.*/i,'').trim();
+  var num    = String(idx + 1).padStart(2, '0');
+  var lines  = sec.lines || [];
+  var lc     = title.toLowerCase();
+
+  var inner = '';
+
+  if (/executive|summary/i.test(lc)) {
+    inner = buildSummary(lines);
+  } else if (/priority action/i.test(lc)) {
+    inner = buildActions(lines);
+  } else if (/roadmap/i.test(lc)) {
+    inner = buildRoadmap(lines);
+  } else {
+    inner = buildProse(lines);
+  }
+
+  return '<div class="guide-section" id="' + id + '">' +
+    '<div class="section-header">' +
+    '<span class="section-num">' + num + '</span>' +
+    '<h2 class="section-title">' + escHtml(title) + '</h2>' +
+    '</div>' +
+    inner +
+    '</div>';
+}
+
+// ── Executive Summary ──────────────────────────────────────────────────────
+function buildSummary(lines) {
+  var text   = lines.join('\n');
+  var stats  = [];
+  var statRe = /\*\*([^*]+)\*\*\s*[:\-–—]\s*([^\n*]+)/g;
+  var m;
+  var patterns = [
+    /spend[^:]*:\s*([^\n]+)/i, /roas[^:]*:\s*([^\n]+)/i,
+    /cpa[^:]*:\s*([^\n]+)/i,   /ctr[^:]*:\s*([^\n]+)/i,
+    /revenue[^:]*:\s*([^\n]+)/i, /conversion[^:]*:\s*([^\n]+)/i
+  ];
+
+  lines.forEach(function(line) {
+    var m2 = line.match(/\*\*([^*:]{2,30})\*\*:\s*([^\n]{2,40})/);
+    if (m2 && stats.length < 4) stats.push({ label: m2[1].trim(), val: m2[2].trim() });
+  });
+
+  var statHTML = stats.length ? '<div class="stat-strip">' + stats.map(function(s) {
+    return '<div class="stat-card"><div class="stat-val">' + escHtml(s.val) + '</div><div class="stat-lbl">' + escHtml(s.label) + '</div></div>';
+  }).join('') + '</div>' : '';
+
+  return statHTML + buildProse(lines);
+}
+
+// ── Priority Actions ───────────────────────────────────────────────────────
+function buildActions(lines) {
+  var text   = lines.join('\n');
+  var blocks = text.split(/\n(?=###\s|\*\*Action\s*\d|\d+\.\s+\*\*)/i);
+  var cards  = [];
+
+  blocks.forEach(function(block) {
+    block = block.trim();
+    if (!block) return;
+    var titleM = block.match(/^(?:###\s*)?(?:\d+\.\s*)?\*\*([^*]+)\*\*/);
+    if (!titleM) return;
+    var title   = titleM[1].trim();
+    var why     = (block.match(/\*\*Why\*\*[:\s]+([^\n]+)/i) || [])[1] || '';
+    var how     = (block.match(/\*\*How\*\*[:\s]+([^\n]+)/i) || [])[1] || '';
+    var impact  = (block.match(/\*\*(?:Expected\s+)?Impact\*\*[:\s]+([^\n]+)/i) || [])[1] || '';
+    var time    = (block.match(/\*\*Timeline\*\*[:\s]+([^\n]+)/i) || [])[1] || '';
+    cards.push({ title: title, why: why, how: how, impact: impact, time: time });
+  });
+
+  if (!cards.length) return buildProse(lines);
+
+  return '<div class="action-grid">' + cards.map(function(c, i) {
+    return '<div class="action-card">' +
+      '<div class="action-ghost">' + (i + 1) + '</div>' +
+      '<div class="action-num">Action ' + String(i + 1).padStart(2,'0') + '</div>' +
+      '<div class="action-title">' + escHtml(c.title) + '</div>' +
+      (c.why ? '<p style="font-size:13px;color:rgba(245,245,240,0.7);line-height:1.6;">' + escHtml(c.why) + '</p>' : '') +
+      '<div class="action-rows">' +
+      (c.how    ? '<div class="action-row-item"><div class="action-row-label">How</div><div class="action-row-val">' + escHtml(c.how) + '</div></div>' : '') +
+      (c.impact ? '<div class="action-row-item"><div class="action-row-label">Expected Impact</div><div class="action-row-val">' + escHtml(c.impact) + '</div></div>' : '') +
+      (c.time   ? '<div class="action-row-item"><div class="action-row-label">Timeline</div><div class="action-row-val">' + escHtml(c.time) + '</div></div>' : '') +
+      '</div>' +
+      '</div>';
+  }).join('') + '</div>';
+}
+
+// ── Roadmap ────────────────────────────────────────────────────────────────
+function buildRoadmap(lines) {
+  var months = [{ label: 'Month 1', sublabel: 'Foundation', items: [] },
+                { label: 'Month 2', sublabel: 'Optimise',   items: [] },
+                { label: 'Month 3', sublabel: 'Scale',      items: [] }];
+  var cur = -1;
+  lines.forEach(function(line) {
+    var t = line.trim();
+    if (/month\s*1|week\s*[1-4](?!\s*[5-9])/i.test(t) && !t.startsWith('-')) { cur = 0; return; }
+    if (/month\s*2|week\s*[5-8]/i.test(t)              && !t.startsWith('-')) { cur = 1; return; }
+    if (/month\s*3|week\s*[9-9]|week\s*1[0-2]/i.test(t) && !t.startsWith('-')) { cur = 2; return; }
+    if (cur >= 0 && /^[-•*]/.test(t)) {
+      months[cur].items.push(t.replace(/^[-•*]\s*/,''));
+    }
+  });
+
+  var hasItems = months.some(function(m){ return m.items.length; });
+  if (!hasItems) return buildProse(lines);
+
+  return '<div class="roadmap-grid">' + months.map(function(m) {
+    return '<div class="roadmap-col">' +
+      '<div class="roadmap-month">' + m.label + '</div>' +
+      '<div class="roadmap-label">' + m.sublabel + '</div>' +
+      '<ul class="roadmap-items">' +
+      (m.items.length ? m.items.map(function(i){ return '<li>' + escHtml(i) + '</li>'; }).join('') : '<li>See full report for details</li>') +
+      '</ul></div>';
+  }).join('') + '</div>';
+}
+
+// ── Generic prose renderer ─────────────────────────────────────────────────
+function buildProse(lines) {
+  var html = '';
+  var inList = false;
+  lines.forEach(function(line) {
+    var t = line.trim();
+    if (!t || t === '---') { if (inList) { html += '</ul>'; inList = false; } return; }
+    if (/^### (.+)$/.test(t)) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<h3>' + inlineMd(t.replace(/^### /,'')) + '</h3>';
+    } else if (/^[-•*]\s/.test(t)) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      var sev = /critical/i.test(t) ? 'sev-critical' : /high/i.test(t) ? 'sev-high' : /medium/i.test(t) ? 'sev-medium' : '';
+      html += '<li' + (sev ? ' class="'+sev+'"':'') + '>' + inlineMd(t.replace(/^[-•*]\s+/,'')) + '</li>';
+    } else if (/^\*([^*]+:?)\*$/.test(t)) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<em>' + inlineMd(t.replace(/^\*|\*$/g,'')) + '</em>';
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<p>' + inlineMd(t) + '</p>';
+    }
+  });
+  if (inList) html += '</ul>';
+  return '<div class="prose">' + html + '</div>';
+}
+
+// ── Inline markdown ────────────────────────────────────────────────────────
+function inlineMd(str) {
+  return escHtml(str)
+    .replace(/\*\*\[CRITICAL\]\*\*/gi, '<span class="badge badge-critical">CRITICAL</span>')
+    .replace(/\*\*\[HIGH\]\*\*/gi,     '<span class="badge badge-high">HIGH</span>')
+    .replace(/\*\*\[MEDIUM\]\*\*/gi,   '<span class="badge badge-medium">MEDIUM</span>')
+    .replace(/\*\*\[LOW\]\*\*/gi,      '<span class="badge badge-low">LOW</span>')
+    .replace(/\[CRITICAL\]/gi,         '<span class="badge badge-critical">CRITICAL</span>')
+    .replace(/\[HIGH\]/gi,             '<span class="badge badge-high">HIGH</span>')
+    .replace(/\[MEDIUM\]/gi,           '<span class="badge badge-medium">MEDIUM</span>')
+    .replace(/\[LOW\]/gi,              '<span class="badge badge-low">LOW</span>')
+    .replace(/\*\*([^*]+)\*\*/g,       '<strong>$1</strong>')
+    .replace(/\*([^*\n]+)\*/g,         '<em>$1</em>');
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Sticky nav highlight ───────────────────────────────────────────────────
+function initNav() {
+  var links = document.querySelectorAll('.nav-link');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        links.forEach(function(l){ l.classList.remove('active'); });
+        var target = document.querySelector('.nav-link[href="#' + entry.target.id + '"]');
+        if (target) target.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  document.querySelectorAll('.guide-section, #cta').forEach(function(el){ observer.observe(el); });
+}
+</script>
+
+</body>
+</html>

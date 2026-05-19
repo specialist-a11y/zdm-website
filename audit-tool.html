@@ -1412,6 +1412,10 @@ Generic - Performance Max,Performance max,Enabled,$200/day,85000,1100,1.29%,$2.4
         </div>
       </div>
       <div class="report-actions">
+        <button class="report-btn" onclick="exportClientGuide()" style="border-color:var(--lime);color:var(--lime);background:rgba(200,255,0,0.08);">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 10v2h10v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          Client Guide
+        </button>
         <button class="report-btn" onclick="enterPresentation()" style="border-color:var(--lime);color:var(--lime);">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M5 11v1.5M9 11v1.5M3.5 12.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
           Present
@@ -2661,6 +2665,21 @@ function renderPresSlide(slide) {
 }
 
 // ── ENTER / EXIT ──
+function exportClientGuide() {
+  if (!state.fullReport) return;
+  var bizName   = document.getElementById('report-biz-name').textContent || 'Client';
+  var scoreMatch = state.fullReport.match(/ACCOUNT HEALTH SCORE:\s*(\d+)/i);
+  var payload = {
+    bizName:    bizName,
+    date:       new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }),
+    score:      scoreMatch ? parseInt(scoreMatch[1]) : null,
+    fullReport: state.fullReport,
+    sections:   state.sections || []
+  };
+  localStorage.setItem('zdm_guide', JSON.stringify(payload));
+  window.open('/client-guide-v3', '_blank');
+}
+
 function enterPresentation() {
   if (!state.sections || !state.sections.length) return;
   pres.slides = buildSlides();

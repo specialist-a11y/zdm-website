@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZDM INC — Lead Generation Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lime:    #C8FF00;
+    --black:   #0A0A0A;
+    --bg:      #141414;
+    --surface: #1E1E1E;
+    --surface2:#242424;
+    --mid:     #888888;
+    --light:   #F5F5F0;
+    --white:   #FFFFFF;
+    --border:  rgba(255,255,255,0.07);
+    --lime-dim:rgba(200,255,0,0.08);
+    --red:     #FF5A5A;
+    --orange:  #FF9B35;
+    --font-d:  'Bebas Neue', sans-serif;
+    --font-b:  'DM Sans', sans-serif;
+    --font-m:  'DM Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-b); background: var(--bg); color: var(--light); line-height: 1.6; overflow-x: hidden; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--lime); z-index: 9999; transition: width 0.1s linear; }
+
+  .wrapper { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 240px; min-width: 240px;
+    background: var(--black);
+    border-right: 1px solid var(--border);
+    position: sticky; top: 0;
+    height: 100vh; overflow-y: auto;
+    display: flex; flex-direction: column;
+    padding: 28px 0 40px; z-index: 100;
+  }
+  .sidebar-logo { font-family: var(--font-d); font-size: 22px; letter-spacing: 0.08em; color: var(--lime); padding: 0 24px 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .sidebar-logo span { color: var(--mid); font-size: 10px; display: block; font-family: var(--font-m); letter-spacing: 0.1em; margin-top: 2px; }
+  .sidebar-nav { list-style: none; flex: 1; }
+  .sidebar-nav li a { display: flex; align-items: center; gap: 10px; padding: 9px 24px; color: var(--mid); text-decoration: none; font-size: 12px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s, background 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a .num { font-family: var(--font-m); font-size: 10px; color: rgba(136,136,136,0.5); min-width: 18px; }
+  .sidebar-nav li a:hover { color: var(--light); background: rgba(255,255,255,0.03); }
+  .sidebar-nav li a.active { color: var(--lime); border-left-color: var(--lime); background: var(--lime-dim); }
+  .sidebar-nav li a.active .num { color: rgba(200,255,0,0.5); }
+
+  /* ── MAIN ── */
+  main { flex: 1; min-width: 0; padding: 60px 72px; max-width: 1100px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a1200 0%, #141414 60%);
+    border: 1px solid rgba(200,255,0,0.15);
+    padding: 48px 56px;
+    margin-bottom: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--lime); }
+  .hero-eyebrow { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--lime); opacity: 0.7; margin-bottom: 14px; }
+  .hero-title { font-family: var(--font-d); font-size: 60px; letter-spacing: 0.03em; color: var(--white); line-height: 1; margin-bottom: 16px; }
+  .hero-title span { color: var(--lime); }
+  .hero-sub { font-size: 15px; color: rgba(245,245,240,0.65); max-width: 560px; line-height: 1.7; margin-bottom: 28px; }
+  .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tag { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 12px; border: 1px solid rgba(200,255,0,0.3); color: var(--lime); }
+  .tag.mid { border-color: rgba(255,255,255,0.12); color: var(--mid); }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 88px; scroll-margin-top: 40px; }
+  .section-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 36px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: var(--font-m); font-size: 11px; color: var(--lime); opacity: 0.5; letter-spacing: 0.1em; }
+  .section-title { font-family: var(--font-d); font-size: 36px; letter-spacing: 0.04em; color: var(--light); line-height: 1; }
+
+  h3 { font-family: var(--font-d); font-size: 22px; letter-spacing: 0.05em; color: var(--light); margin: 28px 0 12px; }
+  h4 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lime); margin-bottom: 10px; }
+  p { color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.75; margin-bottom: 14px; }
+  ul, ol { padding-left: 20px; color: rgba(245,245,240,0.75); font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
+  li { margin-bottom: 3px; }
+  strong { color: var(--light); font-weight: 600; }
+
+  /* ── STAT ROW ── */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 40px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 22px 20px; }
+  .stat-val { font-family: var(--font-d); font-size: 40px; color: var(--lime); line-height: 1; margin-bottom: 4px; }
+  .stat-lbl { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); }
+
+  /* ── TWO COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+
+  /* ── CARDS ── */
+  .card { background: var(--surface); border: 1px solid var(--border); padding: 24px; }
+  .card-tag { font-family: var(--font-m); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; display: inline-block; border: 1px solid rgba(200,255,0,0.25); padding: 2px 8px; }
+  .card h3 { font-size: 18px; margin-top: 0; margin-bottom: 10px; }
+  .card p { font-size: 13px; margin-bottom: 10px; }
+  .card ul { font-size: 13px; }
+
+  .lime-box { background: rgba(200,255,0,0.05); border: 1px solid rgba(200,255,0,0.15); padding: 24px; }
+  .lime-box h4 { color: var(--lime); }
+  .dark-box { background: var(--surface2); border: 1px solid var(--border); padding: 24px; }
+
+  /* ── FUNNEL ── */
+  .funnel { margin-bottom: 40px; }
+  .funnel-step { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 4px; }
+  .funnel-arrow { width: 36px; height: 36px; background: var(--lime); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: 16px; color: var(--black); flex-shrink: 0; margin-top: 2px; }
+  .funnel-arrow.dim { background: var(--surface); color: var(--mid); border: 1px solid var(--border); }
+  .funnel-body { flex: 1; border-left: 1px solid var(--border); padding: 0 0 24px 20px; }
+  .funnel-step:last-child .funnel-body { border-left-color: var(--lime); }
+  .funnel-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--lime); margin-bottom: 4px; }
+  .funnel-title { font-family: var(--font-d); font-size: 20px; letter-spacing: 0.05em; color: var(--light); margin-bottom: 6px; }
+  .funnel-desc { font-size: 13px; color: rgba(245,245,240,0.65); line-height: 1.6; }
+
+  /* ── CHANNEL TABLE ── */
+  .ch-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; font-size: 13px; }
+  .ch-table th { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mid); padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: left; }
+  .ch-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(245,245,240,0.75); vertical-align: top; }
+  .ch-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .ch-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
+
+  /* ── WEEK PLAN ── */
+  .week-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .week-card { background: var(--surface); border: 1px solid var(--border); padding: 18px; }
+  .week-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lime); margin-bottom: 8px; }
+  .week-card ul { padding-left: 16px; font-size: 12px; line-height: 1.8; }
+
+  /* ── SCRIPT BOX ── */
+  .script-box { background: var(--black); border: 1px solid rgba(200,255,0,0.15); border-left: 3px solid var(--lime); padding: 20px 24px; margin-bottom: 16px; font-family: var(--font-m); font-size: 12px; color: rgba(245,245,240,0.8); line-height: 1.8; white-space: pre-wrap; }
+  .script-label { font-family: var(--font-m); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--lime); margin-bottom: 8px; display: block; }
+
+  /* ── KPI TABLE ── */
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .kpi-item { background: var(--surface); border: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+  .kpi-val { font-family: var(--font-d); font-size: 28px; color: var(--lime); min-width: 70px; }
+  .kpi-text h4 { margin-bottom: 2px; font-size: 10px; }
+  .kpi-text p { font-size: 12px; margin: 0; color: var(--mid); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1000px) { main { padding: 40px 32px; } }
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    main { padding: 32px 24px; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .two-col, .three-col, .week-grid { grid-template-columns: 1fr; }
+    .hero { padding: 32px 24px; }
+    .hero-title { font-size: 42px; }
+  }
+
+  /* ── PASSWORD GATE ── */
+  #pw-gate { position: fixed; inset: 0; background: #0A0A0A; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  #pw-gate.hidden { display: none; }
+  #pw-box { width: 100%; max-width: 380px; background: #141414; border: 1px solid rgba(255,255,255,0.07); padding: 48px 40px; }
+  #pw-mark { width: 44px; height: 44px; background: #C8FF00; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #0A0A0A; margin-bottom: 24px; }
+  #pw-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.06em; color: #fff; margin-bottom: 6px; }
+  #pw-sub { font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.5; }
+  #pw-input { width: 100%; background: #1E1E1E; border: 1px solid #3A3A3A; color: #F5F5F0; font-size: 14px; padding: 12px 14px; outline: none; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; display: block; }
+  #pw-input:focus { border-color: #C8FF00; }
+  #pw-btn { width: 100%; margin-top: 16px; background: #C8FF00; color: #0A0A0A; border: none; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.08em; padding: 14px; cursor: pointer; }
+  #pw-btn:hover { opacity: 0.88; }
+  #pw-err { margin-top: 10px; font-size: 11px; color: #FF5A5A; font-family: 'DM Mono', monospace; min-height: 16px; }
+</style>
+</head>
+<body>
+
+<div id="pw-gate">
+  <div id="pw-box">
+    <div id="pw-mark">Z</div>
+    <div id="pw-title">ZDM INC</div>
+    <div id="pw-sub">This page is password protected.</div>
+    <input type="password" id="pw-input" placeholder="Enter password" autocomplete="off">
+    <div id="pw-err"></div>
+    <button id="pw-btn" onclick="checkPw()">Enter</button>
+  </div>
+</div>
+<script>
+  (function() {
+    if (sessionStorage.getItem('zdm_access') === '1') document.getElementById('pw-gate').classList.add('hidden');
+    document.getElementById('pw-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkPw(); });
+  })();
+  function checkPw() {
+    if (document.getElementById('pw-input').value === '123###$$$') {
+      sessionStorage.setItem('zdm_access', '1');
+      document.getElementById('pw-gate').classList.add('hidden');
+    } else {
+      document.getElementById('pw-err').textContent = 'Incorrect password.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
+
+<div id="progress-bar"></div>
+
+<div class="wrapper">
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">ZDM INC<span>LEADS STRATEGY</span></div>
+  <ul class="sidebar-nav">
+    <li><a href="#s01" class="nav-link"><span class="num">01</span>Strategy Overview</a></li>
+    <li><a href="#s02" class="nav-link"><span class="num">02</span>Lead Funnel</a></li>
+    <li><a href="#s03" class="nav-link"><span class="num">03</span>Organic Approach</a></li>
+    <li><a href="#s04" class="nav-link"><span class="num">04</span>Paid Approach</a></li>
+    <li><a href="#s05" class="nav-link"><span class="num">05</span>Audit Tool as Lead Magnet</a></li>
+    <li><a href="#s06" class="nav-link"><span class="num">06</span>Outreach Scripts</a></li>
+    <li><a href="#s07" class="nav-link"><span class="num">07</span>Content Calendar</a></li>
+    <li><a href="#s08" class="nav-link"><span class="num">08</span>30-Day Launch Plan</a></li>
+    <li><a href="#s09" class="nav-link"><span class="num">09</span>KPIs &amp; Targets</a></li>
+  </ul>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">ZDM INC — Internal Strategy Document</div>
+  <div class="hero-title">Lead Generation<br><span>Strategy</span></div>
+  <div class="hero-sub">A full organic + paid playbook to drive qualified business owners into the ZDM AI Audit Tool and convert them into retained clients.</div>
+  <div class="hero-tags">
+    <span class="tag">Organic</span>
+    <span class="tag">Paid Ads</span>
+    <span class="tag">Audit Tool Funnel</span>
+    <span class="tag mid">Meta · LinkedIn · Google</span>
+    <span class="tag mid">Target: 20 leads/month</span>
+  </div>
+</div>
+
+<!-- ══ 01 — STRATEGY OVERVIEW ══ -->
+<section class="section" id="s01">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Strategy Overview</h2>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">2</div><div class="stat-lbl">Channels (Organic + Paid)</div></div>
+    <div class="stat-card"><div class="stat-val">20</div><div class="stat-lbl">Target Leads / Month</div></div>
+    <div class="stat-card"><div class="stat-val">4–6</div><div class="stat-lbl">Target New Clients / Month</div></div>
+    <div class="stat-card"><div class="stat-val">30</div><div class="stat-lbl">Days to First Results</div></div>
+  </div>
+
+  <p>The ZDM lead generation strategy uses the <strong>AI Audit Tool as the primary lead magnet</strong>. Instead of cold-pitching services, we lead with value — a free, instant audit of a prospect's ad account. This removes friction, demonstrates expertise before any sales conversation, and filters for businesses that are actively running ads and care about performance.</p>
+
+  <p>The strategy operates on two parallel tracks:</p>
+
+  <div class="two-col">
+    <div class="lime-box">
+      <h4>Organic Track</h4>
+      <ul>
+        <li>Content that educates and attracts inbound leads</li>
+        <li>LinkedIn and Instagram as primary platforms</li>
+        <li>Direct outreach to warm prospects</li>
+        <li>SEO targeting high-intent audit keywords</li>
+        <li>Referral system from existing clients</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;">Cost: Time only. Results build over 60–90 days and compound.</p>
+    </div>
+    <div class="dark-box">
+      <h4>Paid Track</h4>
+      <ul>
+        <li>Meta ads driving to the free audit tool</li>
+        <li>Google Search ads for high-intent keywords</li>
+        <li>LinkedIn ads targeting marketing decision-makers</li>
+        <li>Retargeting visitors who didn't convert</li>
+        <li>Lookalike audiences from existing clients</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;">Budget: $500–$1,500/mo to start. Scalable once CAC is proven.</p>
+    </div>
+  </div>
+
+  <h3>Who We Are Targeting</h3>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-tag">Primary</div>
+      <h3>E-Commerce Owners</h3>
+      <p>DTC brands spending $5K–$50K/mo on Meta or Google. Frustrated with rising CPAs and inconsistent ROAS.</p>
+      <ul>
+        <li>Shopify / WooCommerce stores</li>
+        <li>$1M–$20M annual revenue</li>
+        <li>Have run ads for 6+ months</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">Secondary</div>
+      <h3>B2B Service Businesses</h3>
+      <p>Agencies, SaaS, coaches, and consultants running lead gen ads. Want more qualified leads at a lower CPL.</p>
+      <ul>
+        <li>LinkedIn + Meta primary channels</li>
+        <li>$500K–$10M annual revenue</li>
+        <li>Sales team in place</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">Tertiary</div>
+      <h3>Marketing Managers</h3>
+      <p>In-house marketers who manage ad budgets but lack deep performance expertise. Want to show ROI to their leadership.</p>
+      <ul>
+        <li>$10K–$100K monthly budgets</li>
+        <li>Mid-to-large companies</li>
+        <li>Need an external audit to justify agency hire</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 — LEAD FUNNEL ══ -->
+<section class="section" id="s02">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Lead Funnel</h2>
+  </div>
+
+  <p>Every lead follows the same path — from first touch to retained client. The audit tool sits at the centre of the funnel, converting interest into a qualified conversation.</p>
+
+  <div class="funnel">
+    <div class="funnel-step">
+      <div class="funnel-arrow">1</div>
+      <div class="funnel-body">
+        <div class="funnel-label">Awareness</div>
+        <div class="funnel-title">They See ZDM Content or Ad</div>
+        <div class="funnel-desc">A pain-point post on LinkedIn, a Meta ad targeting business owners, a Google search for "Facebook ads audit" — any channel that puts ZDM in front of someone running paid ads.</div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-arrow">2</div>
+      <div class="funnel-body">
+        <div class="funnel-label">Interest</div>
+        <div class="funnel-title">They Land on zdminc.com</div>
+        <div class="funnel-desc">The website CTA drives them to the free audit sign-up page. The offer is clear: "Find out exactly what's wrong with your ads — free, in 60 seconds."</div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-arrow">3</div>
+      <div class="funnel-body">
+        <div class="funnel-label">Conversion</div>
+        <div class="funnel-title">They Create an Account &amp; Run the Audit</div>
+        <div class="funnel-desc">They sign up via Supabase, input their ad data, and receive a full AI-generated audit report. This is the moment they experience ZDM's value — before paying anything.</div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-arrow">4</div>
+      <div class="funnel-body">
+        <div class="funnel-label">Qualification</div>
+        <div class="funnel-title">They Request an Account Manager or Book a Call</div>
+        <div class="funnel-desc">After seeing the audit, they either book a strategy call via the calendar link in the report or request a managed service. Both trigger a ZDM team notification.</div>
+      </div>
+    </div>
+    <div class="funnel-step">
+      <div class="funnel-arrow dim">5</div>
+      <div class="funnel-body">
+        <div class="funnel-label">Close</div>
+        <div class="funnel-title">Discovery Call → Proposal → Retained Client</div>
+        <div class="funnel-desc">The audit becomes the foundation of the discovery call. The prospect already knows what's wrong — ZDM presents the solution and the retainer is signed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lime-box">
+    <h4>Why the Audit Tool Changes the Sales Dynamic</h4>
+    <p>Traditional agency sales starts with "trust us." The audit tool starts with evidence. A prospect who has already seen a detailed breakdown of their ad account problems is 3–5× more likely to sign than one who received a cold pitch. The audit does the qualification and the selling simultaneously.</p>
+  </div>
+</section>
+
+<!-- ══ 03 — ORGANIC APPROACH ══ -->
+<section class="section" id="s03">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Organic Approach</h2>
+  </div>
+
+  <h3>LinkedIn — Primary Organic Channel</h3>
+  <p>LinkedIn is the highest-intent platform for reaching business owners and marketing decision-makers. The strategy is to post consistently, engage in comments, and use direct outreach to warm contacts.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag">Content Strategy</div>
+      <h3>Post 4× Per Week</h3>
+      <ul>
+        <li><strong>Monday:</strong> Performance insight — "Your ROAS isn't the problem. Your audience structure is."</li>
+        <li><strong>Wednesday:</strong> Before/after case study — metrics improved after audit</li>
+        <li><strong>Friday:</strong> Free audit CTA — "Run your free account audit → link in bio"</li>
+        <li><strong>Sunday:</strong> Educational thread — ad account mistakes, platform changes, tips</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">Outreach</div>
+      <h3>DM 10 Prospects Daily</h3>
+      <ul>
+        <li>Search: "Marketing Manager", "Head of Growth", "Founder" + industry filter</li>
+        <li>Connect with a personalised note (no pitch in the connect)</li>
+        <li>After connection, send the audit tool link with a soft CTA</li>
+        <li>Follow up once after 5 days if no reply</li>
+        <li>Target: 10 DMs/day → 2–3 audit sign-ups/week</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Instagram — Visual Social Proof</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag">Feed &amp; Reels</div>
+      <h3>3× Per Week</h3>
+      <ul>
+        <li>Reels: screen recordings of audit results (blurred client data)</li>
+        <li>Carousels: "5 reasons your Meta ads are underperforming"</li>
+        <li>Stories: daily — polls, questions, audit link sticker</li>
+        <li>Bio link: direct to zdminc.com audit sign-up</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">Engagement</div>
+      <h3>Comment on 15 Posts Daily</h3>
+      <ul>
+        <li>Target accounts: business coaches, Shopify educators, marketing influencers</li>
+        <li>Leave genuine, expert-level comments — not generic</li>
+        <li>When someone engages back, move to DM with audit offer</li>
+        <li>Goal: become a visible expert in paid media circles</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>SEO — Long-Term Inbound</h3>
+  <table class="ch-table">
+    <thead>
+      <tr><th>Keyword</th><th>Monthly Searches</th><th>Intent</th><th>Content Type</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Facebook ads audit free</strong></td><td>~1,200</td><td>High — ready to audit</td><td>Audit tool landing page</td></tr>
+      <tr><td><strong>Meta ads not performing</strong></td><td>~2,400</td><td>High — problem-aware</td><td>Blog post + audit CTA</td></tr>
+      <tr><td><strong>How to improve ROAS Facebook</strong></td><td>~3,100</td><td>Medium — learning</td><td>Guide + audit CTA at end</td></tr>
+      <tr><td><strong>Google ads audit tool</strong></td><td>~900</td><td>High — ready to audit</td><td>Audit tool landing page</td></tr>
+      <tr><td><strong>Ad account audit agency</strong></td><td>~600</td><td>Very high — buying</td><td>Services page + calendar link</td></tr>
+      <tr><td><strong>Why are my Facebook ads not converting</strong></td><td>~4,800</td><td>High — problem-aware</td><td>Blog post + audit CTA</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Referral System</h3>
+  <div class="lime-box">
+    <h4>Client Referral Program</h4>
+    <p>Existing clients refer one new prospect → they receive a <strong>$500 account credit</strong> or <strong>one free month of reporting</strong>. The referred prospect gets priority onboarding. Set this up as a simple email: "Know a business owner struggling with ads? Send them to zdminc.com/audit and we'll take care of them — and take care of you."</p>
+  </div>
+</section>
+
+<!-- ══ 04 — PAID APPROACH ══ -->
+<section class="section" id="s04">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Paid Approach</h2>
+  </div>
+
+  <p>Paid ads accelerate what organic builds. The goal is not to sell ZDM's services directly — it's to drive sign-ups to the <strong>free audit tool</strong>. The audit converts. The ads just fill the top of funnel.</p>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">$500</div><div class="stat-lbl">Minimum Monthly Budget</div></div>
+    <div class="stat-card"><div class="stat-val">$25</div><div class="stat-lbl">Target CPL (Cost Per Lead)</div></div>
+    <div class="stat-card"><div class="stat-val">20%</div><div class="stat-lbl">Lead-to-Call Conversion</div></div>
+    <div class="stat-card"><div class="stat-val">40%</div><div class="stat-lbl">Call-to-Client Close Rate</div></div>
+  </div>
+
+  <h3>Meta Ads — Top of Funnel</h3>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag">Campaign 1 — Awareness</div>
+      <h3>Pain Point Creative</h3>
+      <p><strong>Objective:</strong> Traffic / Lead Gen</p>
+      <p><strong>Audience:</strong> Business owners, ages 28–55, interests: Shopify, digital marketing, Facebook Business, e-commerce</p>
+      <p><strong>Creative:</strong> Video or image showing a common ad account problem — "Is this your ROAS?" or "Your ads are leaking money. Here's proof."</p>
+      <p><strong>CTA:</strong> "Run your free ad audit" → zdminc.com/audit</p>
+      <p><strong>Budget:</strong> $15/day</p>
+    </div>
+    <div class="card">
+      <div class="card-tag">Campaign 2 — Retargeting</div>
+      <h3>Website Visitor Retarget</h3>
+      <p><strong>Objective:</strong> Conversions</p>
+      <p><strong>Audience:</strong> All website visitors (last 30 days) who did not sign up</p>
+      <p><strong>Creative:</strong> Testimonial or result-based — "We found $14K in wasted spend in one audit."</p>
+      <p><strong>CTA:</strong> "Your free audit is waiting" → audit-tool direct link</p>
+      <p><strong>Budget:</strong> $10/day</p>
+    </div>
+  </div>
+
+  <h3>Google Search Ads — High Intent</h3>
+  <div class="card" style="margin-bottom:28px;">
+    <div class="card-tag">Search Campaign</div>
+    <div class="two-col" style="margin-bottom:0;">
+      <div>
+        <h4>Target Keywords</h4>
+        <ul>
+          <li>"facebook ads audit"</li>
+          <li>"meta ads not working"</li>
+          <li>"google ads audit free"</li>
+          <li>"ad account audit tool"</li>
+          <li>"improve ROAS facebook ads"</li>
+          <li>"facebook ads agency audit"</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Ad Copy Formula</h4>
+        <p style="font-size:13px;"><strong>Headline 1:</strong> Free Ad Account Audit</p>
+        <p style="font-size:13px;"><strong>Headline 2:</strong> Find What's Killing Your ROAS</p>
+        <p style="font-size:13px;"><strong>Headline 3:</strong> AI-Powered — Results in 60 Seconds</p>
+        <p style="font-size:13px;"><strong>Description:</strong> Run a free AI audit of your Meta or Google ads. See exactly what's underperforming and how to fix it. No agency pitch. Just answers.</p>
+        <p style="font-size:13px;"><strong>Budget:</strong> $20/day</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>LinkedIn Ads — B2B Decision-Makers</h3>
+  <div class="card" style="margin-bottom:28px;">
+    <div class="card-tag">Sponsored Content</div>
+    <div class="two-col" style="margin-bottom:0;">
+      <div>
+        <h4>Targeting</h4>
+        <ul>
+          <li>Job titles: Marketing Manager, CMO, Head of Growth, Founder, Director of Marketing</li>
+          <li>Company size: 11–500 employees</li>
+          <li>Industries: Retail, SaaS, Professional Services, E-Commerce</li>
+          <li>Seniority: Senior, Manager, Director, VP, C-Suite</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Creative</h4>
+        <p style="font-size:13px;">Single image or document ad. Lead with a stat: <em>"The average ad account wastes 23% of its budget on underperforming campaigns. Run a free audit to find yours."</em></p>
+        <p style="font-size:13px;"><strong>CTA:</strong> "Get Free Audit"</p>
+        <p style="font-size:13px;"><strong>Budget:</strong> $25/day (LinkedIn CPCs are higher but quality is better for B2B)</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Budget Allocation</h3>
+  <table class="ch-table">
+    <thead>
+      <tr><th>Channel</th><th>Monthly Budget</th><th>Expected Leads</th><th>Est. CPL</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="ch-dot" style="background:#1877F2"></span><strong>Meta Ads</strong></td><td>$450</td><td>12–18</td><td>$25–$38</td><td>Start here</td></tr>
+      <tr><td><span class="ch-dot" style="background:#4285F4"></span><strong>Google Search</strong></td><td>$600</td><td>10–15</td><td>$40–$60</td><td>Add at Month 2</td></tr>
+      <tr><td><span class="ch-dot" style="background:#0A66C2"></span><strong>LinkedIn Ads</strong></td><td>$750</td><td>6–10</td><td>$75–$125</td><td>Add at Month 3</td></tr>
+      <tr><td><span class="ch-dot" style="background:#C8FF00"></span><strong>Retargeting</strong></td><td>$300</td><td>4–8</td><td>$38–$75</td><td>Always-on</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══ 05 — AUDIT TOOL AS LEAD MAGNET ══ -->
+<section class="section" id="s05">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Audit Tool as Lead Magnet</h2>
+  </div>
+
+  <p>The audit tool is not just a product — it is the most powerful lead generation asset ZDM has. Every person who runs an audit has self-qualified: they run paid ads, they care about performance, and they're willing to spend 5 minutes telling us exactly what their account looks like.</p>
+
+  <div class="two-col">
+    <div class="lime-box">
+      <h4>What the Audit Tool Does for Lead Gen</h4>
+      <ul>
+        <li>Captures email on sign-up (Supabase account = lead in your database)</li>
+        <li>Reveals the prospect's ad spend, platforms, and pain points</li>
+        <li>Delivers enough value to earn a follow-up conversation</li>
+        <li>Creates urgency — they've just seen their account problems in writing</li>
+        <li>Positions ZDM as the expert before any sales call</li>
+      </ul>
+    </div>
+    <div class="dark-box">
+      <h4>Post-Audit Follow-Up Sequence</h4>
+      <ol>
+        <li><strong>Immediate:</strong> Audit results page with "Book a Call" CTA and "Request Account Manager" option</li>
+        <li><strong>24 hrs:</strong> Email from ZDM — "Here's what we found in your account + 3 quick wins"</li>
+        <li><strong>Day 3:</strong> Email — case study from a client with similar issues</li>
+        <li><strong>Day 7:</strong> Email — limited slots for managed service, personalised offer</li>
+        <li><strong>Day 14:</strong> Final follow-up — "Still seeing these issues?" with direct calendar link</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>Optimising the Audit Sign-Up Page</h3>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-tag">Headline</div>
+      <p style="font-size:13px;">Lead with the outcome, not the tool:<br><br><strong>"Find out exactly what's killing your ad performance — free, in 60 seconds."</strong><br><br>Not: "Try our AI audit tool"</p>
+    </div>
+    <div class="card">
+      <div class="card-tag">Social Proof</div>
+      <p style="font-size:13px;">Add 2–3 short testimonials from clients who ran the audit and booked:<br><br><em>"Found $8K in wasted spend in the first audit. Booked a call the same day." — E-commerce founder</em></p>
+    </div>
+    <div class="card">
+      <div class="card-tag">Friction Removal</div>
+      <p style="font-size:13px;">Make the sign-up as fast as possible:<br><br>• "No credit card" badge<br>• "Free forever" badge<br>• "Takes 5 minutes" label<br>• Google/Apple sign-in (future)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 06 — OUTREACH SCRIPTS ══ -->
+<section class="section" id="s06">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Outreach Scripts</h2>
+  </div>
+
+  <h3>LinkedIn Connection Request</h3>
+  <span class="script-label">Keep under 300 characters — no pitch yet</span>
+  <div class="script-box">Hi [First Name] — came across your profile while looking at [industry] founders. Love what you're building at [Company]. Would be great to connect.</div>
+
+  <h3>LinkedIn DM — After Connection (Day 1)</h3>
+  <span class="script-label">Lead with value, not a pitch</span>
+  <div class="script-box">Hey [First Name], thanks for connecting.
+
+I run ZDM INC — we specialise in paid media audits and performance for e-commerce and B2B brands.
+
+We built a free AI audit tool that analyses ad accounts and finds exactly what's underperforming — most people find at least 2–3 quick wins they can action straight away.
+
+No catch, no sales call required. If you're running Meta or Google ads, it takes about 5 minutes:
+→ zdminc.com/audit
+
+Happy to talk through the findings if anything comes up.</div>
+
+  <h3>LinkedIn DM — Follow-Up (Day 6, if no reply)</h3>
+  <span class="script-label">One follow-up only — keep it short</span>
+  <div class="script-box">Hey [First Name] — just circling back on this. The audit tool is completely free and takes 5 minutes. Worth running even just to benchmark where your account is.
+
+→ zdminc.com/audit
+
+No pressure either way — happy to connect if you ever want to talk ads.</div>
+
+  <h3>Instagram DM — After Engagement</h3>
+  <span class="script-label">Use after they comment on or like your content</span>
+  <div class="script-box">Hey [First Name]! Thanks for engaging with the post — glad it was useful.
+
+Quick question — are you running paid ads for [their brand/business]? We have a free AI audit tool that a lot of founders use to find quick wins in their accounts.
+
+If you want to try it: zdminc.com/audit — takes 5 mins, completely free.</div>
+
+  <h3>Email Cold Outreach</h3>
+  <span class="script-label">For warm leads from referrals or event contacts</span>
+  <div class="script-box">Subject: Free ad account audit for [Company Name]
+
+Hi [First Name],
+
+[Referral name] mentioned you're running paid ads and looking to improve performance — thought it was worth reaching out directly.
+
+We built a free AI audit tool at ZDM INC that analyses your Meta and/or Google ad account and tells you exactly what's underperforming and why. Most users find 3–5 actionable issues within their first run.
+
+No agency pitch. No obligation. Just a free, honest audit:
+→ zdminc.com/audit
+
+If anything useful comes out of it and you'd like to talk through the findings, I'm happy to jump on a quick call.
+
+— [Your name]
+ZDM INC | zdminc.com</div>
+</section>
+
+<!-- ══ 07 — CONTENT CALENDAR ══ -->
+<section class="section" id="s07">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">Content Calendar</h2>
+  </div>
+
+  <p>Consistency beats virality. The goal is to post enough that when a prospect sees ZDM three times, they remember the brand — and the fourth time, they click the audit link.</p>
+
+  <h3>Weekly Repeating Framework</h3>
+  <div class="week-grid">
+    <div class="week-card">
+      <div class="week-label">Monday</div>
+      <ul>
+        <li>LinkedIn: Performance insight or stat</li>
+        <li>Instagram Story: Poll or question</li>
+        <li>Theme: <strong>Education</strong></li>
+      </ul>
+    </div>
+    <div class="week-card">
+      <div class="week-label">Wednesday</div>
+      <ul>
+        <li>LinkedIn: Case study or before/after</li>
+        <li>Instagram Feed: Carousel post</li>
+        <li>Theme: <strong>Proof</strong></li>
+      </ul>
+    </div>
+    <div class="week-card">
+      <div class="week-label">Friday</div>
+      <ul>
+        <li>LinkedIn: Direct audit CTA post</li>
+        <li>Instagram Reel: Audit walkthrough</li>
+        <li>Theme: <strong>Conversion</strong></li>
+      </ul>
+    </div>
+    <div class="week-card">
+      <div class="week-label">Sunday</div>
+      <ul>
+        <li>LinkedIn: Thread or long-form insight</li>
+        <li>Instagram Story: Behind the scenes</li>
+        <li>Theme: <strong>Authority</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Content Pillars</h3>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-tag">Pillar 1 — Education (40%)</div>
+      <ul>
+        <li>"Why your CPM is rising and what to do"</li>
+        <li>"The 3 audience mistakes killing e-com ROAS"</li>
+        <li>"How to read your Meta attribution report"</li>
+        <li>"Google vs Meta: where to put your budget first"</li>
+        <li>"What a healthy ad account looks like"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">Pillar 2 — Proof (35%)</div>
+      <ul>
+        <li>Anonymised audit results (screenshots)</li>
+        <li>Before/after metric comparisons</li>
+        <li>Client testimonials and case studies</li>
+        <li>Audit tool walkthrough videos</li>
+        <li>"We found X in Y's account" posts</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">Pillar 3 — CTA (25%)</div>
+      <ul>
+        <li>Direct "run your free audit" posts</li>
+        <li>Limited availability for managed service</li>
+        <li>Booking link posts</li>
+        <li>Audit tool feature announcements</li>
+        <li>Referral program reminders</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 08 — 30-DAY LAUNCH PLAN ══ -->
+<section class="section" id="s08">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 class="section-title">30-Day Launch Plan</h2>
+  </div>
+
+  <p>The first 30 days focus on organic — build the content rhythm, start outreach, and gather early audit sign-ups. Paid ads launch in Week 3 once the landing page is tested and the follow-up sequence is in place.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Week 1 — Foundation</h3>
+      <div class="dark-box" style="margin-bottom:16px;">
+        <ul>
+          <li>Optimise LinkedIn and Instagram profiles — bio, banner, audit link</li>
+          <li>Write and schedule 4 LinkedIn posts</li>
+          <li>Write and schedule 3 Instagram posts + daily stories</li>
+          <li>Set up email follow-up sequence (5 emails)</li>
+          <li>Start 10 LinkedIn connection requests per day</li>
+          <li>Identify 50 target prospects for outreach list</li>
+        </ul>
+      </div>
+
+      <h3>Week 2 — Outreach Begins</h3>
+      <div class="dark-box">
+        <ul>
+          <li>Begin LinkedIn DMs to Week 1 connections</li>
+          <li>Post consistently — 4× LinkedIn, 3× Instagram</li>
+          <li>Engage on 15 posts per day (comments)</li>
+          <li>Follow up on Day 1 DMs with no response</li>
+          <li>Goal: first 5 audit sign-ups</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3>Week 3 — Paid Ads Launch</h3>
+      <div class="dark-box" style="margin-bottom:16px;">
+        <ul>
+          <li>Launch Meta pain-point campaign ($15/day)</li>
+          <li>Launch retargeting campaign ($10/day)</li>
+          <li>A/B test 2 ad creatives per campaign</li>
+          <li>Continue organic — now 2 tracks running simultaneously</li>
+          <li>Goal: 10 audit sign-ups total</li>
+        </ul>
+      </div>
+
+      <h3>Week 4 — Optimise &amp; Close</h3>
+      <div class="dark-box">
+        <ul>
+          <li>Review paid ad CPLs — kill underperforming creatives</li>
+          <li>Follow up with all audit sign-ups who haven't booked</li>
+          <li>Book first discovery calls from organic outreach</li>
+          <li>Launch Google Search ads if budget allows</li>
+          <li>Goal: 2–3 discovery calls, 1 closed client</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 09 — KPIs & TARGETS ══ -->
+<section class="section" id="s09">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 class="section-title">KPIs &amp; Targets</h2>
+  </div>
+
+  <p>Track these numbers weekly. If any KPI misses two weeks in a row, diagnose and adjust before spending more budget.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <div class="kpi-val">20</div>
+      <div class="kpi-text"><h4>Audit Sign-Ups / Month</h4><p>New accounts created in the audit tool</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">$35</div>
+      <div class="kpi-text"><h4>Blended CPL</h4><p>Total ad spend ÷ total leads (organic = $0)</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">30%</div>
+      <div class="kpi-text"><h4>Audit Completion Rate</h4><p>Sign-ups who complete and view the full report</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">20%</div>
+      <div class="kpi-text"><h4>Lead-to-Call Rate</h4><p>Completed audits that result in a booked call</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">40%</div>
+      <div class="kpi-text"><h4>Call-to-Client Rate</h4><p>Discovery calls that convert to a paid retainer</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">4–6</div>
+      <div class="kpi-text"><h4>New Clients / Month</h4><p>Target at full operational capacity</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">4×</div>
+      <div class="kpi-text"><h4>LinkedIn Posts / Week</h4><p>Minimum for consistent organic growth</p></div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">10</div>
+      <div class="kpi-text"><h4>LinkedIn DMs / Day</h4><p>New connection + follow-up messages</p></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="lime-box">
+    <h4>The Math at Scale</h4>
+    <p>20 audit sign-ups → 6 complete the audit and engage → 4 book a call → 1–2 become clients. At an average retainer of $3,000/month, acquiring 2 clients per month from $1,500 in ad spend = <strong>4× return on ad spend from the lead gen budget alone</strong>, before accounting for organic leads which cost nothing.</p>
+    <p>Scale the ad budget when the CAC is proven. Do not scale before the follow-up sequence and sales process is converting consistently.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', function() {
+    var s = document.documentElement;
+    var pct = (s.scrollTop / (s.scrollHeight - s.clientHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  // Active nav
+  var links = document.querySelectorAll('.nav-link');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        links.forEach(function(l){ l.classList.remove('active'); });
+        var t = document.querySelector('.nav-link[href="#' + e.target.id + '"]');
+        if (t) t.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('.section').forEach(function(el){ observer.observe(el); });
+</script>
+
+</body>
+</html>
