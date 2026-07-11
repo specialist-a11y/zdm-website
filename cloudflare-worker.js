@@ -24,7 +24,20 @@ const SUPABASE_ANON = 'sb_publishable_jVtYc6imLNSz0yvHNfnw5g_Pa20U5yF';
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
-    const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+    
+    let isAllowed = ALLOWED_ORIGINS.includes(origin);
+    if (!isAllowed && origin) {
+      try {
+        const url = new URL(origin);
+        if (url.hostname.endsWith('.vercel.app') || 
+            url.hostname === 'localhost' || 
+            url.hostname === '127.0.0.1') {
+          isAllowed = true;
+        }
+      } catch (_) {}
+    }
+
+    const allowedOrigin = isAllowed ? origin : ALLOWED_ORIGINS[0];
 
     const cors = {
       'Access-Control-Allow-Origin':  allowedOrigin,

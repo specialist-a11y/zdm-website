@@ -1973,14 +1973,23 @@ async function runAudit() {
   } catch (err) {
     var msg = err.message || 'Unknown error';
     var isCors = msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('load failed') || msg.toLowerCase().includes('cors') || msg.toLowerCase().includes('network');
-    errorDiv.innerHTML = '<div class="notice error">' +
-      '<strong>Audit failed:</strong> ' + escapeHtml(msg) +
-      (isCors ? '<br><br><strong>Fix: open from a local server, not the file directly.</strong><br>' +
-        '1. Open Terminal<br>' +
-        '2. Run: <code>cd "/Users/katrinapayne/antigravity/websites/Zee Digital Marketing Inc/ZDM (2)" && python3 -m http.server 8000</code><br>' +
-        '3. Then open <code>http://localhost:8000/audit-tool.html</code> in your browser<br><br>' +
-        'Browsers block calls to the ZDM audit server from <code>file://</code> URLs for security — localhost bypasses this.' : '') +
-      '</div>';
+    
+    var errorHtml = '<div class="notice error"><strong>Audit failed:</strong> ' + escapeHtml(msg);
+    if (isCors) {
+      if (window.location.protocol === 'file:') {
+        errorHtml += '<br><br><strong>Fix: open from a local server, not the file directly.</strong><br>' +
+          '1. Open Terminal<br>' +
+          '2. Run: <code>cd "/Users/katrinapayne/antigravity/websites/Zee Digital Marketing Inc/ZDM (2)" && python3 -m http.server 8000</code><br>' +
+          '3. Then open <code>http://localhost:8000/audit-tool.html</code> in your browser<br><br>' +
+          'Browsers block calls to the ZDM audit server from <code>file://</code> URLs for security — localhost bypasses this.';
+      } else {
+        errorHtml += '<br><br><strong>Fix: Cloudflare Worker CORS Config</strong><br>' +
+          'If this error persists, ensure that the origin <code>' + escapeHtml(window.location.origin) + '</code> is allowed by the Cloudflare Worker.<br>' +
+          'To apply the latest origin policy, run <code>npx wrangler deploy</code> in the terminal to update the Cloudflare Worker.';
+      }
+    }
+    errorHtml += '</div>';
+    errorDiv.innerHTML = errorHtml;
   }
 }
 
