@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="800" height="200">
+<title>ZDM INC — Logo Primary (Lime on Black)</title>
+<defs>
+  <style><![CDATA[
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  ]]></style>
+</defs>
+<rect width="800" height="200" fill="#0A0A0A"/>
+<!-- Z Mark -->
+<rect x="10" y="10" width="180" height="180" fill="#C8FF00"/>
+<text x="100" y="100"
+  font-family="'Bebas Neue', Impact, sans-serif"
+  font-size="108" fill="#0A0A0A"
+  text-anchor="middle" dominant-baseline="central">Z</text>
+<!-- Wordmark -->
+<text x="220" y="125"
+  font-family="'Bebas Neue', Impact, sans-serif"
+  font-size="88" letter-spacing="4"
+  fill="#F5F5F0" text-anchor="start">ZDM INC</text>
+<!-- Sub-brand line -->
+<text x="222" y="155"
+  font-family="'DM Mono', 'Courier New', monospace"
+  font-size="13" letter-spacing="3"
+  fill="#888888" text-anchor="start">ZEE DIGITAL MARKETING INC.</text>
+</svg>

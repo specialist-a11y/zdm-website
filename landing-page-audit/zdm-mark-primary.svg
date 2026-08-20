@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<title>ZDM INC — Z Mark (Lime on Black)</title>
+<defs>
+  <style><![CDATA[
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  ]]></style>
+</defs>
+<rect width="400" height="400" fill="#0A0A0A"/>
+<rect x="60" y="60" width="280" height="280" fill="#C8FF00"/>
+<text x="200" y="200"
+  font-family="'Bebas Neue', Impact, sans-serif"
+  font-size="168" fill="#0A0A0A"
+  text-anchor="middle" dominant-baseline="central">Z</text>
+</svg>
