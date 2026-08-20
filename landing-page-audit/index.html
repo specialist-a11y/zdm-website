@@ -237,21 +237,23 @@ form.done .sent{display:block}
 
 /* ---------- work ---------- */
 .work{display:grid;gap:clamp(34px,5vw,60px);align-items:center}
-@media(min-width:880px){.work{grid-template-columns:360px 1fr}}
+@media(min-width:880px){.work{grid-template-columns:minmax(320px, 500px) 1fr;gap:64px}}
 .video-wrapper{
   position:relative;
   width:100%;
-  border-radius:6px;
+  max-width:540px;
+  margin:0 auto;
+  border-radius:8px;
   overflow:hidden;
   border:1px solid var(--grey-line);
-  background:#111;
-  box-shadow:0 16px 40px rgba(0,0,0,.6);
+  background:#0A0A0A;
+  box-shadow:0 20px 48px rgba(0,0,0,.7);
 }
 .video-wrapper video{
   width:100%;
   height:auto;
-  aspect-ratio:16/9;
-  object-fit:cover;
+  aspect-ratio:9/16;
+  object-fit:contain;
   display:block;
   background:#0A0A0A;
 }
@@ -373,7 +375,13 @@ body{padding-bottom:0}
         <div class="form-card">
           <div class="form-body">
             <h3>Claim your free audit</h3>
-            <p class="form-sub">Two fields. Roughly thirty seconds.</p>
+            <p class="form-sub">Three fields. Roughly thirty seconds.</p>
+
+            <div class="field">
+              <label for="name">Your name</label>
+              <input id="name" name="name" type="text" placeholder="First & Last Name" autocomplete="name" required>
+              <span class="err">Add your name.</span>
+            </div>
 
             <div class="field">
               <label for="url">Your page or website</label>
@@ -557,7 +565,7 @@ body{padding-bottom:0}
         <h2>We build the pages we audit.</h2>
         <p class="lede" style="margin-top:20px;max-width:40em">
           The audit is not theory. It comes from building and shipping pages for
-          businesses here, then watching what people actually do on them. The reel
+          businesses, then watching what people actually do on them. The reel
           is a recent build, start to finish.
         </p>
         <div class="quote">
@@ -715,6 +723,12 @@ body{padding-bottom:0}
           <p class="form-sub">One of the fifty, or the paid version later.</p>
 
           <div class="field">
+            <label for="name2">Your name</label>
+            <input id="name2" name="name" type="text" placeholder="First & Last Name" autocomplete="name" required>
+            <span class="err">Add your name.</span>
+          </div>
+
+          <div class="field">
             <label for="url2">Your page or website</label>
             <input id="url2" name="url" type="text" inputmode="url" placeholder="yourbusiness.com" autocomplete="url" required>
             <span class="err">Add the link you want us to look at.</span>
@@ -813,9 +827,12 @@ body{padding-bottom:0}
     if (!form) return;
     form.addEventListener('submit', function(e){
       e.preventDefault();
+      var name = form.querySelector('input[name="name"]');
       var url = form.querySelector('input[name="url"]');
       var email = form.querySelector('input[name="email"]');
-      var ok = mark(url, url.value.trim().length > 3);
+      var ok = true;
+      if (name) { ok = mark(name, name.value.trim().length >= 2) && ok; }
+      ok = mark(url, url.value.trim().length > 3) && ok;
       ok = mark(email, emailOk.test(email.value.trim())) && ok;
       if (!ok) { form.querySelector('.field.invalid input').focus(); return; }
 
