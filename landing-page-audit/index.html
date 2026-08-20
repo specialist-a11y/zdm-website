@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Landing Page Audit | ZDM Inc. Barbados</title>
+<meta name="description" content="Send us your landing page. In three business days you get a recorded walkthrough and a ranked list of what is costing you leads. Free, from ZDM Inc. in Barbados.">
+<link rel="icon" href="zdm-icon.png">
+
+<meta property="og:title" content="Free Landing Page Audit | ZDM Inc.">
+<meta property="og:description" content="Find out exactly why your page is not converting. Recorded walkthrough plus a ranked fix list, in three business days.">
+<meta property="og:image" content="zdm-recent-work-poster.jpg">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --black:#0A0A0A;
+  --grey-d:#1A1A1A;
+  --grey-line:#242424;
+  --green:#C8FF00;
+  --white:#FFFFFF;
+  --grey-m:#888888;
+
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+
+  --pad:clamp(20px,5vw,40px);
+  --max:1180px;
+  --gap:clamp(64px,9vw,128px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--black);color:var(--white);
+  font-family:var(--sans);font-weight:400;
+  font-size:clamp(16px,1.05vw,17px);line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+section{padding-block:var(--gap)}
+
+/* ---------- type ---------- */
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.03em;line-height:1.06}
+h1{font-size:clamp(36px,5.2vw,56px);font-weight:900;letter-spacing:-.04em}
+h2{font-size:clamp(30px,4.2vw,46px)}
+h3{font-size:clamp(19px,2vw,22px);letter-spacing:-.02em;line-height:1.25}
+p{margin:0}
+.lede{font-size:clamp(17px,1.6vw,20px);font-weight:300;color:#D4D4D4;line-height:1.6}
+.muted{color:var(--grey-m)}
+.hl{color:var(--green)}
+
+.eyebrow{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey-m);
+  display:flex;align-items:center;gap:10px;margin-bottom:22px;
+}
+.eyebrow::before{content:"";width:7px;height:7px;background:var(--green);flex:none}
+
+/* ---------- header ---------- */
+header{
+  border-bottom:1px solid var(--grey-line);
+  position:sticky;top:0;z-index:40;
+  background:rgba(10,10,10,.9);backdrop-filter:blur(10px);
+}
+.head-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.head-in img{width:132px;height:auto}
+.head-loc{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-m)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--green);color:#0A0A0A;
+  font-family:var(--sans);font-weight:800;font-size:16px;letter-spacing:-.01em;
+  border:0;border-radius:2px;padding:17px 30px;width:100%;
+  cursor:pointer;transition:transform .12s ease,filter .12s ease;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{
+  background:transparent;color:var(--white);border:1px solid #333;
+  font-weight:600;width:auto;padding:15px 26px;text-decoration:none;
+}
+.btn-ghost:hover{border-color:var(--green);color:var(--green);filter:none}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+
+/* ---------- hero ---------- */
+.hero{padding-top:clamp(40px,4.6vw,58px);padding-bottom:clamp(56px,8vw,96px)}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(48px,6vw,72px);align-items:start}
+@media(min-width:960px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:64px}}
+.hero h1{margin-bottom:20px}
+.hero .lede{margin-bottom:26px;max-width:33em}
+
+.stakes{
+  display:flex;flex-wrap:wrap;gap:8px 24px;margin-bottom:26px;
+  font-family:var(--mono);font-size:12.5px;color:var(--grey-m);letter-spacing:.02em;
+}
+.stakes span{display:flex;align-items:center;gap:8px}
+.stakes span::before{content:"";width:5px;height:5px;background:var(--green)}
+
+/* ---------- form ---------- */
+.form-card{background:var(--grey-d);border:1px solid var(--grey-line);border-radius:3px;padding:clamp(22px,2.4vw,26px)}
+/* scarcity meter */
+.scarce{border:1px solid #2E2E2E;border-radius:2px;padding:14px 16px;margin-bottom:20px;background:#101010}
+.scarce-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px}
+.scarce-lab{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--grey-m)}
+.scarce-num{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--green);letter-spacing:.02em;white-space:nowrap}
+.scarce-track{height:5px;background:#262626;border-radius:3px;overflow:hidden}
+.scarce-fill{height:100%;background:var(--green);width:0;border-radius:3px;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.scarce-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:#5A5A5A;margin-top:10px}
+
+.hero-scarce{display:inline-flex;align-items:center;gap:10px;border:1px solid #2E2E2E;border-radius:2px;padding:9px 14px;margin-bottom:20px}
+.hero-scarce .dot{width:7px;height:7px;background:var(--green);border-radius:50%;flex:none;animation:pulse 2.4s ease-in-out infinite}
+.hero-scarce span{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#D4D4D4}
+.hero-scarce b{color:var(--green);font-weight:500}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.sticky-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--grey-m);text-align:center;margin:0 0 9px}
+.sticky-note b{color:var(--green);font-weight:500}
+
+.form-card h3{margin-bottom:6px}
+.form-sub{font-size:14px;color:var(--grey-m);margin-bottom:18px}
+.field{margin-bottom:12px}
+label{
+  display:block;font-family:var(--mono);font-size:11px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--grey-m);margin-bottom:7px;
+}
+input,select{
+  width:100%;background:#0F0F0F;border:1px solid #2C2C2C;border-radius:2px;
+  color:var(--white);font-family:var(--sans);font-size:16px;padding:13px 14px;
+  transition:border-color .12s ease;
+}
+input::placeholder{color:#555}
+input:focus,select:focus{border-color:var(--green);outline:none}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#888 50%),linear-gradient(135deg,#888 50%,transparent 50%);background-position:calc(100% - 20px) 20px,calc(100% - 14px) 20px;background-size:6px 6px;background-repeat:no-repeat}
+.err{color:#FF6B5A;font-size:13px;margin-top:6px;display:none}
+.field.invalid input{border-color:#FF6B5A}
+.field.invalid .err{display:block}
+.form-foot{font-size:13px;color:var(--grey-m);margin-top:14px;line-height:1.5}
+.sent{display:none;text-align:center;padding:26px 8px}
+.sent .tick{width:44px;height:44px;border:2px solid var(--green);border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;color:var(--green);font-size:20px}
+form.done .form-body{display:none}
+form.done .sent{display:block}
+
+/* ---------- signature: the audit markup ---------- */
+.audit{position:sticky;top:100px}
+.audit-frame{
+  background:var(--grey-d);border:1px solid var(--grey-line);border-radius:4px;
+  overflow:hidden;position:relative;
+}
+.audit-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;border-bottom:1px solid var(--grey-line)}
+.audit-bar i{width:9px;height:9px;border-radius:50%;background:#333;display:block}
+.audit-url{
+  flex:1;text-align:center;font-family:var(--mono);font-size:11px;color:#5A5A5A;
+  background:#131313;border-radius:20px;padding:5px 12px;margin-left:6px;
+}
+.audit-body{position:relative;padding:26px 22px 30px;background:#141414}
+
+/* the wireframe of a generic landing page being audited */
+.wf{display:grid;gap:11px}
+.wf i{display:block;background:#282828;border-radius:2px}
+.wf .nav{height:9px;width:100%;background:#1E1E1E}
+.wf .h{height:17px;width:82%}
+.wf .h2{height:17px;width:56%}
+.wf .t{height:8px;width:94%}
+.wf .t2{height:8px;width:74%}
+.wf .row{display:flex;gap:9px;margin-top:5px}
+.wf .row i{height:26px;flex:1;border-radius:2px}
+.wf .blk{height:58px;width:100%;margin-top:6px}
+.wf .cta{height:26px;width:120px;background:#2E2E2E}
+
+.pin{
+  position:absolute;border:1.5px dashed var(--green);border-radius:2px;
+  opacity:0;transition:opacity .45s ease;pointer-events:none;
+}
+.pin.on{opacity:1}
+.pin b{
+  position:absolute;top:-11px;left:-1px;
+  background:var(--green);color:#0A0A0A;
+  font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.06em;
+  padding:3px 7px;white-space:nowrap;border-radius:1px;
+}
+.pin.below b{top:auto;bottom:-11px}
+
+.audit-note{
+  display:flex;align-items:flex-start;gap:12px;
+  border-top:1px solid var(--grey-line);padding:16px 18px;background:var(--grey-d);
+  font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--grey-m);min-height:70px;
+}
+.audit-note em{color:var(--green);font-style:normal;flex:none}
+.audit-cap{font-family:var(--mono);font-size:11px;color:#5A5A5A;letter-spacing:.1em;text-transform:uppercase;margin-top:14px;text-align:center}
+
+/* ---------- symptoms ---------- */
+.sym{display:grid;gap:1px;background:var(--grey-line);border:1px solid var(--grey-line);border-radius:3px;overflow:hidden;margin-top:52px}
+@media(min-width:820px){.sym{grid-template-columns:repeat(3,1fr)}}
+.sym article{background:var(--black);padding:clamp(26px,3vw,34px)}
+.sym h3{margin-bottom:12px}
+.sym p{color:var(--grey-m);font-size:15.5px}
+
+/* ---------- deliverable ---------- */
+.checks{border-top:1px solid var(--grey-line);margin-top:52px}
+.check{
+  display:grid;grid-template-columns:auto 1fr;gap:18px;
+  border-bottom:1px solid var(--grey-line);padding:26px 0;align-items:start;
+}
+@media(min-width:820px){.check{grid-template-columns:64px 1fr 1.25fr;gap:32px;align-items:baseline}}
+.check .n{font-family:var(--mono);font-size:13px;color:var(--green);letter-spacing:.06em;padding-top:3px}
+.check p{color:var(--grey-m);font-size:15.5px;grid-column:1/-1}
+@media(min-width:820px){.check p{grid-column:auto}}
+
+.get{background:var(--grey-d);border:1px solid var(--grey-line);border-radius:3px;padding:clamp(24px,3vw,34px);margin-top:44px}
+.get ul{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:13px}
+.get li{display:flex;gap:13px;align-items:flex-start;font-size:15.5px;color:#D4D4D4}
+.get li::before{content:"";width:6px;height:6px;background:var(--green);flex:none;margin-top:9px}
+.get-more{margin-top:26px;padding-top:24px;border-top:1px solid #2A2A2A}
+.get-more .tag{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--green);display:block;margin-bottom:12px;
+}
+.get-more h4{margin:0 0 12px;font-size:clamp(17px,1.8vw,19px);font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.get-more p{color:var(--grey-m);font-size:15px;max-width:56em}
+.get-more p + p{margin-top:12px}
+.get-more .needs{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.get-more .needs li{font-size:14.5px;color:var(--grey-m);align-items:flex-start;display:flex;gap:12px}
+.get-more .needs li::before{content:"";width:6px;height:1.5px;background:#555;flex:none;margin-top:11px}
+.get-more .safety{margin-top:16px;font-size:14px;color:#D4D4D4}
+
+/* ---------- work ---------- */
+.work{display:grid;gap:clamp(34px,5vw,60px);align-items:center}
+@media(min-width:880px){.work{grid-template-columns:340px 1fr}}
+.work video{border-radius:4px;border:1px solid var(--grey-line);background:#111;width:100%}
+.quote{border-left:2px solid var(--green);padding-left:22px;margin-top:28px}
+.quote p{font-size:17px;font-weight:300;line-height:1.55}
+.quote span{display:block;margin-top:12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey-m)}
+
+/* ---------- steps ---------- */
+.steps{display:grid;gap:1px;background:var(--grey-line);border:1px solid var(--grey-line);border-radius:3px;overflow:hidden;margin-top:52px}
+@media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr)}}
+.steps article{background:var(--black);padding:clamp(26px,3vw,34px)}
+.steps .n{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.14em;margin-bottom:16px}
+.steps h3{margin-bottom:10px}
+.steps p{color:var(--grey-m);font-size:15.5px}
+
+/* ---------- faq ---------- */
+.faq{margin-top:48px;border-top:1px solid var(--grey-line)}
+details{border-bottom:1px solid var(--grey-line)}
+summary{
+  cursor:pointer;list-style:none;padding:24px 40px 24px 0;position:relative;
+  font-weight:600;font-size:clamp(16px,1.7vw,18.5px);letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"+";position:absolute;right:6px;top:22px;
+  color:var(--green);font-family:var(--mono);font-size:20px;font-weight:400;line-height:1;
+}
+details[open] summary::after{content:"–"}
+details p{color:var(--grey-m);font-size:15.5px;padding:0 0 26px;max-width:62em}
+
+/* ---------- final cta ---------- */
+.final{border-top:1px solid var(--grey-line);background:#0D0D0D}
+.final-grid{display:grid;gap:clamp(36px,5vw,64px)}
+@media(min-width:960px){.final-grid{grid-template-columns:1fr 460px;align-items:center}}
+.final h2{margin-bottom:20px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--grey-line);padding-block:34px}
+.foot-in{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.foot-in img{width:120px;height:auto}
+.foot-in p{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5A5A5A}
+
+/* ---------- mobile sticky cta ---------- */
+.sticky{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  padding:12px var(--pad) calc(12px + env(safe-area-inset-bottom));
+  background:rgba(10,10,10,.94);backdrop-filter:blur(10px);
+  border-top:1px solid var(--grey-line);
+  transform:translateY(110%);transition:transform .28s ease;
+}
+.sticky.show{transform:translateY(0)}
+.sticky .btn{padding:16px 24px;font-size:15px}
+@media(min-width:960px){.sticky{display:none}}
+body{padding-bottom:0}
+@media(max-width:959px){body.has-sticky{padding-bottom:84px}}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .scarce-fill{transition:none!important}
+  .pin{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-in">
+    <img src="zdm-lockup.png" alt="ZDM Inc. Zee Digital Marketing Inc.">
+    <span class="head-loc">Bridgetown, Barbados</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Free landing page audit</p>
+      <div class="hero-scarce">
+        <i class="dot"></i>
+        <span>Free for the first <b>50</b> businesses.</span>
+      </div>
+      <h1>Your page gets the click. Then what?</h1>
+      <p class="lede">
+        You are paying for attention. If the page it lands on is not built to
+        convert, that money leaves as quietly as it arrived. Send us the link
+        and we will tell you exactly where it goes.
+      </p>
+
+      <div class="stakes">
+        <span>Recorded walkthrough</span>
+        <span>Ranked fix list</span>
+        <span>3 business days</span>
+        <span>No charge</span>
+      </div>
+
+      <form id="lead" action="https://formspree.io/f/xgawrpov" method="POST" novalidate>
+        <div class="form-card">
+          <div class="form-body">
+            <h3>Claim your free audit</h3>
+            <p class="form-sub">Two fields. Roughly thirty seconds.</p>
+
+            <div class="field">
+              <label for="url">Your page or website</label>
+              <input id="url" name="url" type="text" inputmode="url" placeholder="yourbusiness.com" autocomplete="url" required>
+              <span class="err">Add the link you want us to look at.</span>
+            </div>
+
+            <div class="field">
+              <label for="email">Where we send it</label>
+              <input id="email" name="email" type="email" placeholder="you@yourbusiness.com" autocomplete="email" required>
+              <span class="err">That email does not look right.</span>
+            </div>
+
+            <button class="btn" type="submit">Claim my free audit</button>
+            <p class="form-foot">
+              No call required. We send the audit whether or not you ever hire us.
+            </p>
+          </div>
+
+          <div class="sent" role="status">
+            <div class="tick">&#10003;</div>
+            <h3>Your page is in the queue.</h3>
+            <p class="form-sub" style="margin-top:10px">
+              Check your inbox within three business days. If it has not arrived,
+              look in spam before you write us off.
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- signature element: a page being marked up -->
+    <div class="audit">
+      <div class="audit-frame">
+        <div class="audit-bar">
+          <i></i><i></i><i></i>
+          <span class="audit-url">yourbusiness.com</span>
+        </div>
+        <div class="audit-body">
+          <div class="wf" id="wf">
+            <i class="nav"></i>
+            <i class="h"></i>
+            <i class="h2"></i>
+            <i class="t"></i>
+            <i class="t2"></i>
+            <i class="cta"></i>
+            <i class="blk"></i>
+            <div class="row"><i></i><i></i><i></i></div>
+            <i class="t"></i>
+            <i class="t2"></i>
+          </div>
+          <div class="pin" data-pin="0" style="left:16px;top:52px;right:16px;height:64px"><b>No offer in the first screen</b></div>
+          <div class="pin below" data-pin="1" style="left:16px;top:150px;width:140px;height:32px"><b>Button says "Learn more"</b></div>
+          <div class="pin" data-pin="2" style="left:16px;top:196px;right:16px;height:66px"><b>Nothing here proves you deliver</b></div>
+          <div class="pin below" data-pin="3" style="left:16px;top:274px;right:16px;height:40px"><b>No way to tell what worked</b></div>
+        </div>
+        <div class="audit-note">
+          <em>&rarr;</em><span id="note">Reading the page the way a first time visitor does.</span>
+        </div>
+      </div>
+      <p class="audit-cap">Sample findings. Yours will be specific.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SYMPTOMS ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Sound familiar</p>
+    <h2>The page looks fine. The results say otherwise.</h2>
+    <p class="lede" style="margin-top:20px;max-width:44em">
+      Most pages we look at are not ugly. They are unclear. Here is how that shows up.
+    </p>
+
+    <div class="sym">
+      <article>
+        <h3>People message you instead of buying</h3>
+        <p>
+          Every enquiry starts with the same three questions on WhatsApp. That is
+          the page failing to answer them, and it is costing you hours a week.
+        </p>
+      </article>
+      <article>
+        <h3>Traffic goes up, enquiries do not</h3>
+        <p>
+          You boosted the post and got the visits. They arrived, looked around,
+          and left without doing anything you can point to.
+        </p>
+      </article>
+      <article>
+        <h3>You cannot tell what is working</h3>
+        <p>
+          A customer comes in and you have no idea which ad, post, or search
+          brought them. So you cannot do more of it on purpose.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT WE CHECK ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">What we actually check</p>
+    <h2>Five passes over your page.</h2>
+    <p class="lede" style="margin-top:20px;max-width:44em">
+      Not a checklist score out of a hundred. A person going through your page in
+      order, the way your customer does, saying what breaks and why.
+    </p>
+
+    <div class="checks">
+      <div class="check">
+        <span class="n">01</span>
+        <h3>First impression</h3>
+        <p>What the page tells a stranger in five seconds, and whether that matches what you actually sell.</p>
+      </div>
+      <div class="check">
+        <span class="n">02</span>
+        <h3>The offer</h3>
+        <p>Whether there is one clear thing to do, where it sits, and how many other things compete with it.</p>
+      </div>
+      <div class="check">
+        <span class="n">03</span>
+        <h3>Friction</h3>
+        <p>Every step between interest and enquiry. Load speed, form length, dead ends, and what breaks on a phone.</p>
+      </div>
+      <div class="check">
+        <span class="n">04</span>
+        <h3>Proof</h3>
+        <p>What makes you believable to someone who has never heard of you, and which proof you are sitting on but not showing.</p>
+      </div>
+      <div class="check">
+        <span class="n">05</span>
+        <h3>Measurement</h3>
+        <p>Whether your tracking can answer the only question that matters. Which spend brought which customer.</p>
+      </div>
+    </div>
+
+    <div class="get">
+      <h3>What lands in your inbox</h3>
+      <ul>
+        <li>A recorded screen walkthrough of your page, ten to fifteen minutes, our voice over your site.</li>
+        <li>A written list of findings, ranked by what will move the needle first.</li>
+        <li>The two changes we would make this week, described clearly enough to hand to whoever built the page.</li>
+      </ul>
+
+      <div class="get-more">
+        <span class="tag">If your page already has traffic</span>
+        <h4>We can stop guessing and watch what visitors actually do.</h4>
+        <p>
+          Instead of us reading the page as a stranger would, we watch real visitors
+          move through it. Where they stop scrolling. What they click instead of your
+          button. The exact point they give up and leave.
+        </p>
+        <p>Two things have to be true before that is worth doing.</p>
+        <ul class="needs">
+          <li>A short tracking snippet has to go on your site first. We send it, you or your developer paste it in, and it records nothing until it is live.</li>
+          <li>The page needs enough visitors for the pattern to mean something. A handful of sessions tells you about a handful of people, not about your customers.</li>
+        </ul>
+        <p class="safety">
+          Not there yet on traffic? The walkthrough and the fix list do not depend on
+          it, and you get both either way.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECENT WORK ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Recent work</p>
+    <div class="work">
+      <video src="zdm-recent-work.mp4" poster="zdm-recent-work-poster.jpg" controls playsinline preload="none" aria-label="ZDM Inc. recent work reel"></video>
+      <div>
+        <h2>We build the pages we audit.</h2>
+        <p class="lede" style="margin-top:20px;max-width:40em">
+          The audit is not theory. It comes from building and shipping pages for
+          businesses here, then watching what people actually do on them. The reel
+          is a recent build, start to finish.
+        </p>
+        <div class="quote">
+          <p>
+            Websites, technical SEO, performance marketing, and the reporting that
+            tells you whether any of it worked.
+          </p>
+          <span>ZDM Inc. &middot; Barbados</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>Three steps. One of them is yours.</h2>
+
+    <div class="steps">
+      <article>
+        <p class="n">STEP 01</p>
+        <h3>Send the link</h3>
+        <p>Fill in the form above. The public address of the page is enough to start. If you want the visitor behaviour part, we send you the snippet next.</p>
+      </article>
+      <article>
+        <p class="n">STEP 02</p>
+        <h3>We go through it</h3>
+        <p>A real person records the walkthrough and writes the findings. Three business days, usually sooner.</p>
+      </article>
+      <article>
+        <p class="n">STEP 03</p>
+        <h3>You decide</h3>
+        <p>Fix it yourself, hand it to your developer, or ask us to quote. All three are fine with us.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Before you ask</p>
+    <h2>The questions we get.</h2>
+
+    <div class="faq">
+      <details>
+        <summary>Is it actually free, or free until the invoice arrives?</summary>
+        <p>
+          Actually free. You get the recording and the written findings with no
+          invoice attached. We do this because roughly one in five people who see
+          what is wrong asks us to fix it, and that is a better way to earn work
+          than cold calling.
+        </p>
+      </details>
+      <details>
+        <summary>Will someone call me and pitch?</summary>
+        <p>
+          No. The audit arrives by email and you can ignore it. If you want to talk
+          after watching, reply and we will book a time. Nobody rings your phone
+          because you filled in a form.
+        </p>
+      </details>
+      <details>
+        <summary>I do not have a landing page, just a website. Does that count?</summary>
+        <p>
+          Yes. Send whichever page your ads, posts, or link in bio point to. That is
+          the page doing the work, and it is usually the homepage, which is part of
+          the problem we would talk about.
+        </p>
+      </details>
+      <details>
+        <summary>My site is on Wix, Shopify, or WordPress. Does that matter?</summary>
+        <p>
+          Not for the audit. The findings are about clarity, friction, proof, and
+          measurement, and those apply on any platform. Where a fix depends on your
+          platform, we say so.
+        </p>
+      </details>
+      <details>
+        <summary>Why only fifty?</summary>
+        <p>
+          Because each audit is a real person spending a couple of hours on your page,
+          and fifty is what we can do properly alongside client work. When the fifty
+          are gone the audit becomes a paid engagement. We are not going to quietly
+          reset the counter and run the same offer again next month.
+        </p>
+      </details>
+      <details>
+        <summary>What happens if I am number fifty one?</summary>
+        <p>
+          You will be told straight away rather than left waiting. We will hold your
+          details only if you ask us to, and let you know what the paid version costs
+          so you can decide with a real number in front of you.
+        </p>
+      </details>
+      <details>
+        <summary>What is this tracking snippet, and do I have to use it?</summary>
+        <p>
+          It is a few lines of JavaScript that go in your site header, the same kind
+          your analytics already uses. It records how visitors move through the page,
+          not who they are, and we can hand you the removal step the day you want it
+          gone. It is optional. Skip it and you still get the walkthrough and the
+          ranked fix list, which is the bulk of the value.
+        </p>
+      </details>
+      <details>
+        <summary>How much traffic counts as enough?</summary>
+        <p>
+          As a rough line, a few hundred visits to that page over two to three weeks.
+          Below that the recordings still make interesting viewing, but you would be
+          making decisions off too few people. We will tell you honestly which side of
+          that line you are on rather than dressing up thin data.
+        </p>
+      </details>
+      <details>
+        <summary>What do you do with my details?</summary>
+        <p>
+          We email you the audit. That is it. No list is sold, no partner is passed
+          your address, and one reply saying stop means we stop.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final">
+  <div class="wrap final-grid">
+    <div>
+      <p class="eyebrow">Last thing</p>
+      <h2>Fifty businesses get this free. Then it stops.</h2>
+      <p class="lede" style="max-width:40em">
+        Worst case, you find out your page is fine and you stop worrying about it.
+        Best case, you find the one thing quietly turning customers away, and you fix
+        it this week. Either way it costs you a link and thirty seconds, and only
+        while the fifty last.
+      </p>
+    </div>
+
+    <form id="lead2" action="https://formspree.io/f/xgawrpov" method="POST" novalidate>
+      <div class="form-card">
+        <div class="form-body">
+          <div class="scarce">
+            <div class="scarce-top">
+              <span class="scarce-lab">Free audits claimed</span>
+              <span class="scarce-num"><b data-claimed>0</b> / 50</span>
+            </div>
+            <div class="scarce-track"><div class="scarce-fill" data-fill></div></div>
+            <p class="scarce-note">After 50, this goes back to a paid engagement.</p>
+          </div>
+
+          <h3>Claim your free audit</h3>
+          <p class="form-sub">One of the fifty, or the paid version later.</p>
+
+          <div class="field">
+            <label for="url2">Your page or website</label>
+            <input id="url2" name="url" type="text" inputmode="url" placeholder="yourbusiness.com" autocomplete="url" required>
+            <span class="err">Add the link you want us to look at.</span>
+          </div>
+
+          <div class="field">
+            <label for="email2">Where we send it</label>
+            <input id="email2" name="email" type="email" placeholder="you@yourbusiness.com" autocomplete="email" required>
+            <span class="err">That email does not look right.</span>
+          </div>
+
+          <button class="btn" type="submit">Claim my free audit</button>
+          <p class="form-foot">No call required. No invoice at the end.</p>
+        </div>
+
+        <div class="sent" role="status">
+          <div class="tick">&#10003;</div>
+          <h3>Your page is in the queue.</h3>
+          <p class="form-sub" style="margin-top:10px">Check your inbox within three business days.</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <img src="zdm-lockup.png" alt="ZDM Inc.">
+    <p>Strategy. Systems. Growth. &middot; Barbados</p>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky">
+  <p class="sticky-note">Free for the first <b>50</b> businesses</p>
+  <button class="btn" type="button" data-scroll>Claim my free audit</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- where the leads go. swap this for your endpoint. ---- */
+  var ENDPOINT = "https://formspree.io/f/xgawrpov";
+
+  /* ---- scarcity counter. update CLAIMED by hand as audits go out. ---- */
+  var TOTAL = 50;
+  var CLAIMED = 0;
+
+  (function(){
+    var claimed = Math.max(0, Math.min(TOTAL, CLAIMED));
+    document.querySelectorAll('[data-claimed]').forEach(function(el){ el.textContent = claimed; });
+    var pct = (claimed / TOTAL) * 100;
+    var fills = document.querySelectorAll('[data-fill]');
+    var paint = function(){ fills.forEach(function(el){ el.style.width = Math.max(pct, 1.5) + '%'; }); };
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ? paint() : setTimeout(paint, 350);
+  })();
+
+  /* ---- signature: cycle the audit findings ---- */
+  var pins = Array.prototype.slice.call(document.querySelectorAll('.pin'));
+  var note = document.getElementById('note');
+  var notes = [
+    "Above the fold: a visitor cannot tell what you sell or what to do next.",
+    "The main button asks for curiosity, not a decision. That costs clicks.",
+    "No reviews, results, or named clients. A stranger has no reason to trust this.",
+    "No tracking on the enquiry. You cannot tell which spend brought the customer."
+  ];
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (pins.length && !reduce) {
+    var i = -1;
+    var step = function(){
+      pins.forEach(function(p){ p.classList.remove('on'); });
+      i = (i + 1) % pins.length;
+      pins[i].classList.add('on');
+      note.textContent = notes[i];
+    };
+    step();
+    setInterval(step, 2800);
+  } else if (pins.length) {
+    pins.forEach(function(p){ p.classList.add('on'); });
+  }
+
+  /* ---- forms ---- */
+  var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function mark(input, ok){
+    input.closest('.field').classList.toggle('invalid', !ok);
+    return ok;
+  }
+
+  function handle(form){
+    if (!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var url = form.querySelector('input[name="url"]');
+      var email = form.querySelector('input[name="email"]');
+      var ok = mark(url, url.value.trim().length > 3);
+      ok = mark(email, emailOk.test(email.value.trim())) && ok;
+      if (!ok) { form.querySelector('.field.invalid input').focus(); return; }
+
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Sending';
+
+      var done = function(){
+        form.classList.add('done');
+        form.scrollIntoView({block:'center', behavior: reduce ? 'auto' : 'smooth'});
+      };
+
+      if (!ENDPOINT) { done(); return; }
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {'Accept':'application/json'},
+        body: new FormData(form)
+      }).then(done).catch(function(){
+        btn.disabled = false;
+        btn.textContent = 'Claim my free audit';
+        alert('That did not send. Email hello@zdminc.com and we will pick it up.');
+      });
+    });
+  }
+  handle(document.getElementById('lead'));
+  handle(document.getElementById('lead2'));
+
+  /* ---- mobile sticky cta ---- */
+  var sticky = document.getElementById('sticky');
+  var hero = document.querySelector('.hero');
+  document.body.classList.add('has-sticky');
+
+  var onScroll = function(){
+    var past = window.scrollY > hero.offsetHeight * 0.9;
+    var atEnd = (window.innerHeight + window.scrollY) > (document.body.offsetHeight - 700);
+    sticky.classList.toggle('show', past && !atEnd);
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  document.querySelector('[data-scroll]').addEventListener('click', function(){
+    var t = document.getElementById('url');
+    t.scrollIntoView({block:'center', behavior: reduce ? 'auto' : 'smooth'});
+    setTimeout(function(){ t.focus(); }, reduce ? 0 : 420);
+  });
+})();
+</script>
+</body>
+</html>
