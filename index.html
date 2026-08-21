@@ -7,6 +7,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "y5kswak8u7");
+  </script>
   <style>
     :root {
       --black: #0A0A0A;
@@ -1054,6 +1062,71 @@
       body { cursor: auto; }
       #cursor-dot, #cursor-ring { display: none; }
     }
+
+    /* ─── ADDED ENGAGING GRAPHICS & STYLES ───────────────── */
+    .hero {
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(200, 255, 0, 0.08) 1.5px, transparent 1.5px);
+      background-size: 36px 36px;
+      z-index: 1;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
+    }
+
+    .glow-blob {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(200, 255, 0, 0.05) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+      z-index: 1;
+      animation: float-blob 15s ease-in-out infinite alternate;
+    }
+    
+    @keyframes float-blob {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.1); }
+      100% { transform: translate(-30px, 40px) scale(0.95); }
+    }
+
+    /* Active Nav Highlighter */
+    .nav-links a.active {
+      color: var(--lime) !important;
+    }
+    .nav-links a.active::after {
+      width: 100% !important;
+    }
+
+    /* Bento Cards Polish */
+    .ab {
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease !important;
+    }
+    .ab:hover {
+      border-color: var(--lime) !important;
+      box-shadow: 0 12px 36px rgba(200, 255, 0, 0.06) !important;
+      transform: translateY(-3px);
+    }
+    .ab-vs-row {
+      transition: background 0.3s ease, border-color 0.3s ease !important;
+    }
+
+    /* Work Card Glows */
+    .work-card {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      border: 1px solid var(--dark-grey);
+    }
+    .work-card:hover {
+      border-color: var(--lime);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(200, 255, 0, 0.04) !important;
+    }
   </style>
 </head>
 <body>
@@ -1064,6 +1137,11 @@
 
   <!-- PROGRESS -->
   <div id="progress-bar"></div>
+
+  <!-- GLOW BLOBS -->
+  <div class="glow-blob" style="top: 10%; left: 5%;"></div>
+  <div class="glow-blob" style="top: 40%; right: 5%; animation-delay: -5s;"></div>
+  <div class="glow-blob" style="top: 70%; left: 10%; animation-delay: -10s;"></div>
 
   <!-- NAV -->
   <nav id="mainNav">
@@ -1585,6 +1663,28 @@
         card.style.transform = '';
       });
     });
+
+    // ─── ACTIVE NAV HIGHLIGHTER ──────────────────────────────
+    const navLinksList = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
+    
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinksList.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${id}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "-80px 0px -40% 0px" });
+    
+    sections.forEach(sec => navObserver.observe(sec));
   </script>
 </body>
 </html>
